@@ -1,0 +1,263 @@
+﻿library(ggplot2)
+library(dplyr)
+ 
+myd=read.table("../abortion_db/AbortionAS-AVdatabase-IMMA.09-02-2018.minusfirstline.tsv", header=T, sep="\t", na="na")
+
+
+myd$Pregnancy_termination_date <- as.Date(myd$Pregnancy_termination_date, "%m/%d/%y")
+myd$Last_menstruation_date  <- as.Date(myd$Last_menstruation_date, "%m/%d/%y")
+myd$Nascita  <- as.Date(myd$Nascita, "%m/%d/%y")
+
+
+myd$Type1 <-(ifelse(myd$Type=="Induced", "Induced", ifelse(myd$Miscarriage==0, "MiscarriageFirst",  "MiscarriageRecurrent" ))  )
+myd$Age<- (myd$Pregnancy_termination_date - myd$Nascita)/365
+
+
+ind=subset(myd, Type1=="Induced")$Age
+first=subset(myd, Type1=="MiscarriageFirst")$Age
+rec=subset(myd, Type1=="MiscarriageRecurrent")$Age
+firstpval=formatC(wilcox.test(as.numeric(ind),as.numeric(first), alternative="less")$p.value, format = "e", digits = 3) 
+recpval=formatC(wilcox.test(as.numeric(ind),as.numeric(rec), alternative="less")$p.value, format = "e", digits = 3) 
+png("ageatevent.allinduced.png", res=300, units="cm", width=15, height =15)
+ggplot(myd, aes(Type1, (Pregnancy_termination_date - Nascita)/365 ) )+ geom_boxplot()+geom_jitter(aes(color=as.factor(Miscarriage) ) ) + annotate("text", x = 2, y = 3.5, label = paste ("Mann-Whitney p-value\n(Induced, MiscarriageFirst)  =  ",firstpval , sep=""))+ annotate("text", x = 2, y = 8.5, label = paste ("Mann-Whitney p-value\n (Induced, MiscarriageRecurrent)  =  ",recpval , sep=""))
+dev.off() 
+
+
+
+
+##### Remove induced with Miscarriages>= 1 
+mys1= myd %>% filter(Type1=="Induced" & Miscarriage==0)  
+mys2= myd %>% filter(Type=="Miscarriages")  
+mys=rbind(mys1, mys2)
+
+
+mys %>% group_by(Type1) %>% tally  
+# A tibble: 3 x 2
+  Type1                        n
+  <chr>                    <int>
+1 Induced                     81
+2 MiscarriageFirst            56
+3 MiscarriageRecurrent        40
+
+
+
+
+
+
+~~~~~~~~~~  MOTHER AGE AT EVENT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+##### REMOVE AV030 because Pregnancy_termination_date==Nascita
+ID
+	Nascita
+	Pregnancy_termination_date
+	AV030
+	07/04/16
+	07/04/16
+	
+
+mysnoAV030=subset(mys, ID!="AV030") 
+
+
+ind=subset(mysnoAV030, Type1=="Induced")$Age
+first=subset(mysnoAV030, Type1=="MiscarriageFirst")$Age
+rec=subset(mysnoAV030, Type1=="MiscarriageRecurrent")$Age
+firstpval=formatC(wilcox.test(as.numeric(ind),as.numeric(first), alternative="less")$p.value, format = "e", digits = 3) 
+recpval=formatC(wilcox.test(as.numeric(ind),as.numeric(rec), alternative="less")$p.value, format = "e", digits = 3) 
+
+
+png("ageateventinducedfiltered.png", res=300, units="cm", width=20, height =15)
+ggplot(mysnoAV030, aes(Type1, (Pregnancy_termination_date - Nascita)/365 ) )+ geom_boxplot()+geom_jitter(aes(color=as.factor(Miscarriage) ) ) + annotate("text", x = 2, y = 3.5, label = paste ("Mann-Whitney p-value\n(Induced, MiscarriageFirst)  =  ",firstpval , sep=""))+ annotate("text", x = 2, y = 8.5, label = paste ("Mann-Whitney p-value\n (Induced, MiscarriageRecurrent)  =  ",recpval , sep="")) +theme_bw() + ggtitle("Mother age \nat pregnancy termination")
+dev.off()
+
+
+subset(mys, ID!="AV030")  %>% group_by(Type1) %>% summarize( avAgeMother=mean((Pregnancy_termination_date - Nascita)/365, na.rm=T) , medAgeMother=median((Pregnancy_termination_date - Nascita)/365, na.rm=T), minAgeMother=min((Pregnancy_termination_date - Nascita)/365, na.rm=T) , maxAgeMother=max((Pregnancy_termination_date - Nascita)/365,  na.rm=T), sdAgeMother=sd((Pregnancy_termination_date - Nascita)/365, na.rm=T)  )
+
+
+  Type1          avAgeMother  medAgeMother  minAgeMother  maxAgeMother  sdAgeMother
+  <chr>          <time>           <time>            <time>            <time>                  <dbl>
+1 Induced        29.54335527… 28.926027397… 18.504109589… 44.320547945…            6.13
+2 Miscarria… 33.09247867… 34.145205479… 22.904109589… 43.263013698…            5.56
+3 Miscarria… 38.11226027… 39.023287671… 24.172602739… 45.120547945…            4.98
+
+
+
+
+
+
+~~~~~~~~~~~ GESTATIONAL AGE ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+######## REMOVE AS064 because -
+ID
+	Pregnancy_termination_date
+	Last_menstruation_date
+	AS064
+	10/17/16
+	10/17/16
+	
+
+png("gestational_age.png", res=300 ,width=15, height=10  ,units="cm")
+ggplot(subset(mys, ID!="AS064"), aes(Type1, Pregnancy_termination_date - Last_menstruation_date ) )+ geom_boxplot()+geom_jitter(aes(color=as.factor(Miscarriage)) ) +theme_bw() + ggtitle("Gestational age \nat pregnancy termination")
+dev.off() 
+
+
+
+
+subset(mys, ID!="AS064") %>% group_by(Type1) %>% summarize( avGestAgeFetus=mean(Pregnancy_termination_date - Last_menstruation_date, na.rm=T) , medGestAgeFetus=median(Pregnancy_termination_date - Last_menstruation_date, na.rm=T), minGestAgeFetus=min(Pregnancy_termination_date - Last_menstruation_date, na.rm=T) , maxGestAgeFetus=max(Pregnancy_termination_date - Last_menstruation_date, na.rm=T) )
+  Type1             avGestAgeFetus  medGestAgeFetus minGestAgeFetus maxGestAgeFetus
+  <chr>             <time>              <time>              <time>              <time>             
+1 Induced           67.22666666666… 67                  28                  94                 
+2 MiscarriageF… 72.62745098039… 72                  52                  117                
+3 MiscarriageR… 73.25               72                  55                  90  
+
+
+
+
+~~~~~~~~~~~~~~~~~~~  MENARCHE AGE  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ind=subset(mys, Type1=="Induced")$Menarche_age
+first=subset(mys, Type1=="MiscarriageFirst")$Menarche_age
+rec=subset(mys, Type1=="MiscarriageRecurrent")$Menarche_age
+firstpval=formatC(var.test(as.numeric(ind),as.numeric(first), alternative="two.sided")$p.value, format = "e", digits = 3) 
+recpval=formatC(var.test(as.numeric(ind),as.numeric(rec), alternative="two.sided")$p.value, format = "e", digits = 3) 
+
+
+png("menarche_age.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys, aes(Type1, Menarche_age) )+ geom_boxplot()+geom_jitter(aes(color=as.factor(Miscarriage)) ) +theme_bw() + ggtitle("Menarche Age") + annotate("text", x = 1.5, y = 8, label = paste ("F-test p-value\n(Induced, MiscarriageFirst)  =  ",firstpval , sep=""))+ annotate("text", x = 1.5, y = 9, label = paste ("F-test p-value\n (Induced, MiscarriageRecurrent)  =  ",recpval , sep=""))
+dev.off() 
+
+
+mys %>% group_by(Type1) %>% summarize( medMenarche_ages=median(Menarche_age, na.rm=T), minMenarche_age = min(Menarche_age, na.rm=T) , maxMenarche_age=max(Menarche_age, na.rm=T) , sdMenarche_age=sd (Menarche_age, na.rm=T))
+
+
+ Type1             medMenarche_ages minMenarche_age maxMenarche_age sdMenarche_age
+  <chr>                        <dbl>               <int>               <int>              <dbl>
+1 Induced                         12                  11                  15              0.929
+2 MiscarriageF…                   12                   9                  16              1.46
+3 MiscarriageR…                   13                   8                  17              1.86
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~  BMI   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ind=subset(mys, Type1=="Induced")$BMI
+first=subset(mys, Type1=="MiscarriageFirst")$BMI
+rec=subset(mys, Type1=="MiscarriageRecurrent")$BMI
+firstpval=formatC(wilcox.test(as.numeric(ind),as.numeric(first), alternative="two.sided")$p.value, format = "e", digits = 3) 
+recpval=formatC(wilcox.test(as.numeric(ind),as.numeric(rec), alternative="two.sided")$p.value, format = "e", digits = 3) 
+
+
+png("BMI.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys, aes(Type1, BMI) )+ geom_boxplot()+geom_jitter(aes(color=as.factor(Miscarriage)) ) +geom_hline(yintercept=c(18.5, 24.99) , color="red" ) +theme_bw() + ggtitle("BMI") + annotate("text", x = 1.5, y = 12, label = paste ("Mann-Whitney p-value\n(Induced, MiscarriageFirst)  =  ",firstpval , sep=""))+ annotate("text", x = 1.5, y = 15, label = paste ("Mann-Whitney p-value\n (Induced, MiscarriageRecurrent)  =  ",recpval , sep=""))
+dev.off() 
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~  Smoke_periconceptionaL
+png("Smoke.png", res=300 ,width=20, height=15  ,units="cm")
+
+
+ggplot(mys, aes( Smoke_periconceptional_cigarettes_per_day, fill=Type1) )+ geom_histogram(stat="count", position="dodge" ) 
+dev.off() 
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~   Alcohol_periconceptional_dose_per_day
+
+
+png("alcohol.png", res=300 ,width=20, height=15  ,units="cm")
+
+
+ggplot(mys, aes( Alcohol_periconceptional_dose_per_day, fill=Type1) )+ geom_histogram(stat="count", position="dodge" ) 
+dev.off() 
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~   Thrombophilia, Polycystic_Ovary_Syndrom, Hyperinsulinism, Thyroid_dysfunction
+
+
+png("thrombophilia.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys,  aes( Thrombophilia, fill=Type1) )+ geom_histogram(stat="count" ) 
+dev.off() 
+png("Thyroid_dysfunction.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys,  aes( Thyroid_dysfunction, fill=Type1) )+ geom_histogram(stat="count" ) 
+dev.off() 
+
+
+png("Hyperinsulinism.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys,  aes( Hyperinsulinism, fill=Type1) )+ geom_histogram(stat="count" ) 
+dev.off() 
+
+
+
+
+png("Polycystic_Ovary_Syndrome.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys,  aes( Polycystic_Ovary_Syndrome, fill=Type1) )+ geom_histogram(stat="count" ) 
+dev.off() 
+
+
+~~~~~~~~~~~~~~~~~~~~  EDUCATION
+
+
+mys$Education <- factor(mys$Education, levels = c("None" ,"Primary" , "Jr_high_school"  , "High_school" , "University"))
+
+
+png("Education.png", res=300 ,width=20, height=15  ,units="cm")
+ggplot(mys,  aes( Education, fill=Type1) )+ geom_histogram(stat="count" , position="dodge") 
+dev.off() 
+
+
+
+
+
+
+
+
+
+
+################################################################################   QF PCR and ARRAY CGH 
+##############################################################################
+
+
+myqf=read.table("../arraycgh/qfarray_summary.tsv", header=T,  sep ="\t" , na ="na" )
+library(plyr)
+myq =join (myqf, mys  , by="ID")
+detach("package:plyr")
+myqs = myq %>% filter ( processed=="yes")
+
+
+
+
+myqs$state <- factor(myqs$state, levels = c(  "standby",  "maternal contamination" , "normal cariotype ",  "alterations"  )  ) 
+
+
+png("samplesanalysisat2019Jan.png", res=300 ,width=15, height=15  ,units="cm")
+ggplot(myqs, aes(state) )+ geom_histogram(stat="count" , position="dodge") +theme_bw() + ggtitle("35 analyzed samples at Jan 2019") 
+dev.off() 
+
+
+
+
+
+
+myqs$qf_arraycgh_outcome<- factor( myqs$qf_arraycgh_outcome, levels=c("standby" , "normal cariotype "  ,"maternal contamination","triploid"  ,  "7_trisomy" , "8_trisomy" ,"12_trisomy", "13_trisomy"  ,"16_trisomy" , "18_trisomy"  ,"21_trisomy"  ,"22_trisomy" , "X_monosomy" ))  
+
+
+
+
+png("24samplesResults2019Jan.png", res=300 ,width=14, height=20  ,units="cm")
+ggplot(subset(myqs, state=="normal cariotype " | state== "alterations" ) , aes(qf_arraycgh_outcome, fill=sequencing ) )+ geom_histogram(stat="count" ) +theme_bw() + ggtitle("Pre-sequencing screening results\n for 24  samples (qPCR and array CGH) ") + coord_flip()
+dev.off()
