@@ -10,6 +10,7 @@ Virtually every genomic position needs to be scored, but we can start from some 
 
 
 1. Is it a new variant? --> look for high-confidence singletons/doubletons  
+1.bis Is at already described but at low frequency?  
 
 2. Is it in a stretch of homozygosis? --> evaluate RoH (no phased data required) if yes, it is a plus
 
