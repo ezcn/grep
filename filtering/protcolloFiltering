@@ -34,7 +34,7 @@ Pipeline for prediction:
 
 
 # popgen indicators
-- negative selection 
+- negative selection: use ukbb as a population proxy to identify regions under negative selection
 - ROH 
 
 
