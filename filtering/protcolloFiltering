@@ -27,9 +27,12 @@ Pipeline for prediction:
 - FunSeq
 - NCBoost
 
-# per-gene indicator 
+# per-gene indicator [set of coordinates]
 - DDDgene set 
-- Essential genes 
+- Essential genes  Wang et al. 2014; Blomen et al. 2015; Hart et al. 2015; goldini et al 2018
+    https://sci-hub.tw/https://doi.org/10.1016/j.mgene.2018.05.001
+    https://ac.els-cdn.com/S2405471215002215/1-s2.0-S2405471215002215-main.pdf?_tid=b37bfc4c-a07b-4e9d-b04e-d56d601e58cf&acdnat=1551794432_65d19cc2d7f920be40cf608a803a79c3
+    
 - Embryonic delevlopment 
 
 
