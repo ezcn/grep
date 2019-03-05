@@ -1,2 +1,27 @@
-Is it a new variant ? 
+#### Per/individual analysis 
+starting info:  
 
+List of per/individual variable position 
+- COMPARED to hg38 (assuming healthy reference?)
+- COMPARED to (Almost)all observed variable sites in humans (gnomeAD, 1000G, Bravo)Compile the most comprehensive list of variants and use it to call variants in the miscarriages samples 
+
+
+Virtually every genomic position needs to be scored, but we can start from some that looks special  
+
+
+1. Is it a new variant? --> look for high-confidence singletons/doubletons  
+
+2. Is it in a stretch of homozygosis? --> evaluate RoH (no phased data required) if yes, it is a plus
+
+3. Which are the functional consequences? --> pipeline for prediction 
+
+
+
+
+Pipeline for prediction: 
+- VEP (genomic location, consequence, Sift, polyphen) 
+- CADD 
+- ClinVar 
+- pLI, pLOF, LOFTEE
+- FunSeq
+- NCBoost
