@@ -1,12 +1,11 @@
 #### Per/individual analysis 
-starting info:  
 
 List of per/individual variable position 
 - COMPARED to hg38 (assuming healthy reference?)
 - COMPARED to (Almost)all observed variable sites in humans (gnomeAD, 1000G, Bravo)Compile the most comprehensive list of variants and use it to call variants in the miscarriages samples 
 
 
-Virtually every genomic position needs to be scored, but we can start from some that looks special  
+
 
 
 1. Is it a new variant? --> look for high-confidence singletons/doubletons  
@@ -17,9 +16,27 @@ Virtually every genomic position needs to be scored, but we can start from some 
 3. Which are the functional consequences? --> pipeline for prediction 
 
 
+###### ACTIONS 
 
+1. make the  most comprehensive list of variants (MCLV) and allele frequencies 
+- download data from ftp://ftp.ensembl.org/pub/release-95/variation/gvf/homo_sapiens/
+- convert gvf to vcf to assist variant calling 
+- to calculate world allele frequencies (UKBB, gnomeAD, TOPmed, 1000G, SGDP, etc...)
 
-Pipeline for prediction: 
+2. make naive variant calling --> allelic state indicators at each position in the genome  
+- freebayes 
+- GATK haplotype caller 
+- fermikit
+- platipus 
+- SV aberration signals
+  - improper / discordant pairs 
+  - bedtools coverage
+  - softclip counts
+
+3. INTERSECT for variants that are not in the MCLV 
+(Virtually every genomic position needs to be scored, but we can start from some that looks special) 
+
+4. Pipeline for prediction on 3.: 
 # per-variant indicators
 - VEP (genomic location, consequence, Sift, polyphen) 
 - CADD 
@@ -36,22 +53,8 @@ Pipeline for prediction:
     
 - - Mouse Embryonic delevlopment https://dmdd.org.uk/
 
-
 # popgen indicators
 - negative selection: use ukbb as a population proxy to identify regions under negative selection
 - ROH 
 
-
-###### ACTIONS 
-1. make the  most comprehensive list of variants (MCLV)
-- download data from ftp://ftp.ensembl.org/pub/release-95/variation/gvf/homo_sapiens/
-- convert gvf to vcf to assist varinat calling 
-
-2. make variant calling 
-
-3. filter for variants that are not in the MCLV 
-
-4. calculate per/individual ROH and merge info 
-
-5. calculate consequences for "novel" variants or "known variants in ROH" 
-
+5. INTERSECT all indicators (possibly with weights) to identify variants 
