@@ -20,8 +20,15 @@ List of per/individual variable position
 
 1. make the  most comprehensive list of variants (MCLV) and allele frequencies 
 - download data from ftp://ftp.ensembl.org/pub/release-95/variation/gvf/homo_sapiens/
+source of data is (chr 13): 
+22358556 dbSNP
+    324 ESP
+   4616 HGMD-PUBLIC
+    138 PhenCode
+
+
 - convert gvf to vcf to assist variant calling 
-- to calculate world allele frequencies (UKBB, gnomeAD, TOPmed, 1000G, SGDP, ESP,  etc...)
+- calculate world allele frequencies (UKBB, gnomeAD, TOPmed, 1000G, SGDP, ESP,  etc...)
 
 (ESP http://evs.gs.washington.edu/EVS/) 
 
@@ -42,6 +49,8 @@ List of per/individual variable position
 4. Pipeline for prediction on 3.: 
 # per-variant indicators
 - VEP (genomic location, consequence, Sift, polyphen) 
+ http://www.ensembl.org/info/genome/variation/prediction/predicted_data.html
+ 
 - CADD 
 - ClinVar 
 - pLI, pLOF, LOFTEE
@@ -61,3 +70,15 @@ List of per/individual variable position
 - ROH 
 
 5. INTERSECT all indicators (possibly with weights) to identify variants 
+
+
+
+###################
+TABLES schema 
+
+TABLE allelicState {sampleID, chr, position, rsid, genotypelikelihood1, genotypelikelihood2.....   }
+TABLE alleleFrequencies {rsid, FgnomeAD, F1kg, FTOPmed, FGlobal, ....}
+*TABLE VEPannotations {rsid, VEP....}
+*.....
+
+
