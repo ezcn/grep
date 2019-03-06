@@ -21,7 +21,10 @@ List of per/individual variable position
 1. make the  most comprehensive list of variants (MCLV) and allele frequencies 
 - download data from ftp://ftp.ensembl.org/pub/release-95/variation/gvf/homo_sapiens/
 - convert gvf to vcf to assist variant calling 
-- to calculate world allele frequencies (UKBB, gnomeAD, TOPmed, 1000G, SGDP, etc...)
+- to calculate world allele frequencies (UKBB, gnomeAD, TOPmed, 1000G, SGDP, ESP,  etc...)
+
+(ESP http://evs.gs.washington.edu/EVS/) 
+
 
 2. make naive variant calling --> allelic state indicators at each position in the genome  
 - freebayes 
