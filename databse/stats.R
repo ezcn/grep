@@ -81,6 +81,8 @@ ggplot(myd1, aes(type_of_miscarriage, menarche_age) )+ geom_boxplot(outlier.shap
 ggplot(myd1, aes(type_of_miscarriage, bmi) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("Body Mass Index") +geom_hline(yintercept=c(18.5, 24.99) , color="grey" ) +theme_bw()
 
 
+#########  FULL TERM BIRTH 
+ ggplot(subset(myd1, !is.na(full.term_birth)) , aes( type_of_miscarriage) ) + geom_bar(stat="count", aes(fill = as.factor(full.term_birth))) +theme_bw() + ggtitle("Full-term Births prior to the event")
 
 
 
