@@ -35,4 +35,6 @@ theme_bw() + ggtitle("Gestational age \nat pregnancy termination")
 
 
 
-######### GESTATIONAL AGE 
+######### AGE OF THE MOTHER
+
+
