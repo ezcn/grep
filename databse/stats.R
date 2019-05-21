@@ -88,13 +88,17 @@ ggplot(myd1, aes(type_of_miscarriage, bmi) )+ geom_boxplot(outlier.shape=NA) + g
 
 #########  EDUCATION 
 myd1$education <- factor(myd1$education , levels=c("none",  "primary", "jr_high_school", "high_school", "university" )) 
-mytabtoplot <- subset(myd1, !is.na(education)) %>% group_by(type_of_miscarriage, education) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )
+mytabedu=scales::percent(n/sum(n)) )
 
-ggplot(mytabtoplot,aes(x=type_of_miscarriage,y=n , fill=education ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer()+ ylab("Percent") +theme_bw() + ggtitle("Education") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5))
-
-
+ggplot(mytabedu,aes(x=type_of_miscarriage,y=n , fill=education ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer()+ ylab("Percent") +theme_bw() + ggtitle("Education") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5))
 
 
-ggplot(data = subset(myd1, !is.na(education )),aes(x=type_of_miscarriage,y= ..count../sum(..count..))) + geom_bar(stat="count", aes(fill =as.factor(education)))+ scale_fill_brewer(palette = "Set2") + scale_y_continuous(labels=scales::percent) + ylab("Percent") +theme_bw() + ggtitle("Education")
+#########  FULL TERM BIRTH 
+mytabftb <- subset(myd1, !is.na(full.term_birth)) %>% group_by(type_of_miscarriage, full.term_birth) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )
+
+ggplot(mytabftb ,aes(x=type_of_miscarriage,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer() + ylab("Percent") +theme_bw() + ggtitle("Full-term birth")
 
 
+
+#########  DRUG 
+mydrug=read.table("db_drugs_pa_smiles.csv", header=T , sep="," )
