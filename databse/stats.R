@@ -88,7 +88,7 @@ ggplot(myd1, aes(type_of_miscarriage, bmi) )+ geom_boxplot(outlier.shape=NA) + g
 
 #########  EDUCATION 
 myd1$education <- factor(myd1$education , levels=c("none",  "primary", "jr_high_school", "high_school", "university" )) 
-mytabedu=scales::percent(n/sum(n)) )
+mytabedu= subset(myd1, !is.na(education)) %>% group_by(type_of_miscarriage, education) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )###scales::percent(n/sum(n)) )
 
 ggplot(mytabedu,aes(x=type_of_miscarriage,y=n , fill=education ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer()+ ylab("Percent") +theme_bw() + ggtitle("Education") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5))
 
@@ -102,3 +102,6 @@ ggplot(mytabftb ,aes(x=type_of_miscarriage,y=n, fill=as.factor(full.term_birth))
 
 #########  DRUG 
 mydrug=read.table("db_drugs_pa_smiles.csv", header=T , sep="," )
+
+#ggplot(mytabDrug, aes(reorder(chem_agent, -n)  , n , fill=type_of_miscarriage))+geom_bar(stat="identity", position= position_dodge(preserve = 'single')) +coord_flip()+ scale_fill_brewer()+theme_bw() 
+ggplot(subset(mydrug,!is.na(chem_agent)),aes(x=chem_agent,y= ..count../sum(..count..)))+ geom_bar(aes(y= ..count../sum(..count..), fill = type_of_miscarriage))+ scale_fill_brewer(palette = "Set2") + scale_y_continuous(labels=scales::percent) + ylab("Percent")+ coord_flip() + theme_bw() 
