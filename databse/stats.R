@@ -123,18 +123,37 @@ ggsave("panel1.png", plot = myplot, dpi=300, units="cm", width=35, height =30)
 ############ SUPPLEMENTARY 
 
 ######### BMI 
-ggplot(myd1, aes(type_of_miscarriage, bmi) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("Body Mass Index") +geom_hline(yintercept=c(18.5, 24.99) , color="grey" ) +theme_bw()
+pBMI <- ggplot(myd1, aes(tpf, bmi) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("Body Mass Index") + geom_hline(yintercept=c(18.5, 24.99) , color="grey" ) +theme_bw() + theme(axis.title.x = element_blank()) + labs(color = "# of miscarriages") + scale_color_manual(values=paletteNbMiscarriage)
+ggsave("BMI.png", plot= pBMI, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
 #########  EDUCATION 
 myd1$education <- factor(myd1$education , levels=c("none",  "primary", "jr_high_school", "high_school", "university" )) 
-mytabedu= subset(myd1, !is.na(education)) %>% group_by(type_of_miscarriage, education) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )###scales::percent(n/sum(n)) )
+mytabedu= subset(myd1, !is.na(education)) %>% group_by(tpf, education) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )###scales::percent(n/sum(n)) )
 
-ggplot(mytabedu,aes(x=type_of_miscarriage,y=n , fill=education ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer()+ ylab("Percent") +theme_bw() + ggtitle("Education") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5))
+pEdu<-ggplot(mytabedu,aes(x=tpf,y=n , fill=education ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer(name ="Education" , labels = c("None", "Primary", "Jr high school", "High school", "University"))+ ylab("Percent") +theme_bw() + ggtitle("Education") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5)) + theme(axis.title.x = element_blank())
+
+ggsave("education.png", plot= pEdu, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
-#########  DRUG 
-mydrug=read.table("db_drugs_pa_smiles.csv", header=T , sep="," )
+######### SMOKE
+myd1$smoke_periconceptional_cigarettes_per_day <- factor(myd1$smoke_periconceptional_cigarettes_per_day, levels=c("no", "ex_smoker", "previous", "yes", "1_to_5", "more_than_5" ))
+myd1 %>% group_by(tpf,smoke_periconceptional_cigarettes_per_day) %>% tally()
+mytsmoke= subset(myd1, !is.na(smoke_periconceptional_cigarettes_per_day)) %>% group_by(tpf, smoke_periconceptional_cigarettes_per_day) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )
 
-#ggplot(mytabDrug, aes(reorder(chem_agent, -n)  , n , fill=type_of_miscarriage))+geom_bar(stat="identity", position= position_dodge(preserve = 'single')) +coord_flip()+ scale_fill_brewer()+theme_bw() 
-ggplot(subset(mydrug,!is.na(chem_agent)),aes(x=chem_agent,y= ..count../sum(..count..)))+ geom_bar(aes(y= ..count../sum(..count..), fill = type_of_miscarriage))+ scale_fill_brewer(palette = "Set2") + scale_y_continuous(labels=scales::percent) + ylab("Percent")+ coord_flip() + theme_bw() 
+pSmoke<-ggplot(mytsmoke,aes(x=tpf,y=n , fill=smoke_periconceptional_cigarettes_per_day ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer(name = "Daily cigarettes")+ ylab("Percent") +theme_bw() + ggtitle("Periconceptional smoke") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5)) + theme(axis.title.x = element_blank())
+
+
+ggsave("smoke.png", plot= pSmoke, device="png", width = 25, height = 20, units = "cm", dpi = 300)
+
+
+###### ALCOHOL
+
+myd1$alcohol_periconceptional_dose_per_day <- factor(myd1$alcohol_periconceptional_dose_per_day, levels=c("never", "with_food", "with_and_without_food"))
+
+mytalc= subset(myd1, !is.na(alcohol_periconceptional_dose_per_day)) %>% group_by(tpf, alcohol_periconceptional_dose_per_day) %>% tally() %>% mutate(ratio=scales::percent(n/sum(n)) )
+
+pAlc<- ggplot(mytalc,aes(x=tpf,y=n , fill=alcohol_periconceptional_dose_per_day ) ) + geom_bar(stat="identity", position="fill" ) + scale_fill_brewer(name = "Daily alcohol dosage", labels = c("Never", "With food", "With/Without food"))+ ylab("Percent") +theme_bw() + ggtitle("Alcohol consumption") + geom_text(aes(y=n,label=ratio),position=position_fill(vjust=0.5)) + theme(axis.title.x = element_blank())
+
+
+ggsave("alcohol.png", plot= pAlc, device="png", width = 25, height = 20, units = "cm", dpi = 300)
