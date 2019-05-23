@@ -92,7 +92,7 @@ mytabftb <- subset(myd1, !is.na(full.term_birth)) %>% group_by(tpf, full.term_bi
 
 #ggplot(mytabftb ,aes(x=type_of_miscarriage,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer() + ylab("Percent") +theme_bw() + ggtitle("Full-term birth")
 
-pFTB<- ggplot(mytabftb ,aes(x=tpf,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer(name="# of children") + ylab("Percent") +theme_bw() + ggtitle("Full-term birth") + theme(axis.title.x = element_blank()) + scale_color_manual(values=paletteNbMiscarriage)
+pFTB<- ggplot(mytabftb ,aes(x=tpf,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer(name="# of children") + ylab("Percent within category") +theme_bw() + ggtitle("Number of full-term births") + theme(axis.title.x = element_blank()) + scale_color_manual(values=paletteNbMiscarriage)
 ggsave("fullTermBirth.png", plot= pFTB, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
