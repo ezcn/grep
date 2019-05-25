@@ -31,7 +31,8 @@ ggsave("DNAextraction.png", plot= pDNA, device="png", width = 20, height = 15, u
 7 Lysis Buffer miscarriage_first         3
 8 Lysis Buffer miscarriage_recurrent     1
 
-> mydType <- myd %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+
+mydType <- myd %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
 
 pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Me lo deve dire Vale")
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
@@ -62,3 +63,22 @@ ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, unit
 7 QIAmp®     induced                  87
 8 QIAmp®     miscarriage_first        42
 9 QIAmp®     miscarriage_recurrent    17
+
+
+mydExtract <- myd %>% group_by( Extraction, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+pExtract <- ggplot(mydExtract, aes(Extraction, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Me lo deve dire Vale") 
+ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10, units = "cm", dpi = 300)
+
+
+#~~~~~~~~~~~~~~~~ make panel 
+
+library(gridExtra)
+library (grid) 
+library(lattice) 
+
+lay <- rbind(c(1,2)) 
+             
+myplot<- grid.arrange(pYield, pExtract, nrow = 1, layout_matrix = lay)
+ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=30, height =10)
+
+
