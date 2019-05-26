@@ -34,4 +34,45 @@ ggsave("panelPrioritiz.png", plot = myplot, dpi=300, units="cm", width=35, heigh
 
 ### SILVIA anche per gli altri plot: provare a fare uan sola legenda  per tutti e tre i plots 
 
+
+
+#~~~~~~~~~~~~~~~ tests 
+mys$MotAge=(mys$Pregnancy_termination_date - mys$v_Nascita)/365
+
+mys %>% filter(Type=="Miscarriages") %>% group_by(category) %>% summarize( avAgeMot=mean(MotAge, na.rm=T ), medAgeMot=median(MotAge, na.rm=T) )  
+# A tibble: 2 x 3
+  category        avAgeMot      medAgeMot    
+  <chr>           <drtn>        <drtn>       
+1 Not-Prioritized 36.96601 days 38.33425 days
+2 Prioritized     34.11874 days 35.30822 days
+
+### test mother age 
+wilcox.test(data=subset(mys, !is.na(MotAge)) , as.numeric(MotAge)  ~ category) 
+
+        Wilcoxon rank sum test with continuity correction
+
+data:  as.numeric(MotAge) by category
+W = 1351, p-value = 0.01356
+alternative hypothesis: true location shift is not equal to 0
+
+
+#### range menarche 
+
+subset(mys, !is.na(v_Menarche_age))  %>% group_by(category) %>% summarize(min(v_Menarche_age), max(v_Menarche_age ))
+# A tibble: 2 x 3
+  category        `min(v_Menarche_age)` `max(v_Menarche_age)`
+  <chr>                           <dbl>                 <dbl>
+1 Not-Prioritized                     8                    17
+2 Prioritized                        10                    16
+
+###test miscarriages 
+ wilcox.test(data=subset(mys, !is.na(v_Miscarriage)) , as.numeric(v_Miscarriage)  ~ category) 
+
+        Wilcoxon rank sum test with continuity correction
+
+data:  as.numeric(v_Miscarriage) by category
+W = 943, p-value = 0.1391
+alternative hypothesis: true location shift is not equal to 0
+
+
  
