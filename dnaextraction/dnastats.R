@@ -34,7 +34,7 @@ ggsave("DNAextraction.png", plot= pDNA, device="png", width = 20, height = 15, u
 
 mydType <- myd %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
 
-pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Me lo deve dire Vale")
+pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Tissue homogenization")
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 
 #### SILVIA  titololegenda /nb/PoC sample size/  e /type//   ti spiego a voce  
