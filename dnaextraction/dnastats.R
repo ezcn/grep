@@ -32,11 +32,11 @@ ggsave("DNAextraction.png", plot= pDNA, device="png", width = 20, height = 15, u
 8 Lysis Buffer miscarriage_recurrent     1
 
 
-mydType <- myd %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+mydType <- subset(myd, Type!="Culture") %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
 
-pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Tissue homogenization")
+pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization")
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
-
+#, average and C.I.
 #### SILVIA  titololegenda /nb/PoC sample size/  e /type//   ti spiego a voce  
 
 
@@ -66,9 +66,9 @@ ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, unit
 
 
 mydExtract <- myd %>% group_by( Extraction, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
-pExtract <- ggplot(mydExtract, aes(Extraction, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug, average and C.I.)" )  + ggtitle("Me lo deve dire Vale") 
+pExtract <- ggplot(mydExtract, aes(Extraction, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug) " )  + ggtitle("DNA isolation") 
 ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10, units = "cm", dpi = 300)
-
+#, average and C.I.
 
 #~~~~~~~~~~~~~~~~ make panel 
 
