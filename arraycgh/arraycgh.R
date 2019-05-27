@@ -3,7 +3,7 @@ imma=read.table("/home/enza/oogaProtocol/IMMA/2_arraycgh/array2/all.arraychr.hea
 #### remove duplicates  (artifact from this particular experiment)
 imma.noduplicat <- imma %>% distinct(chr, start, as_sample , .keep_all = TRUE) 
 
-toexclude <- c("AS015_bad", "AS030_bad", "AS036_bad",  "AS065_bad", "AS078_bad" ,  "AS080_bad" , "AS093_bad" ) 
+toexclude <- c("AS015_bad", "AS030_bad", "AS036_bad",  "AS065_bad", "AS078_bad" ,  "AS080_bad" , "AS093_bad", "AS032_3xchr22" ) 
 
 #### spread
 imma.spread<- imma.noduplicat %>% filter( !(as_sample  %in% toexclude)  )   %>%  spread(as_sample , LogRatio )
