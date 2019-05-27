@@ -1,5 +1,10 @@
 myd=read.table("/home/enza/oogaProtocol/IMMA/abortion_db/fromValentina/RowDataMiscarriageDNAnames.tsv", header=T , na =NA, sep="\t"  )
 
+myd$method <-(ifelse(myd$Extraction=="QIAmp®", "Membrane", ifelse(myd$Extraction=="InstaGene™", "Chelex resin",  "Nucleon resin" )))
+myd$method<- factor(myd$method, levels=c("Chelex resin", "Nucleon resin", "Membrane"))
+
+myd$tpf <-(ifelse(myd$type=="induced", "VTP", ifelse(myd$type=="miscarriage_first", "FPL",  "RPL" )))
+myd$tpf<- factor(myd$tpf, levels=c("VTP", "FPL", "RPL"))
 
 mycol=c("#00AFBB", "#E7B800", "#FC4E07")
 
@@ -32,10 +37,17 @@ ggsave("DNAextraction.png", plot= pDNA, device="png", width = 20, height = 15, u
 8 Lysis Buffer miscarriage_recurrent     1
 
 
-mydType <- subset(myd, Type!="Culture") %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+#mydType <- subset(myd, Type!="Culture") %>% group_by( Type, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
 
-pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization")
+###silvia 
+mydType <- subset(myd, Type!="Culture") %>% group_by( Type, tpf) %>% summarize(nb=length(tpf) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+
+#pYield <-  ggplot(mydType, aes(Type, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization")
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
+###silvia 
+pYield<-ggplot(mydType, aes(Type, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram)" )  + ggtitle("Tissue homogenization")
+
+
 #, average and C.I.
 #### SILVIA  titololegenda /nb/PoC sample size/  e /type//   ti spiego a voce  
 
@@ -66,9 +78,14 @@ ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, unit
 
 
 mydExtract <- myd %>% group_by( Extraction, type) %>% summarize(nb=length(type) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+###silvia 
+mydExtract <- myd %>% group_by( method, tpf) %>% summarize(nb=length(tpf) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
+
 pExtract <- ggplot(mydExtract, aes(Extraction, average , color=type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug) " )  + ggtitle("DNA isolation") 
 ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 #, average and C.I.
+##silvia 
+pExtract <- ggplot(mydExtract, aes(method, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram) " )  + ggtitle("DNA isolation") + labs(color= "") + scale_size(name="PoC sample size")
 
 #~~~~~~~~~~~~~~~~ make panel 
 
@@ -79,6 +96,6 @@ library(lattice)
 lay <- rbind(c(1,2)) 
              
 myplot<- grid.arrange(pYield, pExtract, nrow = 1, layout_matrix = lay)
-ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=30, height =10)
+ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=25, height =10)
 
 
