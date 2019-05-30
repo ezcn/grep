@@ -32,7 +32,7 @@ melted['smiles'] = melted['periconceptional_drug'].map(dictionary_smiles)
 
 melted_complete = melted.replace(np.nan,'NA', regex=True)
 
-melted_complete.to_csv('/home/drug_script/periconceptional_drug.csv')
+melted_complete.to_csv('/home/"InsertYourDirectoryName"/drug_script/periconceptional_drug.csv')
 
 
 
