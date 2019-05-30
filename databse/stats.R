@@ -111,7 +111,7 @@ library (grid)
 library(lattice) 
 
 lay <- rbind(c(1,2),
-             c(3,4)
+             c(3,4),
              c(5,5)) 
              
 myplot<- grid.arrange(pGesAge, pMotAge, pMenAge, pFTB, pDrug, nrow = 3, layout_matrix = lay)
