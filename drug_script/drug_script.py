@@ -1,4 +1,4 @@
-# extract from the main datbase the dat aon periconceptional drugs
+# extract from the main database the data on periconceptional drugs
 
 import pandas as pd
 import csv
