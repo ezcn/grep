@@ -1,3 +1,4 @@
+library(stats)
 library(RColorBrewer) 
 library(ggplot2) 
 library(dplyr) 
@@ -5,7 +6,6 @@ library(tidyr)
 library(gridExtra)
 library (grid) 
 library(lattice)
-library(stats)
 
 
 # 1.  read db 
