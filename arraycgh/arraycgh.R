@@ -1,5 +1,5 @@
 imma=read.table("/home/enza/oogaProtocol/IMMA/2_arraycgh/array2/all.arraychr.head.tsv.forCopynumber", header=T , sep="\t" )
-##provaprova
+
 #### remove duplicates  (artifact from this particular experiment)
 imma.noduplicat <- imma %>% distinct(chr, start, as_sample , .keep_all = TRUE) 
 
