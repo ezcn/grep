@@ -9,4 +9,4 @@ The script is used to make an additional sub-database for chem-agent's plot, put
 
 
 
-For the script to work the folder must contain the starting database `miscarriage_database.csv` and the two sub-database created manually (`drug_smile`, `drug_pa`).
+For the script to work the folder must contain the starting database `miscarriage_database.csv` and the two sub-database created manually (`drug_smile.csv`, `drug_pa.csv`).
