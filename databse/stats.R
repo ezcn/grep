@@ -4,8 +4,8 @@ library(dplyr)
 library(tidyr) 
 library(gridExtra)
 library (grid) 
-library(lattice) 
-
+library(lattice)
+library(stats)
 
 
 # 1.  read db 
