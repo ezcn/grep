@@ -86,7 +86,7 @@ ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10,
 #, average and C.I.
 ##silvia 
 pExtract <- ggplot(mydExtract, aes(method, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram) " )  + ggtitle("DNA isolation") + labs(color= "") + scale_size(name="PoC sample size")
-
+ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 #~~~~~~~~~~~~~~~~ make panel 
 
 library(gridExtra)
