@@ -1,3 +1,5 @@
+# extract from the main datbase the dat aon periconceptional drugs
+
 import pandas as pd
 import csv
 import numpy as np
