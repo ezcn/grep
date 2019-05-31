@@ -92,7 +92,7 @@ mytabftb <- subset(myd1, !is.na(full.term_birth)) %>% group_by(tpf, full.term_bi
 
 #ggplot(mytabftb ,aes(x=type_of_miscarriage,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer() + ylab("Percent") +theme_bw() + ggtitle("Full-term birth")
 
-pFTB<- ggplot(mytabftb ,aes(x=tpf,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer(name="# of children") + ylab("Percent within category") +theme_bw() + ggtitle("Number of full-term births") + theme(axis.title.x = element_blank()) + scale_color_manual(values=paletteNbMiscarriage)
+pFTB<- ggplot(mytabftb ,aes(x=tpf,y=n, fill=as.factor(full.term_birth))) + geom_bar(stat="identity", position="fill")+ scale_fill_brewer(name="# of children") + ylab("Number of full-term births (% within category)") +theme_bw() + ggtitle("D") + theme(axis.title.x = element_blank()) + scale_color_manual(values=paletteNbMiscarriage)
 ggsave("fullTermBirth.png", plot= pFTB, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
@@ -100,7 +100,7 @@ ggsave("fullTermBirth.png", plot= pFTB, device="png", width = 25, height = 20, u
 mydrug=read.table("db_drugs_pa_smiles.csv", header=T , sep="," )
 
 
-pDrug<-ggplot(subset(mydrug,!is.na(chem_agent)),aes(x=chem_agent,y= ..count../sum(..count..)))+ geom_bar(aes(y= ..count../sum(..count..), fill = type_of_miscarriage))+ scale_fill_brewer(palette = "Set2", labels= c("VTP", "FPL", "RPL")) + scale_y_continuous(labels=scales::percent) + ylab("Percent")+ coord_flip() + theme_bw() + ggtitle("Periconceptional drugs") + xlab("Chemical agent") + theme(legend.title = element_blank())
+pDrug<-ggplot(subset(mydrug,!is.na(chem_agent)),aes(x=chem_agent,y= ..count../sum(..count..)))+ geom_bar(aes(y= ..count../sum(..count..), fill = type_of_miscarriage))+ scale_fill_brewer(palette = "Set2", labels= c("VTP", "FPL", "RPL")) + scale_y_continuous(labels=scales::percent) + ylab("Percent")+ coord_flip() + theme_bw() + ggtitle("E") + xlab("Periconceptional drugs (Chemical agent)") + theme(legend.title = element_blank())
 ggsave("periconceptionalDrug.png", plot= pDrug, device="png", width = 35, height = 20, units = "cm", dpi = 300)
 
 
