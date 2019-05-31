@@ -48,7 +48,7 @@ mysGesAge=subset(myd1, id!="AS064" & id!="AV148" & id!="AV082")
 #mysGesAge$miscarriage[is.na(mysGesAge$miscarriage)] <- 0
 mysGesAge$GesAgeWeeks =difftime(mysGesAge$pregnancy_termination_date, mysGesAge$last_menstruation_date, units = "weeks")
 
-pGesAge <- ggplot(mysGesAge, aes(tpf, GesAgeWeeks ) )+ geom_boxplot(outlier.shape=NA )+geom_jitter( aes(color=as.factor(miscarriage))) + theme_bw() + ggtitle("Gestational age at pregnancy termination") + theme(axis.title.x = element_blank()) + labs(color = "# of miscarriages") +  scale_color_manual(values=paletteNbMiscarriage)+ylab("Weeks")
+pGesAge <- ggplot(mysGesAge, aes(tpf, GesAgeWeeks ) )+ geom_boxplot(outlier.shape=NA )+geom_jitter( aes(color=as.factor(miscarriage))) + theme_bw() + ggtitle("A") + theme(axis.title.x = element_blank()) + labs(color = "# of miscarriages") +  scale_color_manual(values=paletteNbMiscarriage)+ylab("Gestional age at pregnancy termination (Weeks)") + theme(legend.position = 'none') + theme(plot.margin=unit(c(0.5,3,0.5,0.5),"cm"))
 ggsave("gestationalAge.png", plot= pGesAge, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 ######### AGE OF THE MOTHER
@@ -67,7 +67,7 @@ pvalRPLFPL=formatC(wilcox.test(as.numeric(FPL),as.numeric(RPL), alternative="les
 mysMotAge  %>% group_by(type_of_miscarriage) %>% summarize(medAgeMother=median(MotherAge, na.rm=T)) 
 #avAgeMother=mean(MotherAge, na.rm=T)) , minAgeMother=min(MotherAge, na.rm=T) , maxAgeMother=max(MotherAge,  na.rm=T), sdAgeMother=sd(MotherAge, na.rm=T)  )
 
-pMotAge<- ggplot(mysMotAge, aes(tpf, MotherAge) )+ geom_boxplot(outlier.shape=NA)+geom_jitter(aes(color=as.factor(miscarriage) ) ) + annotate("text", x = 2.5 , y = 20, label = paste ("Mann-Whitney p-value (FPL, RPL)  =  ",pvalRPLFPL , sep="")) +theme_bw() + ggtitle("Mother age at pregnancy termination") + theme(axis.title.x = element_blank()) + labs(color = "# of miscarriages") + scale_color_manual(values=paletteNbMiscarriage)+ylab("Years")
+pMotAge<- ggplot(mysMotAge, aes(tpf, MotherAge) )+ geom_boxplot(outlier.shape=NA)+geom_jitter(aes(color=as.factor(miscarriage) ) ) + annotate("text", x = 2.5 , y = 20, label = paste ("Mann-Whitney p-value (FPL, RPL)  =  ",pvalRPLFPL , sep="")) +theme_bw() + ggtitle("B") + theme(axis.title.x = element_blank()) + labs(color = "# of miscarriages") + scale_color_manual(values=paletteNbMiscarriage)+ylab("Mother age (Years)")
 ggsave("motherAge.png", plot= pMotAge, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
@@ -83,7 +83,7 @@ pvalFPLPRPLmen=formatC(var.test(as.numeric(FPLmen),as.numeric(RPLmen), alternati
 
 #ggplot(myd1, aes(type_of_miscarriage, menarche_age) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("Menarche Age") + annotate("text", x = 1.5, y = 8, label = paste ("F-test p-value\n(VTP, FPL) = ",pvalVTPFPLmen , sep=""))+ annotate("text", x = 1.5, y = 9, label = paste ("F-test p-value\n (VTP, RPL) = ",pvalVTPRPLmen , sep=""))  + annotate("text", x = 2.5, y = 9, label = paste ("F-test p-value\n (FPL, RPL) = ",pvalFPLPRPLmen , sep=""))
 
-pMenAge<- ggplot(myd1, aes(tpf, menarche_age) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("Menarche Age") + annotate("text", x = 1.5, y = 8.5, label = paste ("F-test p-value (VTP, FPL) = ",pvalVTPFPLmen , sep=""))+ annotate("text", x = 1.5, y = 8, label = paste ("F-test p-value (VTP, RPL) = ",pvalVTPRPLmen , sep=""))  + annotate("text", x = 1.5, y = 7.5, label = paste ("F-test p-value (FPL, RPL) = ",pvalFPLPRPLmen , sep="")) + theme(axis.title.x = element_blank()) + ylab("Years") + labs(color = " # of miscarriages") + scale_color_manual(values=paletteNbMiscarriage)
+pMenAge<- ggplot(myd1, aes(tpf, menarche_age) )+ geom_boxplot(outlier.shape=NA) + geom_jitter(aes(color=as.factor(miscarriage)) ) +theme_bw() + ggtitle("C") + annotate("text", x = 1.5, y = 8.5, label = paste ("F-test p-value (VTP, FPL) = ",pvalVTPFPLmen , sep=""))+ annotate("text", x = 1.5, y = 8, label = paste ("F-test p-value (VTP, RPL) = ",pvalVTPRPLmen , sep=""))  + annotate("text", x = 1.5, y = 7.5, label = paste ("F-test p-value (FPL, RPL) = ",pvalFPLPRPLmen , sep="")) + theme(axis.title.x = element_blank()) + ylab("Menarche age (Years)") + labs(color = " # of miscarriages") + scale_color_manual(values=paletteNbMiscarriage) + theme(legend.position = 'none') + theme(plot.margin=unit(c(0.5,3,0.5,0.5),"cm"))
 ggsave("menarcheAge.png", plot= pMenAge, device="png", width = 25, height = 20, units = "cm", dpi = 300)
 
 
