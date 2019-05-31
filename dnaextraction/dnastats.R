@@ -45,7 +45,7 @@ mydType <- subset(myd, Type!="Culture") %>% group_by( Type, tpf) %>% summarize(n
 #pYield <-  ggplot(mydType, aes(Type, average , color=Type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization") + labs(color= "") + scale_size(name="PoC sample size")  
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 ###silvia 
-pYield<-ggplot(mydType, aes(Type, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram)" )  + ggtitle("Tissue homogenization")
+pYield<-ggplot(mydType, aes(Type, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram)" )  + ggtitle("Tissue homogenization") + labs(color= "") + scale_size(name="PoC sample size")
 
 
 #, average and C.I.
