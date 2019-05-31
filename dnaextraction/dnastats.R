@@ -42,7 +42,7 @@ ggsave("DNAextraction.png", plot= pDNA, device="png", width = 20, height = 15, u
 ###silvia 
 mydType <- subset(myd, Type!="Culture") %>% group_by( Type, tpf) %>% summarize(nb=length(tpf) , max = max (ng.ul*Vol.ul)/1000, min=min(ng.ul*Vol.ul)/1000, average=mean((ng.ul*Vol.ul)/1000), stdev=sd((ng.ul*Vol.ul)/1000)  )
 
-#pYield <-  ggplot(mydType, aes(Type, average , color=Type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization")
+#pYield <-  ggplot(mydType, aes(Type, average , color=Type   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (ug)" )  + ggtitle("Tissue homogenization") + labs(color= "") + scale_size(name="PoC sample size")  
 ggsave("DNAyield.png", plot= pYield, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 ###silvia 
 pYield<-ggplot(mydType, aes(Type, average , color=tpf   )  ) +geom_point(aes(size=nb )) +geom_errorbar( aes(ymax = average + stdev, ymin=average - stdev, width=0.1) )+scale_color_manual(values=mycol ) +theme_bw() +xlab("" ) + ylab("DNA yield from PoC (microgram)" )  + ggtitle("Tissue homogenization")
@@ -89,13 +89,17 @@ pExtract <- ggplot(mydExtract, aes(method, average , color=tpf   )  ) +geom_poin
 ggsave("DNAyieldKit.png", plot= pExtract, device="png", width = 15, height = 10, units = "cm", dpi = 300)
 #~~~~~~~~~~~~~~~~ make panel 
 
-library(gridExtra)
-library (grid) 
-library(lattice) 
+#library(gridExtra)
+#ibrary (grid) 
+#library(lattice) 
 
-lay <- rbind(c(1,2)) 
+#lay <- rbind(c(1,2)) 
              
-myplot<- grid.arrange(pYield, pExtract, nrow = 1, layout_matrix = lay)
-ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=25, height =10)
+#myplot<- grid.arrange(pYield, pExtract, nrow = 1, layout_matrix = lay)
+#ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=25, height =10)
 
+##silvia
+library(ggpubr)
+ggarrange(pYield,pExtract, labels = c("A", "B"), common.legend = TRUE, legend = "right")
+ggsave("panelDNA.png", plot = myplot, dpi=300, units="cm", width=25, height =10)
 
