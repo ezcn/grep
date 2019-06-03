@@ -34,4 +34,13 @@ imma.thr.loss= mean(imma.segments$segments$mean)-3*sd(imma.segments$segments$mea
 plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
 
 imma.cnvCalls <- callAberrations(imma.segments$segments, imma.thr.gain, imma.thr.loss) 
+summary((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos)/1000000)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.103  34.526  56.938  65.043  93.301 147.724 
+
+> min((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos))
+[1] 1103396
+> min((imma.cnvCalls$n.probes))
+[1] 120
+
 
