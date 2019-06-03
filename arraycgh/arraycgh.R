@@ -3,7 +3,7 @@ imma=read.table("/home/enza/oogaProtocol/IMMA/2_arraycgh/array2/all.arraychr.hea
 #### remove duplicates  (artifact from this particular experiment)
 imma.noduplicat <- imma %>% distinct(chr, start, as_sample , .keep_all = TRUE) 
 
-toexclude <- c("AS015_bad", "AS030_bad", "AS036_bad",  "AS065_bad", "AS078_bad" ,  "AS080_bad" , "AS093_bad") # , "AS032_3xchr22" ) 
+toexclude <- c("AS015_bad", "AS030_bad", "AS036_bad",  "AS065_bad", "AS078_bad" ,  "AS080_bad" , "AS093_bad", "AS032_3xchr22" ) 
 # toexclude <- c("cicci" )
 #### spread
 imma.spread<- imma.noduplicat %>% filter( !(as_sample  %in% toexclude)  )   %>%  spread(as_sample , LogRatio )
@@ -19,7 +19,7 @@ imma.win <- winsorize(imma.spread, pos.unit = "bp", arms = NULL, method = "mad",
 ### to save files 
 #imma.segments <- pcf(data=imma.win, gamma=10, assembly="hg19", return.est=TRUE, save.res=TRUE , file.names=c("imma.win.pcf", "imma.win.segments"))
 ### to continue protocol ######## DO NOT USE NORMALIZATION!!!! 
-imma.gamma=10 imma.gamma=10 
+imma.gamma=10 
 #imma.gamma=5
 
 imma.segments <- pcf(data=imma.win, gamma=imma.gamma , assembly="hg19", return.est=TRUE, save.res=FALSE,  normalize = FALSE )
@@ -30,7 +30,9 @@ sd(imma.segments$segments$mean)
 ## 3. CALLING 
 imma.thr.gain= mean(imma.segments$segments$mean)+3*sd(imma.segments$segments$mean)
 imma.thr.loss= mean(imma.segments$segments$mean)-3*sd(imma.segments$segments$mean)
+png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
 plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
+dev.off() 
 
 imma.cnvCalls <- callAberrations(imma.segments$segments, imma.thr.gain, imma.thr.loss) 
 summary((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos)/1000000)
@@ -48,6 +50,7 @@ seg.agilent$type="Agilent"
 
 ##  rbind 
 all.cnvCalls=rbind(imma.cnvCalls.gainloss, seg.agilent) 
+all.cnvCalls$truename=unlist(strsplit(all.cnvCalls$sampleID,  "_"))[1]
 ggplot(all.cnvCalls, aes((end.pos-start.pos)/1000000, n.probes, color=type ) )+geom_point(alpha=0.6 ) +theme_bw() +facet_grid(type ~ . )
 
 
@@ -81,6 +84,8 @@ seg.agilent$type="Agilent"
 
 ##  rbind 
 all.cnvCalls=rbind(imma.cnvCalls.gainloss, seg.agilent) 
+all.cnvCalls$truename=unlist(strsplit(all.cnvCalls$sampleID,  "_"))[1]
+
 ggplot(all.cnvCalls, aes((end.pos-start.pos)/1000000, n.probes, color=type ) )+geom_point(alpha=0.6 ) +theme_bw() +facet_grid(type ~ . )
 
 
