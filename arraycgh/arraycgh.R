@@ -19,14 +19,11 @@ imma.win <- winsorize(imma.spread, pos.unit = "bp", arms = NULL, method = "mad",
 ### to save files 
 #imma.segments <- pcf(data=imma.win, gamma=10, assembly="hg19", return.est=TRUE, save.res=TRUE , file.names=c("imma.win.pcf", "imma.win.segments"))
 ### to continue protocol ######## DO NOT USE NORMALIZATION!!!! 
-imma.segments <- pcf(data=imma.win, gamma=10, assembly="hg19", return.est=TRUE, save.res=FALSE,  normalize = FALSE )
+imma.gamma=10 
+imma.segments <- pcf(data=imma.win, gamma=imma.gamma , assembly="hg19", return.est=TRUE, save.res=FALSE,  normalize = FALSE )
 
 summary(imma.segments$segments$mean) 
-     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
--0.629600 -0.055500 -0.004500 -0.007237  0.048500  0.570400 
 sd(imma.segments$segments$mean) 
-[1] 0.1153323
-
 
 ## 3. CALLING 
 imma.thr.gain= mean(imma.segments$segments$mean)+3*sd(imma.segments$segments$mean)
@@ -35,12 +32,21 @@ plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =im
 
 imma.cnvCalls <- callAberrations(imma.segments$segments, imma.thr.gain, imma.thr.loss) 
 summary((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos)/1000000)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  1.103  34.526  56.938  65.043  93.301 147.724 
+min((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos))
+min((imma.cnvCalls$n.probes))
 
-> min((imma.cnvCalls$end.pos-imma.cnvCalls$start.pos))
-[1] 1103396
-> min((imma.cnvCalls$n.probes))
-[1] 120
+imma.cnvCalls.gainloss <- imma.segments$segments %>% filter (mean<imma.thr.gain |  mean > imma.thr.gain )
+imma.cnvCalls.gainloss$type="PLS"
+
+## 4. COMPARISON WITH AGILENT 
+## format agilent reference calls and add to seg compare 
+mc=read.table("../array2/all.cyto.tsv.forcomparison", header=T , sep="\t" )
+seg.agilent= cbind.data.frame(sampleID=mc$sampleid, chrom=mc$Chr,  arm=as.character(mc$Chr) ,  start.pos=mc$Start,  end.pos=mc$Stop_bp,  n.probes=as.numeric(mc$Probes), mean=mc$Amp.Gain.Loss.Del) 
+seg.agilent$type="Agilent"
+
+##  rbind 
+all.cnvCalls=rbind(imma.cnvCalls.gainloss, seg.agilent) 
+ggplot(all.cnvCalls, aes((end.pos-start.pos)/1000000, n.probes, color=type ) )+geom_point(alpha=0.6 ) +theme_bw() +facet_grid(type ~ . )
+
 
 
