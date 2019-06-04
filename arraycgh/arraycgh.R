@@ -22,18 +22,16 @@ imma.win <- winsorize(imma.spread, pos.unit = "bp", arms = NULL, method = "mad",
 imma.gamma=10 
 #imma.gamma=5
 
-imma.segments <- pcf(data=imma.win, gamma=imma.gamma , assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE) 
+imma.segments <- pcf(data=imma.win,Y=imma.spread,  gamma=imma.gamma , assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE) 
 ### change names for plotting 
-imma.segmentsPlot = imma.segments %>% transmute(sampleID= unlist(strsplit(sampleID,  "_"))[1], chrom=chrom, arm=arm, start.pos=start.pos,  end.pos= end.pos, n.probes=n.probes, mean=mean)
+####imma.segmentsPlot = imma.segments %>% transmute(sampleID= unlist(strsplit(sampleID,  "_"))[1], chrom=chrom, arm=arm, start.pos=start.pos,  end.pos= end.pos, n.probes=n.probes, mean=mean)
 
-summary(imma.segments$segments$mean) 
-sd(imma.segments$segments$mean) 
+summary(imma.segments$mean) 
+sd(imma.segments$mean) 
 
 ## 3. CALLING 
-imma.thr.gain= mean(imma.segments$segments$mean)+3*sd(imma.segments$segments$mean)
-imma.thr.loss= mean(imma.segments$segments$mean)-3*sd(imma.segments$segments$mean)
-
-
+imma.thr.gain= mean(imma.segments$mean)+3*sd(imma.segments$mean)
+imma.thr.loss= mean(imma.segments$mean)-3*sd(imma.segments$mean)
 
 png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
 plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
