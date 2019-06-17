@@ -25,7 +25,15 @@
 
 ## per allineare dobbiamo eseguire questo comando che alla fine ci da un file bam
 
-bwa mem -t 16 -R '@RG\tID:AS006\tSM:AS006' /mpbastudies3/IMMA/hg38/hg38.p12.fa /mpbastudies3/181113_Vincenza-Colonna/AS006-Av-L/AS006-Av-L_R1.fastq.gz  /mpbastudies3/181113_Vincenza-Colonna/AS006-Av-L/AS006-Av-L_R2.fastq.gz | samtools view -b - > /mpbastudies3/IMMA/samples/AS006.raw.bam
+
+## fl=file 
+nameflgz1=${gz1}
+nameflgz2=${gz2}
+idsample=${idout}
+namedir=${dir}
+
+
+bwa mem -t 16 -R '@RG\tID:${idsample}\tSM:${idsample}' /mpbastudies3/IMMA/hg38/hg38.p12.fa /mpbastudies3/181113_Vincenza-Colonna/${namedir}/${nameflgz1}  /mpbastudies3/181113_Vincenza-Colonna/${namedir}/${nameflgz2} | samtools view -b - > /mpbastudies3/IMMA/samples/${idsample}.raw.bam
 
 ## questo file possiamo sortarlo e marcare quelli che sembrano duplicati ridondanti della PCR  
 
