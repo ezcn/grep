@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## piu' tardi gelato da mennela 
+
 # set some parameters for qsub
 
 # -N name of the job
