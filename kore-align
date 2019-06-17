@@ -1,0 +1,15 @@
+
+## dobbiamo prima indicizzare 
+
+bwa index E.coli_K12_MG1655.fa
+
+## per allineare dobbiamo eseguire questo comando che alla fine ci da un file bam
+
+bwa mem -t $threads -R '@RG\tID:K12\tSM:K12' \
+   E.coli_K12_MG1655.fa SRR1770413_1.fastq.gz SRR1770413_2.fastq.gz \
+   | samtools view -b - >SRR1770413.raw.bam
+
+## questo file possiamo sortarlo e marcare quelli che sembrano duplicati ridondanti della PCR  
+
+sambamba sort SRR1770413.raw.bam
+sambamba markdup SRR1770413.raw.sorted.bam SRR1770413.bam
