@@ -24,10 +24,10 @@ bwa index hg38.p12.fa
 ## per allineare dobbiamo eseguire questo comando che alla fine ci da un file bam
 
 bwa mem -t $threads -R '@RG\tID:hg38.p12\tSM:hg38.p12' \
-   hg38.p12.fa "".fastq.gz \
-   | samtools view -b - > "".raw.bam
+   hg38.p12.fa "seq da allineare".fastq.gz \
+   | samtools view -b - > "nomefileoutput".raw.bam
 
 ## questo file possiamo sortarlo e marcare quelli che sembrano duplicati ridondanti della PCR  
 
-sambamba sort "".raw.bam
-sambamba markdup "".raw.sorted.bam "".bam
+sambamba sort "nomefileoutput".raw.bam
+sambamba markdup "fileoutputsenzaduplicati".raw.sorted.bam "".bam
