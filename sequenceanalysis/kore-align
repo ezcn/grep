@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# set some parameters for qsub
+
+# -N name of the job
+$ -N Alignment to hg38
+
+# -q name of the queue to use
+$ -q bld.q
+
+# -l mf=amount of memory requested (this is a MANDATORY parameter), use carefully.
+$ -l mf=1G
+
+# -M emailaddress@organization.xx, where to send email alerts
+$ -M gianluca.damaggio@igb.cnr.it
+
+# condition occurred under which email is to be sent, es=end,suspend
+$ -m es
+
+## dobbiamo prima indicizzare 
+
+bwa index hg38.p12.fa
+
+## per allineare dobbiamo eseguire questo comando che alla fine ci da un file bam
+
+bwa mem -t $threads -R '@RG\tID:hg38.p12\tSM:hg38.p12' \
+   hg38.p12.fa "".fastq.gz \
+   | samtools view -b - > "".raw.bam
+
+## questo file possiamo sortarlo e marcare quelli che sembrano duplicati ridondanti della PCR  
+
+sambamba sort "".raw.bam
+sambamba markdup "".raw.sorted.bam "".bam
