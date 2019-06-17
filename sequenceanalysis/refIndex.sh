@@ -21,4 +21,4 @@
 #$ -m es
 
 ## dobbiamo prima indicizzare 
-bwa index /mpbastudies3/IMMA/hg38/hg38.p12.fa
+~/bin/bwa index /mpbastudies3/IMMA/hg38/hg38.p12.fa
