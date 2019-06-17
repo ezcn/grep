@@ -1,9 +1,16 @@
 #!/bin/sh
 
+## fl=file 
+nameflgz1=${gz1}
+nameflgz2=${gz2}
+idsample=${idout}
+namedir=${dir}
+
+
 # set some parameters for qsub
 
-# -N name of the job
-#$ -N alhg38
+### -N name of the job
+###$ -N al$idsample
 
 # -q name of the queue to use
 #$ -q bld.q
@@ -26,16 +33,5 @@
 ## per allineare dobbiamo eseguire questo comando che alla fine ci da un file bam
 
 
-## fl=file 
-nameflgz1=${gz1}
-nameflgz2=${gz2}
-idsample=${idout}
-namedir=${dir}
+~/bin/bwa mem -t 16 -R "@RG\tID:$idsample\tSM:$idsample" /mpbastudies3/IMMA/hg38/hg38.p12.fa /mpbastudies3/181113_Vincenza-Colonna/$namedir/$nameflgz1  /mpbastudies3/181113_Vincenza-Colonna/$namedir/$nameflgz2 | /mpba0/mpba-sw/samtools view -b - > /mpbastudies3/IMMA/samples/$idsample.raw.bam
 
-
-bwa mem -t 16 -R '@RG\tID:${idsample}\tSM:${idsample}' /mpbastudies3/IMMA/hg38/hg38.p12.fa /mpbastudies3/181113_Vincenza-Colonna/${namedir}/${nameflgz1}  /mpbastudies3/181113_Vincenza-Colonna/${namedir}/${nameflgz2} | samtools view -b - > /mpbastudies3/IMMA/samples/${idsample}.raw.bam
-
-## questo file possiamo sortarlo e marcare quelli che sembrano duplicati ridondanti della PCR  
-
-##sambamba sort "nomefileoutput".raw.bam
-##sambamba markdup "fileoutputsenzaduplicati".raw.sorted.bam "".bam
