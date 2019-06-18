@@ -11,6 +11,9 @@ idflrbam=${idrbam}
 # -q name of the queue to use
 #$ -q bld.q
 
+# -l mf=amount of memory requested (this is a MANDATORY parameter), use carefully.
+#$ -l mf=2G
+
 # number of threads in multi-threaded jobs 
 #$ -pe smp 16
 
