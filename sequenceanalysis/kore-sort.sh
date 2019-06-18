@@ -5,9 +5,6 @@ idflrbam=${idrbam}
 
 # set some parameters for qsub
 
-### -N name of the job
-###$ -N al$idsample
-
 # -q name of the queue to use
 #$ -q bld.q
 
