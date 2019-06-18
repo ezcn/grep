@@ -1,7 +1,7 @@
-Variant name	Variant source	Chromosome/scaffold name	Chromosome/scaffold position start (bp)	Ancestral allele	Variant alleles
-rs10270417	dbSNP	7	25760106	C	C/T
-rs138993181	dbSNP	2	15017885	C	C/A
-rs143445068	dbSNP	11	19610850	G	G/C
-rs146350366	dbSNP	13	22779354	G	G/A
-rs183453668	dbSNP	21	43412110		G/A
-rs7859844	dbSNP	9	81063077	G	G/A
+Variant name	Variant source	Chromosome/scaffold name	Chromosome/scaffold position start (bp)	Ancestral allele	Variant alleles EffectAllele  AS006 AS054 AS064
+rs10270417	dbSNP	7	25760106	C	C/T C C/C 
+rs138993181	dbSNP	2	15017885	C	C/A A
+rs143445068	dbSNP	11	19610850	G	G/C C 
+rs146350366	dbSNP	13	22779354	G	G/A G
+rs183453668	dbSNP	21	43412110		G/A A 
+rs7859844	dbSNP	9	81063077	G	G/A A
