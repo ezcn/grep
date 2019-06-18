@@ -18,4 +18,4 @@ chr=${chr}
 # condition occurred under which email is to be sent, es=end,suspend
 #$ -m es
 
-~/bin/freebayes -f /mpbastudies3/IMMA/hg38/hg38.p12.fa -r ${chr} --gvcf -g 2000  /mpbastudies3/IMMA/samples/${idsample}.bam | bgzip > /mpbastudies3/IMMA/samples/${idsample}.vcf.gz
+~/bin/freebayes -f /mpbastudies3/IMMA/hg38/hg38.p12.fa -r ${chr} --gvcf -g 2000  /mpbastudies3/IMMA/samples/vcf/${idsample}.bam | bgzip > /mpbastudies3/IMMA/samples/${idsample}.vcf.gz
