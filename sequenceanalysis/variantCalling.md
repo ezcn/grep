@@ -22,7 +22,7 @@
  
  ```
  
- #### 6. variant calling 
+ #### 6. variant calling [kore-freebayes](kore-freebayes.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr1" -N fbyAS090  kore-freebayes.sh
  
