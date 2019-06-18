@@ -16,7 +16,7 @@
  
   ```
  
- #### remove PCR duplicates
+ #### remove PCR duplicates [kore-markdup](kore-markdup.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.mkdup.out -e /mpba0/vcolonna/silvia/AS090.mkdup.err -v idrbam="AS090" -N mkdupAS090  kore-markdup.sh
  
