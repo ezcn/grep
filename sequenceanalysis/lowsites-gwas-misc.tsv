@@ -1,4 +1,4 @@
-Variant name	VariantSource	Chromosome/ScaffoldName	Chromosome/scaffoldPositionStart(bp)	AncestralAllele	VariantAlleles	EffectAllele	AS006	AS054	AS064	AS074	AS090	AS094	phenotype	ancestry	EAF*	OR (95% CI)	P-value	Heterogeneity P-value
+Variant name	VariantSource	Chr	Start(bp)	AncestralAllele	VariantAlleles	EffectAllele	AS006	AS054	AS064	AS074	AS090	AS094	phenotype	ancestry	EAF*	OR (95% CI)	P-value	Heterogeneity P-value
 rs10270417	dbSNP	7	25760106	C	C/T	C	C/C	C/C	C/C	NA	C/T	C/C	sporadic	trans-ethnic	0.98	NA	5.97E-09	P_ancestry_het = 1.43e-09 P_residual_het = 0.95
 rs138993181	dbSNP	2	15017885	C	C/A	A	C/C	C/C	C/C	NA	C/C	C/C	recurrent	European	0.006	3.61 (2.23-5.84)	P_Firth = 1.7e-07; P_original_meta = 1.6e-08	P_het_Firth = 0.01
 rs143445068	dbSNP	11	19610850	G	G/C	C	G/G	G/G	G/G	NA	G/G	G/G	recurrent	European	0.008	3.43 (2.35-5.00)	P_Firth = 1.8e-10; P_original_meta = 5.2e-09	P_het_Firth = 0.79
