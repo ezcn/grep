@@ -23,5 +23,5 @@ idflrbam=${idrbam}
 # condition occurred under which email is to be sent, es=end,suspend
 #$ -m es
 
-~/bin/sambamba sort ${idflrbam}.raw.bam
+~/bin/sambamba sort -t 16 -o /mpbastudies3/IMMA/samples/${idflrbam}.raw.sorted.bam ${idflrbam}.raw.bam 
 ##~/bin/sambamba markdup ${idflrbam}.raw.sorted.bam /mpbastudies3/IMMA/samples/${idflrbam}.bam
