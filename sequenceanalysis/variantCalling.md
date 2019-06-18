@@ -10,13 +10,16 @@
  
  ```
  
- #### sort reads bam file [kore-sort.sh](kore-sort.sh)
+ #### sort reads bam file [kore-sort](kore-sort.sh)
  ```
  qsub -o /mpba0/vcolonna/silvia/AS090.sort.out -e /mpba0/vcolonna/silvia/AS090.sort.err -v idrbam="AS090" -N sortAS090  kore-sort.sh
  
   ```
  
- #### remove PCR duplicates
+ #### remove PCR duplicates [kore-markdup](kore-markdup.sh)
+  ```
+ qsub -o /mpba0/vcolonna/silvia/AS090.mkdup.out -e /mpba0/vcolonna/silvia/AS090.mkdup.err -v idrbam="AS090" -N mkdupAS090  kore-markdup.sh
  
+ ```
  
  #### index bam files
