@@ -5,9 +5,6 @@ idflrbam=${idrbam}
 
 # set some parameters for qsub
 
-### -N name of the job
-###$ -N al$idsample
-
 # -q name of the queue to use
 #$ -q bld.q
 
@@ -24,4 +21,4 @@ idflrbam=${idrbam}
 #$ -m es
 
 ##~/bin/sambamba sort ${idflrbam}.raw.bam
-~/bin/sambamba markdup ${idflrbam}.raw.sorted.bam /mpbastudies3/IMMA/samples/${idflrbam}.bam
+~/bin/sambamba markdup /mpbastudies3/IMMA/samples/${idflrbam}.raw.sorted.bam /mpbastudies3/IMMA/samples/${idflrbam}.bam
