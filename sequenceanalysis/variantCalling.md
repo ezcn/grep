@@ -23,4 +23,21 @@
  ```
  
  #### variant calling 
+  ```
+ qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr1" -N fbyAS090  kore-freebayes.sh
  
+ ```
+ 
+ cycle for chr 1-22 
+  ```
+ for c in $(seq 1 22); do  echo qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr$c" -N fbyAS090  kore-freebayes.sh; done 
+ 
+ ```
+
+
+ cycle for ID for  chr 1-22 
+  ```
+ for id in AS006 AS074 ; do for c in $(seq 1 22); do  echo qsub -o /mpba0/vcolonna/silvia/$id.fby.out -e /mpba0/vcolonna/silvia/$id.fby.err -v id="$id",chr="chr$c" -N fby$id  kore-freebayes.sh; done; done  
+ 
+ ```
+
