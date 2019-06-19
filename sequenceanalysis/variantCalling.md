@@ -14,15 +14,21 @@
  ```
  qsub -o /mpba0/vcolonna/silvia/AS090.sort.out -e /mpba0/vcolonna/silvia/AS090.sort.err -v idrbam="AS090" -N sortAS090  kore-sort.sh
  
+ ```
+
+#### 5. make stats from bam file  [kore-stats](kore-stats.sh)
+ ```
+ qsub -v id="AS064" -N statsAS064 kore-stats.sh
+ 
   ```
  
- #### 5. remove PCR duplicates [kore-markdup](kore-markdup.sh)
+ #### 6. remove PCR duplicates [kore-markdup](kore-markdup.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.mkdup.out -e /mpba0/vcolonna/silvia/AS090.mkdup.err -v idrbam="AS090" -N mkdupAS090  kore-markdup.sh
  
  ```
  
- #### 6. variant calling [kore-freebayes](kore-freebayes.sh)
+ #### 7. variant calling [kore-freebayes](kore-freebayes.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr1" -N fbyAS090  kore-freebayes.sh
  
