@@ -21,4 +21,4 @@ idflrbam=${idrbam}
 #$ -m es
 
 ##~/bin/sambamba sort ${idflrbam}.raw.bam
-~/bin/sambamba markdup /mpbastudies3/IMMA/samples/${idflrbam}.raw.sorted.bam /mpbastudies3/IMMA/samples/${idflrbam}.bam
+~/bin/sambamba markdup -t 16 -p  /mpbastudies3/IMMA/samples/${idflrbam}.raw.sorted.bam /mpbastudies3/IMMA/samples/${idflrbam}.bam
