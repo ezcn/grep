@@ -36,14 +36,14 @@
  
  cycle for chr 1-22 
   ```
- for c in $(seq 1 22); do  echo qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr$c" -N fbyAS090  kore-freebayes.sh; done 
+ for c in $(seq 1 22); do  echo qsub -o /mpba0/vcolonna/silvia/AS090.chr$c.fby.out -e /mpba0/vcolonna/silvia/AS090.chr$c.fby.err -v id="AS090",chr="chr$c" -N AS090.chr$c.fby  kore-freebayes.sh; done 
  
  ```
 
 
  cycle for ID for  chr 1-22 
   ```
- for id in AS006 AS074 ; do for c in $(seq 1 22); do  echo qsub -o /mpba0/vcolonna/silvia/$id.fby.out -e /mpba0/vcolonna/silvia/$id.fby.err -v id="$id",chr="chr$c" -N fby$id  kore-freebayes.sh; done; done  
+  for id in AS006 AS054 AS064; do for c in $(seq 1 22); do qsub -o /mpba0/vcolonna/gianluca/$id.chr$c.fby.out -e /mpba0/vcolonna/gianluca/$id.chr$c.fby.err -v id="$id",chr="chr$c" -N $id.chr$c.fby  /mpba0/vcolonna/gianluca/kore-freebayes.sh; done; done
  
  ```
 
