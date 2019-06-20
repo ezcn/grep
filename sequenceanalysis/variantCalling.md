@@ -54,3 +54,11 @@
  for id in AS006 AS074 ;  do  echo qsub -o /mpba0/vcolonna/silvia/$id.fby.out -e /mpba0/vcolonna/silvia/$id.fby.err -v id="$id",chr="chrX" -N fby$id  kore-freebayes.sh; done 
  
  ```
+ 
+ 
+ #### 8. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh)
+ ```
+qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
+
+ 
+  ```
