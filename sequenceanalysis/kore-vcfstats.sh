@@ -20,4 +20,4 @@ chr=${chr}
 #$ -m es
 
 
-~/bin/vcfstats -a /mpbastudies3/IMMA/samples/vcf/${id}.${chr}.vcf.gz > /mpba0/vcolonna/gianluca/stats/${id}.${chr}.stats
+~/bin/vcfstats /mpbastudies3/IMMA/samples/vcf/${id}.${chr}.vcf.gz > /mpba0/vcolonna/gianluca/stats/${id}.${chr}.stats
