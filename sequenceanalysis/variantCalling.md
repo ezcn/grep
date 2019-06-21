@@ -54,9 +54,14 @@
  for id in AS006 AS074 ;  do  echo qsub -o /mpba0/vcolonna/silvia/$id.fby.out -e /mpba0/vcolonna/silvia/$id.fby.err -v id="$id",chr="chrX" -N fby$id  kore-freebayes.sh; done 
  
  ```
+ #### 8. make index from VCF file  [kore-vcfindex](kore-vcfindex.sh)
+ ```
+for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.out -e /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.err -v id="$id",chr="chr$c" -N $id.chr$c.index  /mpba0/vcolonna/gianluca/kore-vcfindex.sh; done; done
+ 
+  ```
  
  
- #### 8. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh)
+ #### 9. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh)
  ```
 qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
 
