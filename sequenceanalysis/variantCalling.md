@@ -61,7 +61,7 @@ for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub
   ```
  
  
- #### 9. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh)
+ #### 9. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh)(kore-bcfQUALstats.sh)
  ```
 qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
 
