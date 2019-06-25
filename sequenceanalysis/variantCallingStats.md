@@ -1,7 +1,7 @@
 ### summary statistics from mapping - (from bam files) 
 
 
-# Summary statistics of variant calling - chr 22 (form vcf files)  
+# Summary statistics of variant calling - chr 22 (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
 
 ### [Number of MNPs](img/SN-numberofMNPs.png) number of rows with a MNP, such as CC>TT
 ### [Number of SNPs](img/SN-numberofSNPs.png) number of rows with a SNP
@@ -12,11 +12,11 @@
 ### [Number of Others](img/SN-numberofothers.png) number of rows with other type, for example a symbolic allele or a complex substitution, such as ACT>TCGA
 ### [Number of Records](img/SN-numberofrecords.png) number of data rows in the VCF
 
-# Substitution types - chr 22 (from vcf files)
+# Substitution types - chr 22 (from vcf files) [script.R](statsRscript/STstatsVCF.R)
 
 ### [Substitution types](img/ST-Substitutiontypes.png) 
 
-# Transitions/transversions - chr 22 (from vcf files)
+# Transitions/transversions - chr 22 (from vcf files) [script.R](statsRscript/TSTVstatsVCF.R)
 
 ### [Transitions](img/transition.png)
 ### [Transversion](img/transversion.png)
