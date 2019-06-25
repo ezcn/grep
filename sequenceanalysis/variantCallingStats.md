@@ -15,3 +15,10 @@
 # Substitution types - chr 22 (from vcf files)
 
 ### [Substitution types](img/ST-Substitutiontypes.png) 
+
+# Transitions/transversions - chr 22 (from vcf files)
+
+### [Transitions](img/transition.png)
+### [Transversion](img/transversion.png)
+### [TSTV ratio](img/tstvratio.png)
+ 
