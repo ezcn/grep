@@ -10,3 +10,14 @@ bcftools +split-vep -f '%CHROM %POS %CSQ\n' -d -A tab OgzFBNb3VDOntEp9.vcf | les
 ```
 https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 
+### 3) Find gene correlate to embryo development 
+
+http://amigo.geneontology.org/amigo/term/GO:0009790#display-lineage-tab
+
+transform UniProtKB AC/ID in Ensembl ID:
+
+https://www.uniprot.org/mapping/
+
+Use BioMart for find Start/End position of Ensembl ID [script](biomartScript/biomaRt.R)
+
+
