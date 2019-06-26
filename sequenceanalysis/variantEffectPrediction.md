@@ -14,7 +14,7 @@ https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 
 3.1) Find genes: http://amigo.geneontology.org/amigo/term/GO:0009790#display-lineage-tab  
 
-3.2) transform UniProtKB AC/ID in Ensembl ID: https://www.uniprot.org/mapping/
+3.2) Transform UniProtKB AC/ID in Ensembl ID: https://www.uniprot.org/mapping/
 
 3.3) Use BioMart for find Start/End position of Ensembl ID [(Script)](biomartScript/biomaRt.R)
 
