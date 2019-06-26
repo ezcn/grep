@@ -21,4 +21,8 @@
 ### [Transitions](img/transition.png)
 ### [Transversion](img/transversion.png)
 ### [TSTV ratio](img/tstvratio.png)
+
+# Depth - chr 22 (from vcf files) [script.R](sequenceanalysis/statsRscript/DEPTHstatsVCF.R)
+
+### [Depth](img/depth-quality1.png)  number of reads, on average, thet are likely to be aligned at a given reference base position.
  
