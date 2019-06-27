@@ -50,8 +50,7 @@ id <- separate(data.frame(id),col=1, into=c("ID", "length", "insertion_count", "
 id$length <- as.numeric(as.character(id$length))
 idm <- melt(id,id="length")
 
-k<-ggplot(idm, aes(x=length, y=value, color=variable)) + geom_line(size=1.5) + labs (x= "length", y= "indels", title="Indel distribution(AS074)") 
-ggsave("indels.png", plot= k, device="png", width = 20, height = 15, units = "cm", dpi = 300)
+k <- ggplot(id, aes(x=as.numeric(length))) + geom_line(aes(y=as.numeric(insertion_count)), color = "red", size=1.5) + geom_line(aes(y=as.numeric(deletion_count)), color = "blue", size=1.5) + labs (x= "lenght", y= "indels", title="Indel distribution(AS074)")
 
 
 #Indels per cycle
