@@ -1,5 +1,10 @@
 # Summary statistics from mapping - (from bam files) [script.R](statsRscript/BAMstats.R)
 
+### [Insert size](img/insert_size.png)
+### [ACGT content per cycle](img/base_comp.png)
+### [GC Content](img/GCcontent.png)
+### [Indel distribution](img/indels.png)
+### [Coverage distribution](img/coverageAS074.png)
 
 # Summary statistics of variant calling - chr 22 (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
 
