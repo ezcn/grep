@@ -1,3 +1,9 @@
+library(knitr)
+library(tidyverse)
+library(reshape2)
+library(gridExtra)
+library(ggplot2)
+
 ## Open bam file 
 data <- readLines("/home/silvia/misc/align/bcf-stats/AS074.raw.sorted.stats.bam")
 
