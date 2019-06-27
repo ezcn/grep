@@ -1,4 +1,4 @@
-### summary statistics from mapping - (from bam files) 
+# Summary statistics from mapping - (from bam files) [script.R](statsRscript/BAMstats.R)
 
 
 # Summary statistics of variant calling - chr 22 (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
