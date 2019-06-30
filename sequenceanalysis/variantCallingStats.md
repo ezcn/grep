@@ -8,12 +8,12 @@
 
 # Summary statistics of variant calling (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
 
-### [Number of MNPs - full](img/fullSN-numberofMNPs.png)  number of rows with a MNP, such as CC>TT
+### [Number of MNPs - full](img/fullSN-numberofMNPs.png) : number of rows with a MNP, such as CC>TT
 ### [Number of MNPs - chr 22](img/SN-numberofMNPs.png)
-###
-### [Number of SNPs - chr 22](img/SN-numberofSNPs.png) number of rows with a SNP
-###
-### [Number of Indels - chr 22](img/SN-numberofindels.png) number of rows with an indel
+### [Number of SNPs - full](img/fullSN-numberofSNPs.png) :  number of rows with a SNP
+### [Number of SNPs - chr 22](img/SN-numberofSNPs.png)
+### [Number of Indels - full](img/fullSN-numberofindels.png) : number of rows with an indel
+### [Number of Indels - chr 22](img/SN-numberofindels.png) 
 ###
 ### [Number of multiallelic SNPs sites - chr 22](img/SN-numberofmultiallelicSNPsites.png) number of rows with multiple alternate alleles, all SNPs
 ###
