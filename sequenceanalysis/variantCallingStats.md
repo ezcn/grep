@@ -27,7 +27,7 @@
 
 # Substitution types (from vcf files) [script.R](statsRscript/STstatsVCF.R)
 
-### [Substitution types -full] missing
+### [Substitution types -full](img/ST-fullSubstitutiontypes.png)
 ### [Substitution types - chr 22](img/ST-Substitutiontypes.png) 
 
 # Transitions/transversions (from vcf files) [script.R](statsRscript/TSTVstatsVCF.R)
