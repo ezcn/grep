@@ -1,12 +1,12 @@
 # Variatn Effect Prediction
 
-### 1) Use a tool (like VEP) on file.VCF for predict variant effect
+### 1) Use [VEP](kore-vep.sh) for predict variant effect 
 ```
-./vep --af --appris --biotype --buffer_size 500 --check_existing --distance 5000 --polyphen b --pubmed --regulatory --sift b --species homo_sapiens --symbol --tsl --cache --input_file [input_data] --output_file [output_file]
+for id in AS006 AS054 AS064 AS074 AS090 AS094 ;do echo qsub -e /mpba0/vcolonna/gianluca/$id.vep.err -o /mpba0/vcolonna/gianluca/$id.vep.out -v id="$id" -N vep$id /mpba0/vcolonna/gianluca/kore-vep.sh; done
 ```
 ### 2) Use Bcftools split-vep for expand information inside output file of VEP analysis
 ```
-bcftools +split-vep -f '%CHROM %POS %CSQ\n' -d -A tab OgzFBNb3VDOntEp9.vcf | less -S
+bcftools +split-vep -f '%CHROM %POS %CSQ\n' -d -A tab [filename].vcf | less -S
 ```
 https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 
