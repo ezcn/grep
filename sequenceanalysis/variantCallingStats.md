@@ -6,7 +6,7 @@
 ### [Indel distribution](img/indels.png)
 ### [Coverage distribution](img/coverageAS074.png)
 
-# Summary statistics of variant calling (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
+# Summary statistics of variant calling - (form vcf files) [script.R](statsRscript/SNstatsVCF.R)
 
 ### [Number of MNPs - full](img/fullSN-numberofMNPs.png) : number of rows with a MNP, such as CC>TT
 ### [Number of MNPs - chr 22](img/SN-numberofMNPs.png)
@@ -25,12 +25,12 @@
 ### [Number of Records - full](img/fullSN-numberofrecords.png) : number of data rows in the VCF
 ### [Number of Records - chr 22](img/SN-numberofrecords.png) 
 
-# Substitution types (from vcf files) [script.R](statsRscript/STstatsVCF.R)
+# Substitution types - (from vcf files) [script.R](statsRscript/STstatsVCF.R)
 
 ### [Substitution types -full](img/ST-fullSubstitutiontypes.png)
 ### [Substitution types - chr 22](img/ST-Substitutiontypes.png) 
 
-# Transitions/transversions (from vcf files) [script.R](statsRscript/TSTVstatsVCF.R)
+# Transitions/transversions - (from vcf files) [script.R](statsRscript/TSTVstatsVCF.R)
 
 ### [Transitions - full](img/fulltransition.png)
 ### [Transitions - chr 22](img/transition.png)
@@ -39,7 +39,7 @@
 ### [TSTV ratio - full](img/fulltstvratio.png)
 ### [TSTV ratio - chr 22](img/tstvratio.png)
 
-# Depth (from vcf files) [script.R](statsRscript/DEPTHstatsVCF.R)
+# Depth - (from vcf files) [script.R](statsRscript/DEPTHstatsVCF.R)
 
 ### [Depth - full](img/fulldepth-quality.png) : number of reads, on average, thet are likely to be aligned at a given reference base position
 ### [Depth - chr 22](img/depth-quality1.png)  
