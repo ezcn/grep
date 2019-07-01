@@ -41,6 +41,6 @@
 
 # Depth (from vcf files) [script.R](statsRscript/DEPTHstatsVCF.R)
 
-### [Depth - full](img/fulldepth-quality.png) : number of reads, on average, thet are likely to be aligned at a given reference base position.
+### [Depth - full](img/fulldepth-quality.png) : number of reads, on average, thet are likely to be aligned at a given reference base position
 ### [Depth - chr 22](img/depth-quality1.png)  
  
