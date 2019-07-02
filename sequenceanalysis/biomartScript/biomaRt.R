@@ -3,7 +3,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 BiocManager::install("biomaRt")
 library(biomaRt)
-
+library(dplyr)
 #####
 
 listMarts()
@@ -13,15 +13,17 @@ ensembl <- biomaRt::useMart(host = "http://www.ensembl.org", biomart = "ENSEMBL_
 filters = listFilters(ensembl)                 
 attributes = listAttributes(ensembl)
 
+filtersimp<- filter(attributes, name=="imprinted")
 
-allGene<-getBM(attributes = c("ensembl_gene_id", "chromosome_name","strand","description","start_position","end_position"), filters = "", values = "", ensembl, curl = NULL,checkFilters = TRUE, verbose = FALSE, uniqueRows = TRUE, bmHeader = FALSE,quote = "\"")
-##allGene<-filter(prova, ensembl_gene_id=="ENSG00000241186") ## voglio vedere se trova un id a caso.
+allGenePosition<-getBM(attributes = c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name"), filters = "", values = "", ensembl, curl = NULL,checkFilters = TRUE, verbose = FALSE, uniqueRows = TRUE, bmHeader = FALSE,quote = "\"")
+#allGene<-filter(prova, ensembl_gene_id=="ENSG00000241186") ## voglio vedere se trova un id a caso.
 
 idGeneEmbryo<-read.table("/home/gianluca/geneidENS.txt")
 
 colnames(idGeneEmbryo)[colnames(idGeneEmbryo)=="V1"] <- "ensembl_gene_id"
 
-startEndEmbryoGene<-merge(idGeneEmbryo,allGene)
+startEndEmbryoGene<-merge(idGeneEmbryo,allGenePosition)
+startEndEmbryoGene<-startEndEmbryoGene[c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name")]
 
-write.table(startEndEmbryoGene, "geneset_GO0009790_embryodevelopment.tsv", row.names = FALSE, quote = FALSE)
+write.table(startEndEmbryoGene, "embryodev.bed", row.names = FALSE, quote = FALSE, col.names = F)
 write.table(allGene, "allGeneStartEndPosition.tsv", row.names = FALSE, quote = FALSE)
