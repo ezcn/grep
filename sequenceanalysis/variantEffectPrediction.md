@@ -16,7 +16,7 @@ https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 
 3.2) Transform UniProtKB AC/ID in Ensembl ID: https://www.uniprot.org/mapping/
 
-3.3) Use BioMart to find Start/End position of Ensembl ID [(Script)](biomartScript/biomaRt.R) , the output is a file.BED .
+3.3) Use BioMart to find Start/End position of Ensembl ID [(Script)](biomartScript/biomaRt.R) , the output is a BED file.
 
 3.4) Sort file.BED ...
 
