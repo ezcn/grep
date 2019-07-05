@@ -20,7 +20,7 @@ https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 
 3.4) Sort file.BED ...
 
-### 4) Intersect the output of VEP analysis with Bedtools
+### 4) Intersect the output of VEP analysis with [Bedtools](kore-bedintersect.sh)
 
 ```
 for id in AS006 AS054 AS064 AS074 AS090 AS094 ;do qsub -e /mpba0/vcolonna/gianluca/$id.int.err -o /mpba0/vcolonna/gianluca/$id.int.out -v id="$id" -N $id.int kore-bedintersect.sh; done
