@@ -21,5 +21,5 @@ id=${id}
 
 
 
-/mpba0/mpba-sw/bedtools intersect -wa -wb -a /mpba0/vcolonna/gianluca/vcfFiltered/${id}.filteredVep -b /mpba0/vcolonna/IMMA/amigo2/embryodev.bed > /mpba0/vcolonna/IMMA/samples/intersectVep/${id}.embryodevIntersect.bed
+/mpba0/mpba-sw/bedtools intersect -header -wa -wb -a /mpba0/vcolonna/gianluca/vcfFiltered/${id}.filteredVep -b /mpbastudies3/IMMA/amigo2/embryodev.bed /mpbastudies3/IMMA/amigo2/DDD.bed /mpbastudies3/IMMA/amigo2/gnomAD.bed /mpbastudies3/IMMA/amigo2/repro.bed > /mpbastudies3/IMMA/samples/intersectVep/${id}.intersect.vcf
 
