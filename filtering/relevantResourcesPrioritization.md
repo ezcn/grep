@@ -1,10 +1,14 @@
 https://www.nature.com/articles/nrg.2017.52
 
 
-Genome Mining(GEMINI)69, 
-seqr (see Further Information), 
-Variant Association Tools70 
-ANNOVAR49, 
+- Genome Mining(GEMINI)69,
+
+- seqr (see Further Information), 
+
+- Variant Association Tools70 
+
+- ANNOVAR49, 
+
 for example, use
 filtering approaches that prioritize variants only if they
 follow a specified mode of inheritance, are predicted to
@@ -12,10 +16,11 @@ affect protein sequence or function and have a popula-
 tion frequency below a specified threshold. 
 
 
-By contrast,
-tools such as 
-VAAST and 
-SKAT‐O use a probabilistic
+By contrast, tools such as 
+- VAAST and 
+- SKAT‐O 
+
+use a probabilistic
 approach that uses background population frequencies
 to determine genotype frequencies and combines these
 with mode of inheritance and penetrance to identify
