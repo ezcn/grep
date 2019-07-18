@@ -24,3 +24,15 @@ https://samtools.github.io/bcftools/howtos/plugin.split-vep.html
 ```
 for id in AS006 AS054 AS064 AS074 AS090 AS094 ;do qsub -e /mpba0/vcolonna/gianluca/$id.int.err -o /mpba0/vcolonna/gianluca/$id.int.out -v id="$id" -N $id.int /mpba0/vcolonna/gianluca/kore-bedintersect.sh; done
 ```
+
+### 5) As an alternative to intersect, add annotations from bed files to vcf file (output of VEP) using [Vcflib vcfannotate](kore-annotate.sh) 
+
+```
+for id in  AS006 AS074 AS054 AS064 AS094 AS090;  do qsub -o /mpba0/vcolonna/silvia/$id.ann.out -e /mpba0/vcolonna/silvia/$id.ann.err -v id="$id" -N ann$id kore-annotate.sh ; done 
+
+
+
+
+
+
+
