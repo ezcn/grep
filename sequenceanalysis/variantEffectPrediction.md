@@ -29,6 +29,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094 ;do qsub -e /mpba0/vcolonna/gianlu
 
 ```
 for id in  AS006 AS074 AS054 AS064 AS094 AS090;  do qsub -o /mpba0/vcolonna/silvia/$id.ann.out -e /mpba0/vcolonna/silvia/$id.ann.err -v id="$id" -N ann$id kore-annotate.sh ; done 
+```
 
 
 
