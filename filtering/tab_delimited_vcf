@@ -1,0 +1,19 @@
+###### Extract info field (as tsv)
+
+vcf2tsv -n NA myvcf.vcf >testvep.tsv    
+cat testvep.tsv | awk '{$15=""; print $0}'>info.vcf    #remove vep CSQ field
+
+
+##### Split Vep CSQ field 
+
+bcftools +split-vep -f '%CHROM\t%POS\t%CSQ\n' -d -A tab myvcf.vcf >splittedcsq.tsv
+
+
+##### Split format field into single components
+
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT\t%GQ\t%GL\t%DP\t%AD\t%RO\t%QR\t%AO\t%QA\t%MIN_DP]\n' myvcf.vcf >formatvcf.tsv
+
+
+
+
+
