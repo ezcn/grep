@@ -41,11 +41,8 @@ def main():
 	#print (dSOTermFineRank)
 
 
-
-
-
-
-############################################################
+##########~~~~~~~~~~~~~~  Loop of vcf lines 
+	listOfErrors=[]
 	dInfo={}
 	header=["chr", "pos", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD"]
 	print("\t".join(map(str, header) )  ) 
@@ -58,7 +55,7 @@ def main():
 			
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
 				
-			if len(myalt.split(","))> 2: 
+			if len(myalt.split(","))> 2:   #excludes cases with more than two alt allele 
 				pass 
 			else:
 	
@@ -85,49 +82,31 @@ def main():
 				
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
-					################
-
-					#if re.search("," , dInfo["AC"]):
-					#	listAC=dInfo["AC"].split(",")
-					#print(listAC)
-					#if re.search("," , myalt):
-					#	listALT=myalt.split(",")
-					#print(listALT)
-					#
-					#dALT=dict(zip(listALT, listAC))
-					#print(dALT)
-					
-					#print(dInfo["AC"])
-					#print(dFormat)
-					#~~~~~~~~~~~
-					#myres+= gp.csqAlleleFeatures(mycsqAllele, myalt, int(dInfo["AC"]), (dFormat["GL"]) ) ## features of csqAll
-					#print(dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"])
-					myres+= gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
-					
-					#~~~~~~~~~~~~~
-					myres.append(dCsq['Feature'])
-					
-					#~~~~~~~~~~~~~~~~
-					
-					myind=[]
+					#~~~~~~~~~~~  csq allele features 
+	
+					featMultiOut=gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
+					if not featMultiOut:
+						listOfErrors.append([mychr, mypos, 'csq allele not matching'])  
+						break 
+					#print (featMultiOut) 
+					else: myres+=featMultiOut
+					#~~~~~~~~~~~~ assign severity score at the  most severe csq
+					myindexes=[]
 					for tl in dCsq['Consequence'].split("&"): 
-						myind.append(lSOTerm.index(tl ))	
-					mostSevereCsq=lSOTerm[min(myind)]
+						myindexes.append(lSOTerm.index(tl ))	
+					mostSevereCsq=lSOTerm[min(myindexes)]
 					#print(dCsq['Consequence']) 
 					#print(mostSevereCsq)
 					myres.append( dSOTermRank[mostSevereCsq ]) ## score based on the impact of the consequence       	
 					myres.append( dSOTermFineRank[mostSevereCsq ])
-
-					#~~~~~~~~~~~~~~~~~~~~~
-				
+					
+					#~~~~~~~~~~~~~~ find out if a variant is rare 
 					thresh=0.01
 					freqlist = [float(x) for x in  [dCsq["AFR_AF"],dCsq["AMR_AF"],dCsq["EAS_AF"],dCsq["EUR_AF"],dCsq["SAS_AF"]] if x ] 
 					rare = gp.checkFreq (freqlist, thresh) # check if it is a rare variant (af<thresh) 
 					myres.append(rare)
 									
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~
-				
-					# check if row have Embryo,CellCycle,DDD,GmomAD genes
+					#~~~~~~~~~~ check if row have Embryo,CellCycle,DDD,GmomAD genes
 					embryo=False ; DDD=False; cellcycle=False; gnomAD=False
 
 					if re.search("annotation", line): embryo=True
@@ -149,11 +128,11 @@ def main():
 			if re.search("ID=CSQ" ,line ): 
 				csqHeader=line.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
-
+	print(listOfErrors) 
 
 
  
 
 
 if __name__ == "__main__":
-	main() 
+	main()

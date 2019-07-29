@@ -17,33 +17,33 @@ def csqAlleleFeaturesMulti(genotype, csqAllele, refAllele, altAlleles, altAllele
 	templist=altAlleleCount.split(',')
 	allCounts=[2-sum( map(int, templist) )]+templist
 	dCount=dict(zip(allAlleles, allCounts)) 
-	csqCount=dCount[csqAllele]
+	if csqAllele in dCount:  
+		csqCount=dCount[csqAllele]
 
-	""" there is no itertool or numpy therfore I HAVE TO write the following...
-	it MUST be rewritten to take the upperdiagonal 
-	use numpy
-	"""
+		""" there is no itertool or numpy therfore I HAVE TO write the following...
+		it MUST be rewritten to take the upperdiagonal 
+		use numpy
+		"""
 
-	tempGenolist=[str(a)+str(b) for a in range (len(allAlleles)) for b in range (len(allAlleles)) ]
-	"""This is equivalent to: 
+		tempGenolist=[str(a)+str(b) for a in range (len(allAlleles)) for b in range (len(allAlleles)) ]
+		"""This is equivalent to: 
 
-	tempGenolist=[]
-	for a in range (len(allAlleles)):		
-		for b in range (len(allAlleles)): 
-			tempGenolist.append(str(a) +str(b)) 
-	"""
-	if len(allAlleles)==2: genotypesIndexToRetain=[0,1,3]
-	elif len(allAlleles)==3: genotypesIndexToRetain=[0,1,2,4,5,8]
-	
-	tempGenolistNoEquivalents=[i for i in tempGenolist if tempGenolist.index(i) in genotypesIndexToRetain] 
-	dGL=dict(zip(tempGenolistNoEquivalents, GL.split(',')  ))	
-	genotypeFormat=str(genotype[0])+str(genotype[2])
-	likl=dGL[genotypeFormat]
-
+		tempGenolist=[]
+		for a in range (len(allAlleles)):		
+			for b in range (len(allAlleles)): 
+				tempGenolist.append(str(a) +str(b)) 
+		"""
+		if len(allAlleles)==2: genotypesIndexToRetain=[0,1,3]
+		elif len(allAlleles)==3: genotypesIndexToRetain=[0,1,2,4,5,8]
 		
-	return [csqAllele, csqCount, likl] 
+		tempGenolistNoEquivalents=[i for i in tempGenolist if tempGenolist.index(i) in genotypesIndexToRetain] 
+		dGL=dict(zip(tempGenolistNoEquivalents, GL.split(',')  ))	
+		genotypeFormat=str(genotype[0])+str(genotype[2])
+		likl=dGL[genotypeFormat]
 
-
+		myout= [csqAllele, csqCount, likl]
+	else: myout =False 	
+	return myout
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def checkFreq (listFreq, threshold): 
