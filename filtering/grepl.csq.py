@@ -86,7 +86,7 @@ def main():
 	
 					featMultiOut=gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
 					if not featMultiOut:
-						listOfErrors.append([mychr, mypos, 'csq allele not matching'])  
+						listOfErrors.append( '\t'.join([mychr, mypos, 'csq allele not matching', '\n']))  
 						break 
 					#print (featMultiOut) 
 					else: myres+=featMultiOut
@@ -128,9 +128,9 @@ def main():
 			if re.search("ID=CSQ" ,line ): 
 				csqHeader=line.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
-	print(listOfErrors) 
 
-
+	fileToWrite=open('LociErrors.txt', 'w')
+	for i in listOfErrors: fileToWrite.write( i )
  
 
 
