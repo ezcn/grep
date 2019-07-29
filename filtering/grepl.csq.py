@@ -128,9 +128,17 @@ def main():
 			if re.search("ID=CSQ" ,line ): 
 				csqHeader=line.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
+<<<<<<< HEAD
 
 	fileToWrite=open('LociErrors.txt', 'w')
 	for i in listOfErrors: fileToWrite.write( i )
+=======
+	 
+
+	open('ScriptErrorOut.txt', 'w') as fileToWrite
+	
+	fileToWrite.append(listOfErrors)
+>>>>>>> 9346bbc77fd5d9188d714ed5f64e4afb8f468486
  
 
 
