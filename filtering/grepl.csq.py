@@ -55,79 +55,94 @@ def main():
 		if not re.match('#', line): 
 			#print("this is a new line ") ## line split by  tab 
 			linesplit=line.rstrip().split()
-		
-			## basic info 
-			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] 
-
-			## split INFO field
-			tempinfo=linesplit[7] 
-			for i in tempinfo.split(";"):  
-				temp=i.split("=") 
-				dInfo[temp[0]]=temp[1]
 			
-			#for i in dInfo["AC"]:
-				#splAC=dInfo["AC"].split(",")
+			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
 				
+			if len(myalt.split(","))> 2: 
+				pass 
+			else:
+	
+				## split INFO field
+				tempinfo=linesplit[7] 
+				for i in tempinfo.split(";"):  
+					temp=i.split("=") 
+					dInfo[temp[0]]=temp[1]
 
-			## split FORMAT field
-			tempformattitle=linesplit[8].split(":")
-			tempformatcontent=linesplit[9].split(":")
-			dFormat=dict(zip(tempformattitle, tempformatcontent))
+					
+				## split FORMAT field
+				tempformattitle=linesplit[8].split(":")
+				tempformatcontent=linesplit[9].split(":")
+				dFormat=dict(zip(tempformattitle, tempformatcontent))
 
-			## work on dInfo[CSQ]
-			## split for multiple consequences separated by ","
-			multipleCsq=dInfo["CSQ"].split(",") 
+				## work on dInfo[CSQ]
+				## split for multiple consequences separated by ","
+				multipleCsq=dInfo["CSQ"].split(",") 
 
-			for mcsq in multipleCsq:  ### single consequence  
-				myres=[]
-				myres+=[mychr, mypos]
-				dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
-			
-				#~~~~~~~~~
-				mycsqAllele=dCsq["Allele"] ## identify the allele with consequences 
-				#print(dInfo["AC"])
-				#~~~~~~~~~~~
-				myres+= gp.csqAlleleFeatures(mycsqAllele, myalt, int(dInfo["AC"]), (dFormat["GL"]) ) ## features of csqAll
-		
-				#~~~~~~~~~~~~~
-				myres.append(dCsq['Feature'])
+				for mcsq in multipleCsq:  ### single consequence  
+					myres=[]
+					myres+=[mychr, mypos]
+					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
 				
-				#~~~~~~~~~~~~~~~~
-				
-				myind=[]
-				for tl in dCsq['Consequence'].split("&"): 
-					myind.append(lSOTerm.index(tl ))	
-				mostSevereCsq=lSOTerm[min(myind)]
-				#print(dCsq['Consequence']) 
-				#print(mostSevereCsq)
-				myres.append( dSOTermRank[mostSevereCsq ]) ## score based on the impact of the consequence       	
-				myres.append( dSOTermFineRank[mostSevereCsq ])
+					#~~~~~~~~~~~  identify the allele with consequences
+					mycsqAllele=dCsq["Allele"] 
+					################
 
-				#~~~~~~~~~~~~~~~~~~~~~
-			
-				thresh=0.01
-				freqlist = [float(x) for x in  [dCsq["AFR_AF"],dCsq["AMR_AF"],dCsq["EAS_AF"],dCsq["EUR_AF"],dCsq["SAS_AF"]] if x ] 
-				rare = gp.checkFreq (freqlist, thresh) # check if it is a rare variant (af<thresh) 
-				myres.append(rare)
+					#if re.search("," , dInfo["AC"]):
+					#	listAC=dInfo["AC"].split(",")
+					#print(listAC)
+					#if re.search("," , myalt):
+					#	listALT=myalt.split(",")
+					#print(listALT)
+					#
+					#dALT=dict(zip(listALT, listAC))
+					#print(dALT)
+					
+					#print(dInfo["AC"])
+					#print(dFormat)
+					#~~~~~~~~~~~
+					#myres+= gp.csqAlleleFeatures(mycsqAllele, myalt, int(dInfo["AC"]), (dFormat["GL"]) ) ## features of csqAll
+					#print(dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"])
+					myres+= gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
+					
+					#~~~~~~~~~~~~~
+					myres.append(dCsq['Feature'])
+					
+					#~~~~~~~~~~~~~~~~
+					
+					myind=[]
+					for tl in dCsq['Consequence'].split("&"): 
+						myind.append(lSOTerm.index(tl ))	
+					mostSevereCsq=lSOTerm[min(myind)]
+					#print(dCsq['Consequence']) 
+					#print(mostSevereCsq)
+					myres.append( dSOTermRank[mostSevereCsq ]) ## score based on the impact of the consequence       	
+					myres.append( dSOTermFineRank[mostSevereCsq ])
+
+					#~~~~~~~~~~~~~~~~~~~~~
+				
+					thresh=0.01
+					freqlist = [float(x) for x in  [dCsq["AFR_AF"],dCsq["AMR_AF"],dCsq["EAS_AF"],dCsq["EUR_AF"],dCsq["SAS_AF"]] if x ] 
+					rare = gp.checkFreq (freqlist, thresh) # check if it is a rare variant (af<thresh) 
+					myres.append(rare)
+									
+					#~~~~~~~~~~~~~~~~~~~~~~~~~~
+				
+					# check if row have Embryo,CellCycle,DDD,GmomAD genes
+					embryo=False ; DDD=False; cellcycle=False; gnomAD=False
+
+					if re.search("annotation", line): embryo=True
+					myres.append(embryo)
+					if re.search("ANN3", line): gnomAD=True
+					myres.append(gnomAD)
+					if re.search("ANN2", line): cellcyle=True
+					myres.append(cellcycle)
+					if re.search("ANN1", line): DDD=True
+					myres.append(DDD)
+
+				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+
 								
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~
-			
-				# check if row have Embryo,CellCycle,DDD,GmomAD genes
-				embryo=False ; DDD=False; cellcycle=False; gnomAD=False
-
-				if re.search("annotation", line): embryo=True
-				myres.append(embryo)
-				if re.search("ANN3", line): gnomAD=True
-				myres.append(gnomAD)
-				if re.search("ANN2", line): cellcyle=True
-				myres.append(cellcycle)
-				if re.search("ANN1", line): DDD=True
-				myres.append(DDD)
-
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
-
-				 			
-				if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True  and embryo==True: 	
+					#if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True  and embryo==True: 	
 					print ( "\t".join( map(str, myres) )  )
 
 		else: 
