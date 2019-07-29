@@ -128,9 +128,11 @@ def main():
 			if re.search("ID=CSQ" ,line ): 
 				csqHeader=line.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
-	print(listOfErrors) 
+	 
 
-
+	open('ScriptErrorOut.txt', 'w') as fileToWrite
+	
+	fileToWrite.append(listOfErrors)
  
 
 
