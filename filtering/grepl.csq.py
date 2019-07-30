@@ -50,7 +50,6 @@ def main():
 	header=["chr", "pos", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
-	#gzip.open(args.f, 'r')	
 	for line in open(args.f, 'r'):
 		if not re.match('#', line): 
 			#print("this is a new line ") ## line split by  tab 
@@ -125,7 +124,7 @@ def main():
 					myres.append(DDD)
 					
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+					#~~~~~~~~~~~~~~~~~ before write check parameters	
 
 				
 					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
