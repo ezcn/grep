@@ -13,7 +13,7 @@ def main():
 	parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
 	parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
 	parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
-                                                                              
+	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	parser.add_argument("-e", help="path to error file",type=str,required=True)
 	args = parser.parse_args()
 	#output = open(args.o,'w')
@@ -44,10 +44,11 @@ def main():
 
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
+	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD"]
-	print("\t".join(map(str, header) )  ) 
+	header=["chr", "pos", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
+	filemyres.write("\t".join(map(str, header)))   
 
 	#gzip.open(args.f, 'r')	
 	for line in open(args.f, 'r'):
@@ -122,12 +123,14 @@ def main():
 					myres.append(cellcycle)
 					if re.search("ANN1", line): DDD=True
 					myres.append(DDD)
+					
 
 				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 
-									
-					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True and embryo==True: 	
-						print ( "\t".join( map(str, myres) )  )
+				
+					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
+						filemyres.write("\t".join( map(str, myres ) ) )
+						filemyres.write('\n')
 
 		else: 
 			if re.search("ID=CSQ" ,line ): 
