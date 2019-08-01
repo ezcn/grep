@@ -15,6 +15,7 @@ def main():
 	parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
 	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	parser.add_argument("-e", help="path to error file",type=str,required=True)
+	parser.add_argument("-c", help="consequence allele count ",type=int,required=False, default=0)
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -47,26 +48,28 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
+	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
-	for line in open(args.f, 'r'):
-		if not re.match('#', line): 
+	for line in gzip.open(args.f, 'r'):
+		decodedLine=line.decode()
+		if not re.match('#', decodedLine): 
 			#print("this is a new line ") ## line split by  tab 
-			linesplit=line.rstrip().split()
+			linesplit=decodedLine.rstrip().split()
 			
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
-				
-			if len(myalt.split(","))> 2:   #~~ excludes cases with more than two alt allele 
+
+			nbOfAltAlleles=len(myalt.split(","))			
+
+			if nbOfAltAlleles> 2:   #~~ excludes cases with more than two alt allele, want to add the excluded in the error output 
+				listOfErrors.append( '\t'.join([mychr, mypos, 'more than two alternate alleles', nbOfAltAlleles ,  '\n']))
 				pass 
 			else:
-	
 				##~~ split INFO field
 				tempinfo=linesplit[7] 
 				for i in tempinfo.split(";"):  
 					temp=i.split("=") 
 					dInfo[temp[0]]=temp[1]
-
 					
 				##~~~ split FORMAT field
 				tempformattitle=linesplit[8].split(":")
@@ -83,7 +86,8 @@ def main():
 					myres=[]
 					myres+=[mychr, mypos]
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
-				
+					myres.append(dCsq['Existing_variation']) 
+	
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
 					#~~~~~~~~~~~  csq allele features 
@@ -92,7 +96,7 @@ def main():
 						listOfErrors.append( '\t'.join([mychr, mypos, 'csq allele not matching', '\n']))  
 						break 
 					#print (featMultiOut) 
-					else: myres+=featMultiOut
+					else: myres+=featMultiOut; csqAllCount=int(featMultiOut[1])
 					
 					#~~~~~~~~~~~ append ENSTID to myres	
 					if  dCsq['Feature'] is not '':	myres.append(dCsq['Feature'])
@@ -114,32 +118,30 @@ def main():
 					#~~~~~~~~~~ check if row have Embryo,CellCycle,DDD,GmomAD genes
 					embryo=False ; DDD=False; cellcycle=False; gnomAD=False
 
-					if re.search("annotation", line): embryo=True
+					if re.search("annotation", decodedLine): embryo=True
 					myres.append(embryo)
-					if re.search("ANN3", line): gnomAD=True
+					if re.search("ANN3", decodedLine): gnomAD=True
 					myres.append(gnomAD)
-					if re.search("ANN2", line): cellcycle=True
+					if re.search("ANN2", decodedLine): cellcycle=True
 					myres.append(cellcycle)
-					if re.search("ANN1", line): DDD=True
+					if re.search("ANN1", decodedLine): DDD=True
 					myres.append(DDD)
 					
-
-					#~~~~~~~~~~~~~~~~~ before write check parameters	
-
+  					#~~~~~~~~~~~~~~~~~ before write check parameters	
 				
-					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
+					#if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True: #or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
+					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and csqAllCount>args.c: 
 						filemyres.write("\t".join( map(str, myres ) ) )
 						filemyres.write('\n')
 
 		else: 
-			if re.search("ID=CSQ" ,line ): 
-				csqHeader=line.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
+			if re.search("ID=CSQ" , decodedLine ): 
+				csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
 
 	fileToWrite=open(args.e, 'w')
 	for i in listOfErrors: fileToWrite.write( i )
  
-
 
 if __name__ == "__main__":
 	main()
