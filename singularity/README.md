@@ -178,9 +178,60 @@ $BWA mem -t 16 /data/ref.fa /data/input1_R1.fq /data/input1_R2.fq | \
 
 ### Intermediate: complex recipes
 
-We may want to create something more than a basic image running a single command.
+We may want to create something more than a basic image running a single command. To do so, we are going to customize the `%post` section, adding all the commands required to install what we want and its dependencies.
 
 **Scenario**: we need a Python environment or a software that is not listed on quay.io
 
-The following is an example recipe for the creation of a full Anaconda environment in Ubuntu 18.04.
+The following is an example recipe for the creation of a full Anaconda environment in a Ubuntu 18.04 container. Some of the commands in the `%post` section are tweaked so that user input is not required (unattended installation).
+
+```sh
+Bootstrap: debootstrap
+OSVersion: bionic
+MirrorURL: http://it.archive.ubuntu.com/ubuntu/
+
+%help
+
+    Ubuntu 18.04 LTS with a full Anaconda installation (Python 3.6)
+
+%labels
+
+    Maintainer Marco Chierici <chierici@fbk.eu>
+    Version v1.0
+
+%runscript
+
+    /bin/bash "$@"
+
+%environment
+
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export PATH="/opt/conda/bin:/usr/local/bin:$PATH"
+
+%post
+
+    . /environment
+
+    CONDA_INSTALL_PATH=/opt/conda
+
+    apt-get clean all && apt-get update && \
+      apt-get upgrade -y && \
+      apt-get install -y --no-install-recommends build-essential vim gcc cmake curl wget automake autoconf zip bzip2 less && \
+      apt-get clean
+
+    # install Anaconda with Python 3.6
+    echo 'export PATH=${CONDA_INSTALL_PATH}/bin:$PATH' > /etc/profile.d/conda.sh && \
+      wget --quiet --no-check-certificate https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh && \
+      /bin/bash ~/anaconda.sh -b -p $CONDA_INSTALL_PATH && \
+      rm ~/anaconda.sh
+
+    conda config --add channels bioconda
+    conda config --add channels conda-forge
+    conda upgrade conda
+    conda install python=3.6
+
+    mkdir -p /data /projects /work /scratch
+    chmod 777 -R /opt/conda
+
+```
 
