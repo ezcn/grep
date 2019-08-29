@@ -182,7 +182,7 @@ We may want to create something more than a basic image running a single command
 
 **Scenario**: we need a Python environment or a software that is not listed on quay.io
 
-The following is an example recipe for the creation of a full Anaconda environment in a Ubuntu 18.04 container. Some of the commands in the `%post` section are tweaked so that user input is not required (unattended installation).
+The following is an example recipe for the creation of a full Anaconda environment in a Ubuntu 18.04 container. Some of the commands in the `%post` section are tweaked so that user input is not required (unattended installation). Note how the Bootstrap is different from the previous examples.
 
 ```sh
 Bootstrap: debootstrap
