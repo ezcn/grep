@@ -24,7 +24,7 @@ Monolithic containers:
   * they contain everything you need to work on your data (_i.e.,_ it's like having a complete Ubuntu system)
   * you just have one image
   * it is more difficult to maintain them (if you need to update or add an app, you need to rebuild the complete image from scratch)
- 
+
 Single-app containers:
   * "one app - one container" phylosophy (_i.e.,_ it's like having the executable binary of the app)
   * you have multiple images, one for each app
@@ -176,4 +176,11 @@ $BWA mem -t 16 /data/ref.fa /data/input1_R1.fq /data/input1_R2.fq | \
     $SAMTOOLS view -bo /data/out.bam -
 ```
 
-_(to be continued...)_
+### Intermediate: complex recipes
+
+We may want to create something more than a basic image running a single command.
+
+**Scenario**: we need a Python environment or a software that is not listed on quay.io
+
+The following is an example recipe for the creation of a full Anaconda environment in Ubuntu 18.04.
+
