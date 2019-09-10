@@ -7,3 +7,9 @@
 #### 4. sort reads bam file and make bam index  [kore-sort] (https://github.com/ezcn/imma/edit/master/sequenceanalysis/variantCalling.md)
 
 #### 5. make dictionary (.dict) of the reference sequence [kore-dict.sh]
+```
+qsub -o /mpba0/vcolonna/silvia/dict.out -e /mpba0/vcolonna/silvia/dict.err -N dictref  kore-dict.sh
+
+```
+
+
