@@ -24,7 +24,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -o /mpba0/vcolonna/silvia
 ```
 #### 8. index vcf files with tabix
 
-#### 9. filter for QUAL>20
+#### 9. filter for QUAL>20 [kore-vcfFilter](kore-vcfFilter)
 ```
 for id in AS054 AS064 AS074 AS090 AS094; do qsub -o /mpba0/vcolonna/silvia/out/$id.filter.out -e /mpba0/vcolonna/silvia/err/$id.filter.err -v id="$id" -N $id.filter kore-vcfFilter.sh ; done
 
