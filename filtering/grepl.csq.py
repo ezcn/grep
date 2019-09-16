@@ -22,6 +22,7 @@ def main():
 
 
 	##  READ VEP consequences rank ########
+	"""read external file with info on VEP consequences  """
 	dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
 	dSOTermRank={}
 	lSOTerm=[]  ### list of SOTerm ordered by severity
@@ -52,7 +53,7 @@ def main():
 	filemyres.write("\t".join(map(str, header)))   
 
 	for line in gzip.open(args.f, 'r'):
-		decodedLine=line.decode()
+		decodedLine=line.decode()  ## why? 
 		if not re.match('#', decodedLine): 
 			#print("this is a new line ") ## line split by  tab 
 			linesplit=decodedLine.rstrip().split()
@@ -70,7 +71,7 @@ def main():
 				for i in tempinfo.split(";"):  
 					temp=i.split("=") 
 					dInfo[temp[0]]=temp[1]
-					
+				#print (dInfo) 	
 				##~~~ split FORMAT field
 				tempformattitle=linesplit[8].split(":")
 				tempformatcontent=linesplit[9].split(":")
@@ -80,17 +81,18 @@ def main():
 				##~~ split for multiple consequences separated by ","
 				multipleCsq=dInfo["CSQ"].split(",") 
 
-				###~~ single consequence
+				##~~ single consequence
 				#print ('~~~  this is a consequence in a line ')
 				for mcsq in multipleCsq:    
 					myres=[]
 					myres+=[mychr, mypos]
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
+					#print (dCsq) 
 					myres.append(dCsq['Existing_variation']) 
 	
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
-					#~~~~~~~~~~~  csq allele features 
+					#~~~~~~~~~~~  csq allele features : number of allele with consequences and genotype likelihood  
 					featMultiOut=gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
 					if not featMultiOut:
 						listOfErrors.append( '\t'.join([mychr, mypos, 'csq allele not matching', '\n']))  
@@ -111,7 +113,14 @@ def main():
 					myres.append( dSOTermFineRank[mostSevereCsq ])
 					
 					#~~~~~~~~~~~~~~ find out if a variant is rare 
-					freqlist = [float(x) for x in  [dCsq["AFR_AF"],dCsq["AMR_AF"],dCsq["EAS_AF"],dCsq["EUR_AF"],dCsq["SAS_AF"]] if x ] 
+					listOfRelevantPopulations=[]	
+					listOfVEPPopulations=["AFR_AF", "AMR_AF", "EAS_AF", "EUR_AF", "SAS_AF", "gnomAD_AFR_AF", "gnomAD_AMR_AF", "gnomAD_ASJ_AF", "gnomAD_EAS_AF", "gnomAD_FIN_AF", "gnomAD_NFE_AF", "gnomAD_OTH_AF", "gnomAD_SAS_AF"] #data from VEP data format is a float or NULL (empty )
+					for vp in listOfVEPPopulations: 
+						listOfRelevantPopulations.append(dCsq[vp])
+					listOfAnnovarPopulations=["ExAC_ALL","ExAC_AFR","ExAC_AMR","ExAC_EAS","ExAC_FIN","ExAC_NFE","ExAC_OTH","ExAC_SAS"]
+					for ap in listOfAnnovarPopulations: 
+						if dInfo[ap] !=  ".": listOfRelevantPopulations.append(dInfo[ap])			
+					freqlist = [float(x) for x in listOfRelevantPopulations if x ] 
 					rare = gp.checkFreq (freqlist, args.r) # check if it is a rare variant (af<thresh)  
 					myres.append(rare)
 									

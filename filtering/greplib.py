@@ -42,7 +42,7 @@ def csqAlleleFeaturesMulti(genotype, csqAllele, refAllele, altAlleles, altAllele
 		likl=dGL[genotypeFormat]
 
 		myout= [csqAllele, csqCount, likl]
-	else: myout =False 	
+	else: myout =False   ## no match between csq allele and alleles of teh vcf 	
 	return myout
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,5 +53,5 @@ def checkFreq (listFreq, threshold):
 			if freq > threshold:
 				rare=False
 				break
-	else: rare="na"
+	else: rare="NOB" #never observed 
 	return(rare) 
