@@ -93,7 +93,7 @@ def main():
 					myres+=[mychr, mypos]
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
 					#print (dCsq) 
-					myres.append(dCsq['Existing_variation']) 
+					myres.append(dCsq['Existing_variation']) # identificativo 'rs'
 	
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
