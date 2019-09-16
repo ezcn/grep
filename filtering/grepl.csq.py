@@ -49,6 +49,7 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
+	header=[]
 	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
@@ -136,10 +137,19 @@ def main():
 					if re.search("ANN1", decodedLine): DDD=True
 					myres.append(DDD)
 					
-  					#~~~~~~~~~~~~~~~~~ before write check parameters	
+
+					##~~~~~~~~~~ ANNOVAR 
+					##~~~ CONSERVATION SCORE 
+					# add to myres phyloP7way_vertebrate 
+					# addd to header 	
+					
+
+
+
+  					#~~~~~~~~ FILTER ~~~~~~~~~ before write check parameters	
 				
 					#if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True: #or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
-					if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and csqAllCount>args.c: 
+					if dSOTermFineRank[mostSevereCsq ] > args.i and csqAllCount>args.c: #and rare==True and csqAllCount>args.c: 
 						filemyres.write("\t".join( map(str, myres ) ) )
 						filemyres.write('\n')
 
