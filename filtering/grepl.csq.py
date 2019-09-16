@@ -49,14 +49,18 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=[]
 	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
 	for line in gzip.open(args.f, 'r'):
-		decodedLine=line.decode()  ## why? 
-		if not re.match('#', decodedLine): 
-			#print("this is a new line ") ## line split by  tab 
+		decodedLine=line.decode()  ## why?
+		if re.match('#', decodedLine):
+			if re.search("ID=CSQ" , decodedLine ):
+				csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
+			#print (csqHeader)	
+
+		else:
+			#print("this is a new line ") ## line split by  tab
 			linesplit=decodedLine.rstrip().split()
 			
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
@@ -153,9 +157,9 @@ def main():
 						filemyres.write("\t".join( map(str, myres ) ) )
 						filemyres.write('\n')
 
-		else: 
-			if re.search("ID=CSQ" , decodedLine ): 
-				csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
+		#else: 
+		#	if re.search("ID=CSQ" , decodedLine ): 
+		#		csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
 				#print (csqHeader)	
 
 	fileToWrite=open(args.e, 'w')
