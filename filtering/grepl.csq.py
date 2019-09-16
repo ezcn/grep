@@ -157,10 +157,7 @@ def main():
 						filemyres.write("\t".join( map(str, myres ) ) )
 						filemyres.write('\n')
 
-		#else: 
-		#	if re.search("ID=CSQ" , decodedLine ): 
-		#		csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
-				#print (csqHeader)	
+			
 
 	fileToWrite=open(args.e, 'w')
 	for i in listOfErrors: fileToWrite.write( i )
