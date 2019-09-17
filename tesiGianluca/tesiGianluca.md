@@ -3,8 +3,12 @@
 
 
 ### 2. Merge VCF (Chr 22) of multiple samples into one VCF 
-'''for id in AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz chr22 | vcffilter -f "QUAL > 20" > $id.chr22.vep.vcf ; done'''
 
+# 2.1 tabix of chr22 in our samples and filter with QUAL > 20 
+```
+for id in AS006 AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz chr22 | vcffilter -f "QUAL > 20" > $id.chr22.vep.vcf ; done
+```
+# 2.2 merge VCF
 
 ### 3. Annotation of our samples with BED.file 
 
