@@ -24,7 +24,7 @@ def main():
 	dInfo={}
 
 	for line in gzip.open(args.f, 'r'):
-		decodedLine=line.decode()  ## why?
+		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 		if re.match('#', decodedLine):
 			if re.search("ID=CSQ" , decodedLine ):
 				csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
