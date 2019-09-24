@@ -8,7 +8,10 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz ch
 ```
 qsub -e /mpba0/vcolonna/gianluca/TESI/merg.err -o /mpba0/vcolonna/gianluca/TESI/merg.out -N MergeVCF /mpba0/vcolonna/gianluca/job/kore-bcftoolsMerge.sh
 ```
-
+### 1.3 CSQ Allele freq using [CSQfreq]
+```
+python3 CSQfreqAnnotation.py -f /mpba0/vcolonna/gianluca/TESI/MergedFreqScript/merged.chr22.vep.vcf.gz -o mergedWithFreq.vcf -e freq.err
+```
 
 # 2. Evaluate the freq of allele with CSQ in VCF_merged in our population
 
