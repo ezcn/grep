@@ -54,4 +54,36 @@ def checkFreq (listFreq, threshold):
 				rare=False
 				break
 	else: rare="NOB" #never observed 
-	return(rare) 
+	return(rare)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def freqCSQinMergedVCF (csqAllele, refAllele, altAlleles, nbAploidSamples, GTfields):
+        #csqAllele = consequence allele  from vep  
+        #refAllele = reference allele from variant calling
+	#altAlleles = alt allele from variant calling
+	#nbAploidSamples= number of total Alleles
+	#GTfields= linesplit[9:] (take only from 9° column to the end)
+       		
+	allAlleles=[refAllele]+ altAlleles.split(',')
+	mygstring=""
+	GTsplit=[i.split(":")[0] for i in GTfields]
+	for i in GTsplit:  mygstring+=i
+	CountAlleles=[]
+	for i in range(len(allAlleles)):
+		if str(i) in mygstring:
+			CountAlleles.append(mygstring.count(str(i)))
+	dAllele=dict(zip(allAlleles,CountAlleles))
+	if csqAllele in dAllele: 
+		csqAllCount=dAllele[csqAllele]	
+		freqCsqAll="{0:4.2f}%".format(csqAllCount/nbAploidSamples * 100) 
+		# for obtain a '%' instead of integer
+		# "{0:4.2f}%" : 
+		# 4 = four number include the float ,
+		# 2 = two float numbers,
+		# f = for floating numbers; 
+		# "{0:.0f}%" = if i want only '%' without float.
+		return freqCsqAll
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
