@@ -10,7 +10,7 @@ qsub -e /mpba0/vcolonna/gianluca/TESI/merg.err -o /mpba0/vcolonna/gianluca/TESI/
 ```
 # 2. CSQ Allele freq using [CSQfreqAnnotation](../filtering/CSQfreqAnnotation.py)
 ```
-python3 CSQfreqAnnotation.py -f /mpba0/vcolonna/gianluca/TESI/MergedFreqScript/merged.chr22.CSQfreq.vep.vcf.gz -o mergedWithFreq.vcf -e freq.err
+python3 CSQfreqAnnotation.py -f /mpba0/vcolonna/gianluca/TESI/MergedFreqScript/merged.chr22.vep.vcf.gz -o merged.chr22.CSQfreq.vep.vcf -e freq.err
 ```
 ### 2.1 bgzip output
 ```
@@ -21,23 +21,29 @@ bgzip merged.chr22.CSQfreq.vep.vcf
 tabix -h merged.chr22.CSQfreq.vep.vcf.gz
 ```
 # 3. Use VCF2TSV to convert a VCF into a TSV file
-
+```
+vcf2tsv -g merged.chr22.CSQfreq.vep.vcf.gz > merged.chr22.CSQfreq.vep.tsv
+```
 ### 3.1 Import TSV file in R
-
-
+```
+merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr22.CSQfreq.vep.tsv", sep= "\t", header = T)
+```
 # 4. Use splitVEP (BCFTOOLS plugin) for obtain VEP annotation as TSV file 
 
 ### 4.1 header-splitvep is obtained from :
 ```
 bcftools +split-vep -f '%CHROM %POS %CSQ\n' -l -d -A tab merged.chr22.CSQfreq.vep.vcf.gz > header-splitvep
 ```
-### 4.2 append to header-splitvep information from VEP annotation
+### 4.2 append to header-splitvep information from VEP annotation and rename
 ```
 bcftools +split-vep -f '%CHROM %POS %CSQ\n'  -d -A tab merged.chr22.CSQfreq.vep.vcf.gz >> header-splitvep
 ```
+```
+mv header-splitvep merged.chr22.CSQfreq.splitvep.tsv
+```
 ### 4.1 Import splitVEP.vcf in R
 ```
-splitvep<-read.table("/home/gianluca/project/TESI/CSQsplitted.tsv", sep = "\t", header = T)
+splitvep<-read.table("/home/gianluca/project/TESI/merged.chr22.CSQfreq.splitvep.tsv", sep = "\t", header = T)
 ```
 # 5. Bind Merged.vcf and splitVEP.vcf
 ```
