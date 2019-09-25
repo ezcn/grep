@@ -72,7 +72,7 @@ def main():
 				mycsqAllele=dCsq["Allele"]
 				GTfields=linesplit[9:] 
 				nbAploidSamples=len(GTfields)*2
-				freqCsqInMerged=gp.freqCSQinMergedVCF(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
+				freqCsqInMerged=gp.AnnotateFreqCSQ(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
 				linesplit[7]+=";CSQfreq=%s" %(freqCsqInMerged)
 				filemyres.write("\t".join(map(str,linesplit)))
 				filemyres.write("\n")
