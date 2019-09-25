@@ -33,8 +33,12 @@ def main():
 			
 		elif re.match('#', decodedLine): 
 			filemyres.write('##INFO=<ID=CSQfreq,Number=A,Type=Float,Description="Frequency of CSQ allele in set of samples">')
+			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=REFfreq,Number=A,Type=Float,Description="Frequency of REF allele in set of samples">')
+			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=ALTfreq,Number=A,Type=Float,Description="Frequency of ALT allele in set of samples">')
+			filemyres.write("\n")
+			filemyres.write('##INFO=<ID=nbCSQ,Number=A,Type=Integer,Description="1st, 2nd .... CSQ allele">')
 			filemyres.write("\n")
 			filemyres.write(decodedLine)
 		else:
@@ -63,7 +67,9 @@ def main():
 
 			##~~ single consequence
 			#print ('~~~  this is a consequence in a line ')
+			CSQcount=0
 			for mcsq in multipleCsq:    
+				CSQcount+=1
 				myres=[]
 				#myres+=[mychr, mypos]
 				dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
@@ -71,15 +77,27 @@ def main():
 				#myres.append(dCsq['Existing_variation']) 
 
 				#~~~~~~~~~~~  identify the allele with consequences
+				linesplit[7]=tempinfo # reset info field
 				mycsqAllele=dCsq["Allele"]
 				GTfields=linesplit[9:] 
 				nbAploidSamples=len(GTfields)*2
 				freqCSQ_REF_ALT=gp.AnnotateFreqCSQ_REF_ALT(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
 				#print(freqCSQ_REF_ALT)
+				linesplit[7]+=";"
+				linesplit[7]+="nbCSQ=" # for specify the number of CSQ allele
+				linesplit[7]+=str(CSQcount) # for specify the number of CSQ allele 
 				linesplit[7]+=";CSQfreq=%s" %(freqCSQ_REF_ALT[0])
 				linesplit[7]+=";REFfreq=%s" %(freqCSQ_REF_ALT[1])
 				linesplit[7]+=";ALTfreq=%s" %(freqCSQ_REF_ALT[2])
-				filemyres.write("\t".join(map(str,linesplit)))
+				#CSQfreq="CSQfreq=%s" %(freqCSQ_REF_ALT[0])
+				#REFfreq="REFfreq=%s" %(freqCSQ_REF_ALT[1])
+				#ALTfreq="ALTfreq=%s" %(freqCSQ_REF_ALT[2])
+				#allfreq=CSQfreq,REFfreq,ALTfreq
+				#freqField=";".join(map(str,allfreq))
+				#rowWithFreq=linesplit[7],freqField
+				#row2print=";".join(map(str,rowWithFreq))
+				#linesplit[7]=row2print
+				filemyres.write("\t".join(linesplit))
 				filemyres.write("\n")
 	#fileToWrite=open(args.e, 'w')
 	#for i in listOfErrors: fileToWrite.write( i )
