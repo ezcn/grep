@@ -59,9 +59,18 @@
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.out -e /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.err -v id="$id",chr="chr$c" -N $id.chr$c.index  /mpba0/vcolonna/gianluca/kore-vcfindex.sh; done; done
  
   ```
+ #### 9. VCF filter for quality >20 [kore-vcfFilterfb](kore-vcfFilterfb.sh)
+ ```
+ for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.filt.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.filt.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.filt  /mpba0/vcolonna/silvia/job/kore-vcfFilterfb ; done; done
+
+```
+ #### 10. VCF normalize [kore-vtnormalizeFb](kore-vtnormalizeFb.sh)
+ ```
+for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.norm  /mpba0/vcolonna/silvia/job/kore-vtnormalize.sh ; done; done
+
+```
  
- 
- #### 9. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh) - [kore-bcfQUAL](kore-bcfQUALstats.sh)
+ #### 11. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh) - [kore-bcfQUAL](kore-bcfQUALstats.sh)
  ```
 qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
 
