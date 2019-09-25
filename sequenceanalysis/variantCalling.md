@@ -83,7 +83,7 @@ for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.filt.
 ```
 
  #### 11. VCF normalize [kore-vtnormalizeFb](kore-vtnormalizeFb.sh)
- cucle for ID for chr 1-22
+ cycle for ID for chr 1-22
  ```
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.norm  /mpba0/vcolonna/silvia/job/kore-vtnormalize.sh ; done; done
 
