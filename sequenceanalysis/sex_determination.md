@@ -14,7 +14,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094 ; do qsub -o /mpba0/vcolonna/silvi
 
 ```
 ### 4. Sex determination from txt file
-if xCoverage=autCoverage sample is female
+if xCoverage=autCoverage sample is female  
 if xCoverage is half of autCoverage sample is male
 
 our samples sex :  
