@@ -18,12 +18,12 @@ if xCoverage=autCoverage sample is female
 if xCoverage is half of autCoverage sample is male
 
 our samples sex :
-AS006 FEMALE
-AS054 MALE
-AS064 FEMALE
-AS074 FEMALE
-AS090 MALE
-AS094 FEMALE
+AS006 FEMALE  
+AS054 MALE  
+AS064 FEMALE  
+AS074 FEMALE  
+AS090 MALE  
+AS094 FEMALE  
 
 
 
