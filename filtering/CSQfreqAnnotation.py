@@ -4,6 +4,7 @@ sys.path.append('/mpba0/vcolonna/gianluca/TESI/MergedFreqScrip/greplib.py')
 import greplib as gp
 import argparse
 import gzip
+#from __future__ import division
 
 
 ########################################################
@@ -25,9 +26,14 @@ def main():
 
 	for line in gzip.open(args.f, 'r'):
 		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
-		if re.match('#', decodedLine):
+		if re.match('##', decodedLine):
 			if re.search("ID=CSQ" , decodedLine ):
 				csqHeader=decodedLine.rstrip().split(":")[1].lstrip().rstrip("\">").split("|")		
+			filemyres.write(decodedLine)
+			
+		elif re.match('#', decodedLine): 
+			filemyres.write('##INFO=<ID=CSQfreq,Number=A,Type=Float,Description="Frequency of CSQ allele in set of samples">')
+			filemyres.write("\n")
 			filemyres.write(decodedLine)
 		else:
 			#print("this is a new line ") ## line split by  tab
@@ -46,13 +52,10 @@ def main():
 			for i in tempinfo.split(";"):  
 				temp=i.split("=") 
 				dInfo[temp[0]]=temp[1]
-			#print (dInfo) 	
-			##~~~ split FORMAT field
-			#tempformattitle=linesplit[8].split(":")
-			#tempformatcontent=linesplit[9].split(":")
-			#dFormat=dict(zip(tempformattitle, tempformatcontent))
+
 
 			##~~ work on dInfo[CSQ]
+
 			##~~ split for multiple consequences separated by ","
 			multipleCsq=dInfo["CSQ"].split(",") 
 

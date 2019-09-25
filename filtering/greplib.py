@@ -76,7 +76,7 @@ def freqCSQinMergedVCF (csqAllele, refAllele, altAlleles, nbAploidSamples, GTfie
 	dAllele=dict(zip(allAlleles,CountAlleles))
 	if csqAllele in dAllele: 
 		csqAllCount=dAllele[csqAllele]	
-		freqCsqAll="{0:4.2f}%".format(csqAllCount/nbAploidSamples * 100) 
+		freqCsqAll="{0:4.2f}".format(csqAllCount/nbAploidSamples * 100) 
 		# for obtain a '%' instead of integer
 		# "{0:4.2f}%" : 
 		# 4 = four number include the float ,
