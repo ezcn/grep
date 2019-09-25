@@ -58,32 +58,43 @@ def checkFreq (listFreq, threshold):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def AnnotateFreqCSQ (csqAllele, refAllele, altAlleles, nbAploidSamples, GTfields):
+def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, nbAploidSamples, GTfields):
 	"""csqAllele = type: string, consequence allele  from vep  
 	refAllele = type: string, reference allele from variant calling
 	altAlleles = type: string, comma-separated list of alternate allele from variant calling
 	nbAploidSamples = type: int, number of total Alleles
 	GTfields = type: list, linesplit[9:] (take only from 9° column to the end) ["0/0:.:.:.:.:.:.:.","1/1:16:0,16:0:0:16:628:-34.365,-4.81648,0"]"""
-	
-	allAlleles=[refAllele]+ altAlleles.split(',')
+	splitAltAlleles=altAlleles.split(",")
+	allAlleles=[refAllele]+ splitAltAlleles
 	mygstring=""
 	GTsplit=[i.split(":")[0] for i in GTfields]
 	for i in GTsplit:  mygstring+=i
 	CountAlleles=[]
 	for i in range(len(allAlleles)):
-		if str(i) in mygstring:
-			CountAlleles.append(mygstring.count(str(i)))
+		#if str(i) in mygstring:
+		CountAlleles.append(mygstring.count(str(i)))
 	dAllele=dict(zip(allAlleles,CountAlleles))
+
+	freqREF="{0:4.2f}".format(dAllele[refAllele]/nbAploidSamples)
+	sumALT=0
+	for i in splitAltAlleles:
+		sumALT+=dAllele[i]
+
+	freqALT="{0:4.2f}".format(sumALT/nbAploidSamples)
 	if csqAllele in dAllele: 
 		csqAllCount=dAllele[csqAllele]	
-		freqCsqAll="{0:4.2f}".format(csqAllCount/nbAploidSamples) 
+		freqCsq="{0:4.2f}".format(csqAllCount/nbAploidSamples) 
 		# for obtain a '%' instead of integer
 		# "{0:4.2f}%" : 
 		# 4 = four number include the float ,
 		# 2 = two float numbers,
 		# f = for floating numbers; 
 		# "{0:.0f}%" = if i want only '%' without float.
-		return freqCsqAll
-
+		
+		myres= [freqCsq, freqREF, freqALT]
+		return myres
+	else:
+		myres= ['NA' ,freqREF,freqALT]
+		return myres
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

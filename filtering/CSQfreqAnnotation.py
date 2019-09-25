@@ -33,12 +33,14 @@ def main():
 			
 		elif re.match('#', decodedLine): 
 			filemyres.write('##INFO=<ID=CSQfreq,Number=A,Type=Float,Description="Frequency of CSQ allele in set of samples">')
+			filemyres.write('##INFO=<ID=REFfreq,Number=A,Type=Float,Description="Frequency of REF allele in set of samples">')
+			filemyres.write('##INFO=<ID=ALTfreq,Number=A,Type=Float,Description="Frequency of ALT allele in set of samples">')
 			filemyres.write("\n")
 			filemyres.write(decodedLine)
 		else:
 			#print("this is a new line ") ## line split by  tab
 			linesplit=decodedLine.rstrip().split()
-			
+			#print(linesplit)
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
 
 			#nbOfAltAlleles=len(myalt.split(","))			
@@ -72,8 +74,11 @@ def main():
 				mycsqAllele=dCsq["Allele"]
 				GTfields=linesplit[9:] 
 				nbAploidSamples=len(GTfields)*2
-				freqCsqInMerged=gp.AnnotateFreqCSQ(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
-				linesplit[7]+=";CSQfreq=%s" %(freqCsqInMerged)
+				freqCSQ_REF_ALT=gp.AnnotateFreqCSQ_REF_ALT(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
+				#print(freqCSQ_REF_ALT)
+				linesplit[7]+=";CSQfreq=%s" %(freqCSQ_REF_ALT[0])
+				linesplit[7]+=";REFfreq=%s" %(freqCSQ_REF_ALT[1])
+				linesplit[7]+=";ALTfreq=%s" %(freqCSQ_REF_ALT[2])
 				filemyres.write("\t".join(map(str,linesplit)))
 				filemyres.write("\n")
 	#fileToWrite=open(args.e, 'w')
