@@ -6,7 +6,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz ch
 ```
 ### 1.2 merge VCF
 ```
-qsub -e /mpba0/vcolonna/gianluca/TESI/merg.err -o /mpba0/vcolonna/gianluca/TESI/merg.out -N MergeVCF /mpba0/vcolonna/gianluca/job/kore-bcftoolsMerge.sh
+for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/mergChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/mergChr$c.out -v chr="chr$c" -N MergeChr$c /mpba0/vcolonna/gianluca/job/kore-bcftoolsMerge.sh ; done
 ```
 # 2. CSQ Allele freq using [CSQfreqAnnotation](../filtering/CSQfreqAnnotation.py)
 ```
