@@ -12,6 +12,10 @@ for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/mergChr$c.e
 ```
 python3 CSQfreqAnnotation.py -f /mpba0/vcolonna/gianluca/TESI/MergedFreqScript/merged.chr22.vep.vcf.gz -o merged.chr22.CSQfreq.vep.vcf -e freq.err
 ```
+or for AFS :
+```
+for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.err -o /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.out -v chr="chr$c",output="-o /mpba0/vcolonna/gianluca/TESI/AFS/ScriptProcessed/merged.chr$c.AFS.fb.vep.vcf",error="-e /mpba0/vcolonna/gianluca/junkfile/AFSchr$c.err" -N AFS_Chr$c /mpba0/vcolonna/gianluca/job/kore-scriptAFSpython.sh ; done 
+```
 ### 2.1 bgzip output
 ```
 bgzip merged.chr22.CSQfreq.vep.vcf
