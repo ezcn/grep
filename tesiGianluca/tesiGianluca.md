@@ -17,9 +17,15 @@ tabix -h merged.chr$c.AFS.fb.vep.vcf.gz
 ```
 # 3. Use VCF2TSV to convert a VCF into a TSV file
 ```
-vcf2tsv -g merged.chr$c.AFS.fb.vep.vcf.gz > merged.chr$c.AFS.fb.vep.vcf.tsv
+for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/vcfChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/vcfChr$c.out -v chr="chr$c" -N vcfChr$c /mpba0/vcolonna/gianluca/job/kore-vcf2tsv.sh ; done
+
 ```
+### 3.1 Delete '#' at beginning 
+```
+for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/sedChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/sedChr$c.out -v chr="chr$c" -N sedChr$c /mpba0/vcolonna/gianluca/job/kore-sedRemove.sh ; done
 ### 3.1 Import TSV file in R
+```
+### 3.2 open in R
 ```
 merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr$c.AFS.fb.vep.vcf.tsv", sep= "\t", header = T)
 ```
