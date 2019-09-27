@@ -8,30 +8,31 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz ch
 ```
 for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/mergChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/mergChr$c.out -v chr="chr$c" -N MergeChr$c /mpba0/vcolonna/gianluca/job/kore-bcftoolsMerge.sh ; done
 ```
-# 2. CSQ Allele freq using [CSQfreqAnnotation](../filtering/CSQfreqAnnotation.py)
-```
-python3 CSQfreqAnnotation.py -f /mpba0/vcolonna/gianluca/TESI/MergedFreqScript/merged.chr22.vep.vcf.gz -o merged.chr22.CSQfreq.vep.vcf -e freq.err
-```
-or for AFS :
+# 2. Prepare files for AFS analisys [AFS-script](../filtering/AFS_grepl.py)
 ```
 for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.err -o /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.out -v chr="chr$c",output="-o /mpba0/vcolonna/gianluca/TESI/AFS/ScriptProcessed/merged.chr$c.AFS.fb.vep.vcf",error="-e /mpba0/vcolonna/gianluca/junkfile/AFSchr$c.err" -N AFS_Chr$c /mpba0/vcolonna/gianluca/job/kore-scriptAFSpython.sh ; done 
 ```
 ### 2.1 bgzip output
 ```
-bgzip merged.chr22.CSQfreq.vep.vcf
+bgzip merged.chr$c.AFS.fb.vep.vcf
 ```
 ### 2.2 index of gz
 ```
-tabix -h merged.chr22.CSQfreq.vep.vcf.gz
+tabix -h merged.chr$c.AFS.fb.vep.vcf.gz
 ```
 # 3. Use VCF2TSV to convert a VCF into a TSV file
 ```
-vcf2tsv -g merged.chr22.CSQfreq.vep.vcf.gz > merged.chr22.CSQfreq.vep.tsv
+vcf2tsv -g merged.chr$c.AFS.fb.vep.vcf.gz > merged.chr$c.AFS.fb.vep.vcf.tsv
 ```
 ### 3.1 Import TSV file in R
 ```
-merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr22.CSQfreq.vep.tsv", sep= "\t", header = T)
+merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr$c.AFS.fb.vep.vcf.tsv", sep= "\t", header = T)
 ```
+
+DA RIVEDERE 
+
+
+
 # 4. Use splitVEP (BCFTOOLS plugin) for obtain VEP annotation as TSV file 
 
 ### 4.1 header-splitvep is obtained from :
