@@ -1,10 +1,5 @@
-# 1. Merge VCF (Chr 22) of multiple samples into one VCF 
+# 1. Merge VCF of multiple samples, by "chr", into one VCF 
 
-### 1.1 tabix of chr22 in our samples and filter with QUAL > 20 
-```
-for id in AS006 AS054 AS064 AS074 AS090 AS094; do tabix -h $id.fullvep.vcf.gz chr22 | vcffilter -f "QUAL > 20" > $id.chr22.vep.vcf ; done
-```
-### 1.2 merge VCF
 ```
 for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/mergChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/mergChr$c.out -v chr="chr$c" -N MergeChr$c /mpba0/vcolonna/gianluca/job/kore-bcftoolsMerge.sh ; done
 ```
@@ -28,6 +23,8 @@ vcf2tsv -g merged.chr$c.AFS.fb.vep.vcf.gz > merged.chr$c.AFS.fb.vep.vcf.tsv
 ```
 merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr$c.AFS.fb.vep.vcf.tsv", sep= "\t", header = T)
 ```
+# 4. plot the results
+
 
 DA RIVEDERE 
 
