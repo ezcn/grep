@@ -5,7 +5,7 @@ for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/mergChr$c.e
 ```
 # 2. Prepare files for AFS analisys [AFS-script](../filtering/AFS_grepl.py)
 ```
-for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.err -o /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.out -v chr="chr$c",output="-o /mpba0/vcolonna/gianluca/TESI/AFS/ScriptProcessed/merged.chr$c.AFS.fb.vep.vcf",error="-e /mpba0/vcolonna/gianluca/junkfile/AFSchr$c.err" -N AFS_Chr$c /mpba0/vcolonna/gianluca/job/kore-scriptAFSpython.sh ; done 
+for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.err -o /mpba0/vcolonna/gianluca/junkfile/AFS_Chr$c.out -v chr="chr$c",output="-o /mpba0/vcolonna/gianluca/TESI/AFS/ScriptProcessed/merged.chr$c.AFS.fb.vep.vcf",error="-e /mpba0/vcolonna/gianluca/junkfile/AFSchr$c.err",csqimpact="-v /mpba0/vcolonna/gianluca/TESI/AFS/csqimpact.tsv" -N AFS_Chr$c /mpba0/vcolonna/gianluca/job/kore-scriptAFSpython.sh ; done
 ```
 ### 2.1 bgzip output
 ```
