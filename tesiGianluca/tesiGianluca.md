@@ -24,13 +24,10 @@ for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/vcfChr$c.er
 ```
 for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/sedChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/sedChr$c.out -v chr="chr$c" -N sedChr$c /mpba0/vcolonna/gianluca/job/kore-sedRemove.sh ; done
 ```
-### 3.1 Import TSV file in R
-### 3.2 open in R
+### 3.1 Processing TSV file in R [plotAFS](plotAFS.R)
 ```
-merged_chr22<-read.table("/home/gianluca/project/TESI/merged.chr$c.AFS.fb.vep.vcf.tsv", sep= "\t", header = T)
+qsub -e /mpba0/vcolonna/gianluca/junkfile/rplot.err -o /mpba0/vcolonna/gianluca/junkfile/rplot.out -N Rplots /mpba0/vcolonna/gianluca/TESI/AFS/kore-RscriptPlotAFS.sh
 ```
-# 4. plot the results
-
 
 DA RIVEDERE 
 
