@@ -24,7 +24,7 @@ for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/vcfChr$c.er
 ```
 for c in $(seq 1 22 ) ; do qsub -e /mpba0/vcolonna/gianluca/junkfile/sedChr$c.err -o /mpba0/vcolonna/gianluca/junkfile/sedChr$c.out -v chr="chr$c" -N sedChr$c /mpba0/vcolonna/gianluca/job/kore-sedRemove.sh ; done
 ```
-### 4. Processing TSV file in R [plotAFS](plotAFS.R) 
+# 4. Processing TSV file in R [plotAFS](plotAFS.R) 
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfile/rplot.err -o /mpba0/vcolonna/gianluca/junkfile/rplot.out -N Rplots /mpba0/vcolonna/gianluca/TESI/AFS/kore-RscriptPlotAFS.sh
 ```
