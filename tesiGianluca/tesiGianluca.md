@@ -34,7 +34,7 @@ qsub -e /mpba0/vcolonna/gianluca/junkfile/rplot.err -o /mpba0/vcolonna/gianluca/
 
 
 
-DA RIVEDERE 
+DA QUI IN POI : WORK IN PROGRESS  
 
 
 
