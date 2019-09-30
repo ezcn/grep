@@ -12,11 +12,33 @@ import gzip
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-f", help="path to  input  file ",type=str,required=True)
+	parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)	
 	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	parser.add_argument("-e", help="path to error file",type=str,required=True)
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
+
+
+#############################################################
+
+
+	##  READ VEP consequences rank ########
+	"""read external file with info on VEP consequences  """
+	dRank={"HIGH":"HIGH", "LOW": "LOW", "MODERATE":"MODERATE", "MODIFIER":"MODIFIER"}
+	dSOTermRank={}
+	lSOTerm=[]  ### list of SOTerm ordered by severity
+
+	countlinesCsq= True
+	for csqLine in open(args.v, 'r'):
+		if countlinesCsq:
+			csqTitle=csqLine.rstrip().split('\t')
+			countlinesCsq=False
+		else:
+			myRowList=csqLine.rstrip().split('\t')
+			dCsq= dict(zip(csqTitle, myRowList ))
+			dSOTermRank[dCsq['SO term']]=dRank[dCsq['IMPACT']]
+			lSOTerm.append(myRowList[0])
 
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
@@ -38,6 +60,8 @@ def main():
 			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=ALTfreq,Number=A,Type=Float,Description="Frequency of ALT allele in set of samples">')
 			filemyres.write("\n")
+			filemyres.write('##INFO=<ID=MAF,Number=A,Type=Float,Description="Frequency of Minor allele in set of samples">')
+			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=nbCSQ,Number=A,Type=Integer,Description="1st, 2nd .... CSQ allele">')
 			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=CSQallele,Number=A,Type=String,Description="Describe CSQ allele">')
@@ -50,6 +74,8 @@ def main():
 			filemyres.write("\n")
 			filemyres.write('##INFO=<ID=Consequence,Number=A,Type=String,Description="type of variant : SNP, indels, ecc...">')
 			filemyres.write("\n")
+			filemyres.write('##INFO=<ID=CSQrank,Number=A,Type=String,Description="Rank of Consequence: HIGH, MODERATE, LOW, MODIFIER">')
+			filemyres.write("\n")
 
 			filemyres.write(decodedLine)
 		else:
@@ -57,13 +83,8 @@ def main():
 			linesplit=decodedLine.rstrip().split()
 			#print(linesplit)
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
+			
 
-			#nbOfAltAlleles=len(myalt.split(","))			
-
-			#if nbOfAltAlleles> 2:   #~~ excludes cases with more than two alt allele, want to add the excluded in the error output 
-				#listOfErrors+=( '\t'.join([mychr, mypos, 'more than two alternate alleles', nbOfAltAlleles ,  '\n']))
-				#pass 
-			#else:
 			##~~ split INFO field
 			tempinfo=linesplit[7] 
 			for i in tempinfo.split(";"):  
@@ -96,13 +117,19 @@ def main():
 				#print(freqCSQ_REF_ALT)
 				#print (dCsq['Consequence'].split("&"))
 				for c in dCsq['Consequence'].split("&"):
+					#~~~~~~~~~~~~ assign severity score at the  most severe csq
+					myindexes=[]
+					myindexes.append(lSOTerm.index(c ))	
+					mostSevereCsq=lSOTerm[min(myindexes)]					
 					linesplit[7]=tempinfo	# reset info field 
 					linesplit[7]+=";CSQallele="
 					linesplit[7]+=dCsq["Allele"]
 					linesplit[7]+=";Consequence="
 					linesplit[7]+=c
-					linesplit[7]+=";IMPACT="
-					linesplit[7]+=dCsq["IMPACT"]
+					linesplit[7]+=";CSQrank="
+					linesplit[7]+=dSOTermRank[mostSevereCsq]
+					#linesplit[7]+=";IMPACT="
+					#linesplit[7]+=dCsq["IMPACT"]
 					linesplit[7]+=";ExistingVariation="
 					linesplit[7]+=dCsq["Existing_variation"]
 					linesplit[7]+=";VariantClass="
@@ -112,6 +139,7 @@ def main():
 					linesplit[7]+=";CSQfreq=%s" %(freqCSQ_REF_ALT[0])
 					linesplit[7]+=";REFfreq=%s" %(freqCSQ_REF_ALT[1])
 					linesplit[7]+=";ALTfreq=%s" %(freqCSQ_REF_ALT[2])
+					linesplit[7]+=";MAF=%s" %(freqCSQ_REF_ALT[3])
 					filemyres.write("\t".join(linesplit))
 					filemyres.write("\n")
 	#fileToWrite=open(args.e, 'w')

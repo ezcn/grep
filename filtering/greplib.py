@@ -74,13 +74,22 @@ def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, nbAploidSamples, 
 		#if str(i) in mygstring:
 		CountAlleles.append(mygstring.count(str(i)))
 	dAllele=dict(zip(allAlleles,CountAlleles))
+	
+	##### REF freq
 
 	freqREF="{0:4.2f}".format(dAllele[refAllele]/nbAploidSamples)
 	sumALT=0
 	for i in splitAltAlleles:
 		sumALT+=dAllele[i]
-
+        #### ALT freq
+	
 	freqALT="{0:4.2f}".format(sumALT/nbAploidSamples)
+	
+	#### MAF freq
+	
+	MAF=min(freqALT,freqREF)
+	
+	#### CSQ freq
 	if csqAllele in dAllele: 
 		csqAllCount=dAllele[csqAllele]	
 		freqCsq="{0:4.2f}".format(csqAllCount/nbAploidSamples) 
@@ -91,10 +100,10 @@ def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, nbAploidSamples, 
 		# f = for floating numbers; 
 		# "{0:.0f}%" = if i want only '%' without float.
 		
-		myres= [freqCsq, freqREF, freqALT]
+		myres= [freqCsq, freqREF, freqALT, MAF]
 		return myres
 	else:
-		myres= ['NA' ,freqREF,freqALT]
+		myres= ['NA', freqREF, freqALT, MAF]
 		return myres
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
