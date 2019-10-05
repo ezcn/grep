@@ -30,8 +30,9 @@ summary(imma.segments$mean)
 sd(imma.segments$mean) 
 
 ## 3. CALLING 
-imma.thr.gain= mean(imma.segments$mean)+3*sd(imma.segments$mean)
-imma.thr.loss= mean(imma.segments$mean)-3*sd(imma.segments$mean)
+nbsd=3
+imma.thr.gain= mean(imma.segments$mean)+nbsd*sd(imma.segments$mean)
+imma.thr.loss= mean(imma.segments$mean)-nbsd*sd(imma.segments$mean)
 
 png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
 plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
