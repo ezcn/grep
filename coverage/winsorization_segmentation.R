@@ -1,6 +1,13 @@
+library(GenomicRanges)
+library(copynumber)
+library(DNAcopy)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(RColorBrewer)
+
 #1) open file with coverage for all sample 
 imma<-read.table("allsamples.depth.mean.tsv", header=T , sep="\t")
-
 
 #2) WINDSORIZATION
 imma.win <- winsorize(imma, pos.unit = "bp", arms = NULL, method = "mad", tau = 2.5,k = 25, gamma = 40, iter = 1, assembly = "hg19", digits = 4,return.outliers = FALSE, save.res = FALSE  ,verbose = TRUE)
@@ -18,8 +25,6 @@ summary(imma.segments$mean)
 nbsd=3
 imma.thr.gain= mean(imma.segments$mean)+nbsd*sd(imma.segments$mean)
 imma.thr.loss= mean(imma.segments$mean)-nbsd*sd(imma.segments$mean)
-
-
 
 #7)Plot data
 png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
