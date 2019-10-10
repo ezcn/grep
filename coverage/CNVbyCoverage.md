@@ -31,7 +31,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
 
 ```
 
-#### 3. postprocess agilent probes file to make a be dwith bin identifier (midpoint)
+#### 3. postprocess agilent probes file to make a bed with bin identifier (midpoint)
 ```
 cat agilentProbes.bed  | awk '{print $0, ($3-$2)/2+$2} ' | tr " " "\t"  > agilentProbesBin.bed
  
@@ -54,4 +54,12 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
 
 ```
 
-#### 5. make stats from bam file  [kore-stats](jobs/kore-stats.sh)
+#### 5. merge all sample by chr
+
+#### 6. run R script to have files with mean depth for each sample[depthMean.R](depthMean.R)
+
+#### 7. analize and plot depth data with R[windsorize and CNVplots](winsorization_segmentation.R , coverageCNV.R)
+
+
+
+
