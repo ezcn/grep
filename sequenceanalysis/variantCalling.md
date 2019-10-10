@@ -10,25 +10,25 @@
  
  ```
  
- #### 4. sort reads bam file and make bam index  [kore-sort](kore-sort.sh)
+ #### 4. sort reads bam file and make bam index  [kore-sort](jobs/kore-sort.sh)
  ```
  qsub -o /mpba0/vcolonna/silvia/AS090.sort.out -e /mpba0/vcolonna/silvia/AS090.sort.err -v idrbam="AS090" -N sortAS090  kore-sort.sh
  
  ```
 
-#### 5. make stats from bam file  [kore-stats](kore-stats.sh)
+#### 5. make stats from bam file  [kore-stats](jobs/kore-stats.sh)
  ```
  qsub -v id="AS064" -N statsAS064 kore-stats.sh
  
   ```
  
- #### 6. remove PCR duplicates [kore-markdup](kore-markdup.sh)
+ #### 6. remove PCR duplicates [kore-markdup](jobs/kore-markdup.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.mkdup.out -e /mpba0/vcolonna/silvia/AS090.mkdup.err -v idrbam="AS090" -N mkdupAS090  kore-markdup.sh
  
  ```
  
- #### 7. variant calling [kore-freebayes](kore-freebayes.sh)
+ #### 7. variant calling [kore-freebayes](jobs/kore-freebayes.sh)
   ```
  qsub -o /mpba0/vcolonna/silvia/AS090.fby.out -e /mpba0/vcolonna/silvia/AS090.fby.err -v id="AS090",chr="chr1" -N fbyAS090  kore-freebayes.sh
  
@@ -47,7 +47,7 @@
  
  ```
 
-#### 8. variant calling chromosomes X and Y [kore-fb_chrXY](kore-fb_chrXY.sh)
+#### 8. variant calling chromosomes X and Y [kore-fb_chrXY](jobs/kore-fb_chrXY.sh)
 
  cycle for ID for  chrY
   ```
@@ -60,12 +60,12 @@
  
  ```
  
- #### 9. make index from VCF file  [kore-vcfindex](kore-vcfindex.sh)
+ #### 9. make index from VCF file  [kore-vcfindex](jobs/kore-vcfindex.sh)
  ```
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.out -e /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.err -v id="$id",chr="chr$c" -N $id.chr$c.index  /mpba0/vcolonna/gianluca/kore-vcfindex.sh; done; done
  
   ```
- #### 10. VCF filter for quality >20 [kore-vcfFilterfb](kore-vcfFilterfb.sh)
+ #### 10. VCF filter for quality >20 [kore-vcfFilterfb](jobs/kore-vcfFilterfb.sh)
  cycle for ID for chr 1-22
  ```
  for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.filt.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.filt.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.filt  /mpba0/vcolonna/silvia/job/kore-vcfFilterfb ; done; done
@@ -82,7 +82,7 @@ for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.filt.
 
 ```
 
- #### 11. VCF normalize [kore-vtnormalizeFb](kore-vtnormalizeFb.sh)
+ #### 11. VCF normalize [kore-vtnormalizeFb](jobs/kore-vtnormalizeFb.sh)
  cycle for ID for chr 1-22
  ```
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.norm  /mpba0/vcolonna/silvia/job/kore-vtnormalize.sh ; done; done
@@ -100,7 +100,7 @@ for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.norm.
 ```
 
 
- #### 12. VCF Decompose (decomposes biallelic block substitutions into its constituent SNPs) [kore-decomposeblock](kore-decomposeblock.sh)
+ #### 12. VCF Decompose (decomposes biallelic block substitutions into its constituent SNPs) [kore-decomposeblock](jobs/kore-decomposeblock.sh)
  cycle for ID for chr 1-22
  ```
  for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.dec.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.dec.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.dec  /mpba0/vcolonna/silvia/job/kore-decomposeblock.sh ; done; done
@@ -118,7 +118,7 @@ for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.dec.o
 ```
  
  
-#### 13. make stats from VCF file  [kore-bcfstats](kore-bcfstats.sh) - [kore-bcfQUAL](kore-bcfQUALstats.sh)
+#### 13. make stats from VCF file  [kore-bcfstats](jobs/kore-bcfstats.sh) - [kore-bcfQUAL](jobs/kore-bcfQUALstats.sh)
  ```
 qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
 
