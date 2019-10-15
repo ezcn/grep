@@ -68,7 +68,13 @@ def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, nbAploidSamples, 
 	allAlleles=[refAllele]+ splitAltAlleles
 	mygstring=""
 	GTsplit=[i.split(":")[0] for i in GTfields]
-	for i in GTsplit:  mygstring+=i
+	### assume './.' == to REF (0/0) 
+	for idx, item in enumerate(GTsplit):
+		if item == './.':
+			GTsplit[idx] = '0/0'
+	for i in GTsplit:
+		#if i is not "./.":
+		mygstring+=i
 	CountAlleles=[]
 	for i in range(len(allAlleles)):
 		#if str(i) in mygstring:
