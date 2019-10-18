@@ -3,6 +3,10 @@ require(ggplot2)
 #library(ggrepel)
 require(dplyr)
 require(RColorBrewer)
+library(GenomicRanges)
+library(copynumber)
+library(DNAcopy)
+library(tidyr)
 
 
 gg.manhattan <- function(df, thresholdGain, thresholdLoss, ylims, title){
@@ -92,14 +96,55 @@ gwZcov.graph <- function(df, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
 # sampleID chrom arm start.pos end.pos n.probes    mean
 # AS006     1   p    120908  867593       11 32.2964
 
-gwALL <- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov)), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
 
-summary(gwALL)
+#1) open file with coverage for all sample 
+imma<-read.table("allsamples.depth.mean.tsv", header=T , sep="\t")
 
-nbsd=2
-imma.thr.gain= mean(gwALL$Zcov)+nbsd*sd(gwALL$Zcov)
-imma.thr.loss= mean(gwALL$Zcov)-nbsd*sd(gwALL$Zcov)
-ylim=c(imma.thr.loss-1.5, imma.thr.gain+1.5)
+#2) WINDSORIZATION
+imma.win <- winsorize(imma, pos.unit = "bp", arms = NULL, method = "mad", tau = 2.5,k = 25, gamma = 40, iter = 1, assembly = "hg19", digits = 4,return.outliers = FALSE, save.res = FALSE  ,verbose = TRUE)
 
+
+#2a) formattare con gather 
+imma.win.gat <- .... 
+
+
+#3) standardization 
+imma.win.gat.st <-
+#imma.win.gat.st <- imma.win %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov)), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
+
+summary(win.gat.st)
+
+#4*)Define gamma and kmin 
+# plot.gamma from copynumber 
+imma.gamma=10
+imma.kmin= 5 
+
+#4) Segmentation on median, mean and zmean zmedian 
+imma.segments <- imma.win.gat %>%> select(chr, bp, mystat... ) %>% pcf( gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
+
+#imma.segments <- pcf(data=imma.win.gat.st,Y=imma,  gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
+
+#5)
+summary(imma.segments)
+
+
+
+#6) Define treshold
+nbsd=3 ## number of standard deviation 
+imma.thr.gain= mean(imma.segments$mean)+nbsd*sd(imma.segments$mean)
+imma.thr.loss= mean(imma.segments$mean)-nbsd*sd(imma.segments$mean)
+ylim=c(imma.thr.loss-1.5, imma.thr.gain+1.5) #serve per manthattan, da rivedere  
+
+
+#7)Plot data  tutte le info nel titolo 
+###-cnv 
+png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
+plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
+dev.off()
+
+### manhattan
 gwZcov.graph(gwALL, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
+
+### geompoint facet chr 
+
 
