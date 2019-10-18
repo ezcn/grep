@@ -92,7 +92,9 @@ gwZcov.graph <- function(df, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
 # sampleID chrom arm start.pos end.pos n.probes    mean
 # AS006     1   p    120908  867593       11 32.2964
 
-gwALL <- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-Zcov), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
+gwALL <- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov)), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
+
+summary(gwALL)
 
 nbsd=2
 imma.thr.gain= mean(gwALL$Zcov)+nbsd*sd(gwALL$Zcov)
