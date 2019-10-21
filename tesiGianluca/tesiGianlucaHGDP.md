@@ -5,21 +5,21 @@ position that are shared between them. For do that :
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/positionGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/positionGREP.out -N GREPpos /mpba0/vcolonna/gianluca/job/kore-positionGREP.sh 
 ```
-# 2) After that have to obtain unique position from both bed.file :
+# 2) Obtain unique position from both bed.file :
 ```
 cat positionGREP.chr22.bed | sort | uniq -u > positionGREPuniq.chr22.bed
 ```
 ```
 cat positionHGDP.chr22.bed | sort | uniq -u > positionHGDPuniq.chr22.bed
 ```
-### 2.1) From this two files have to create one file with both Position:
+### 2.1) Create one file with both Position:
 ```
 cat postionGREP.chr22.bed > positionALLuniq.bed
 ```
 ```
 cat positionHGDP.chr22.bed >> positionALLuniq.bed
 ```
-### 2.3) Now have to create a file with only shared position taken one time :
+### 2.3) Create a file with only shared position taken one time :
 ```
 cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
@@ -27,7 +27,7 @@ cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.out -N GREPrecode /mpba0/vcolonna/gianluca/job/kore-recode.sh 
 ```
-# 4) gzip file  and use Python script for obtain frequency of allele in VCF [kore-grepPy.sh](kore-grepPy.sh) and [kore-hgdpPy.sh](kore-hgdpPy.sh)
+# 4) gzip file and use Python script [GREP](filtering/AFS-GREP_grepl.py)[HGDP](filtering/AFS-HGDP_random_grepl.py) for obtain frequency of allele in VCF [kore-grepPy.sh](kore-grepPy.sh) and [kore-hgdpPy.sh](kore-hgdpPy.sh)
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.out -N GREPpy /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
 ```
