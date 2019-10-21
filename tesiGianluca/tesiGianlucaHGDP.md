@@ -19,7 +19,7 @@ cat postionGREP.chr22.bed > positionALLuniq.bed
 ```
 cat positionHGDP.chr22.bed >> positionALLuniq.bed
 ```
-### 2.3) Now have to create a file with only shared position take one time :
+### 2.3) Now have to create a file with only shared position taken one time :
 ```
 cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
