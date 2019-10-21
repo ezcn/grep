@@ -27,7 +27,7 @@ cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.out -N GREPrecode /mpba0/vcolonna/gianluca/job/kore-recode.sh 
 ```
-# 4) gzip file and use Python script for [GREP](filtering/AFS-GREP_grepl.py) for obtain frequency of allele in VCF [kore-grepPy.sh](kore-grepPy.sh) and [kore-hgdpPy.sh](kore-hgdpPy.sh)
+# 4) gzip file and use Python script for [GREP](../filtering/AFS-GREP_grepl.py) for obtain frequency of allele in VCF [kore-grepPy.sh](kore-grepPy.sh) and [kore-hgdpPy.sh](kore-hgdpPy.sh)
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.out -N GREPpy /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
 ```
