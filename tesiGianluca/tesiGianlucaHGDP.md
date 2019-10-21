@@ -31,4 +31,12 @@ qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gia
 ```
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.out -N GREPpy /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
 ```
-# 5) 
+# 5) Use [hgdp_grep_plot.R](hgdp_grep_plot.R) with [kore-hgdp_grep_plot.sh](kore-hgdp_grep_plot.sh) for plot :
+
+### 5.1) CSQfreq wrap for Consequence and  fill by VariantClass [plot.png]()
+
+### 5.2) CSQfreq > 0 wrap for Consequence and  fill by VariantClass [plot.png]()
+
+### 5.3) CSQfreq wrap for CSQrank and  fill by VariantClass [plot.png]()
+
+### 5.4) CSQfreq > 0 wrap for CSQrank and  fill by VariantClass [plot.png]()
