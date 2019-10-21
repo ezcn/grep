@@ -1,6 +1,6 @@
 import re 
 import sys
-sys.path.append('/mpba0/vcolonna/gianluca/TESI/MergedFreqScrip/greplib.py')
+sys.path.append('/mpba0/vcolonna/gianluca/pythonScript/greplib.py')
 import greplib as gp
 import argparse
 import gzip
@@ -51,6 +51,7 @@ def main():
 #		else:
 #			other=line.rstrip().split()
 #			dMeta= dict(zip(header, other))
+#
 #			Region.append(dMeta['region'])
 #			Sample.append(dMeta['sample'])
 #	
@@ -63,13 +64,11 @@ def main():
 
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
-	filemyres=open(args.o, 'w')  ## write a file.gz
+	sys.stdout=open(args.o, 'w')  
 	listOfErrors=[]
 	dInfo={}
-	column2retain=[]
-	header=["Chr", "Pos","VariantClass", "CSQallele","CSQrank","Consequence","CSQfreq","REFfreq","ALTfreq","MAF"]
-	filemyres.write("\t".join(map(str, header)))
-	filemyres.write("\n")
+	#column2retain=[]
+	print("Chr","\t", "Pos","\t","VariantClass","\t", "CSQallele","\t","CSQrank","\t","Consequence","\t","CSQfreq","\t","REFfreq","\t","ALTfreq","\t","MAF","\t","Population")
 	for line in gzip.open(args.f, 'r'):
 		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 		if re.match('#', decodedLine):
@@ -80,9 +79,7 @@ def main():
 #			for ind in sampleToConsider:
 #				column2retain.append(decodedLine.split().index(ind))
 		else:
-			#print("this is a new line ") ## line split by  tab
 			linesplit=decodedLine.rstrip().split()
-			#print(linesplit)
 			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info
 
 			##~~ split INFO field
@@ -91,14 +88,9 @@ def main():
 				if re.search('=', i):
 					temp=i.split("=")
 					dInfo[temp[0]]=temp[1]
-				#if re.search('NEGATIVE_TRAIN_SITE', i): pass
-				#elif re.search('POSITIVE_TRAIN_SITE', i): pass
-
+				
 				else: pass 
-					#dInfo[temp[0]]=temp[1]
-					#print(dInfo)
-
-
+				
 			##~~ work on dInfo[CSQ]
 
 			##~~ split for multiple consequences separated by ","
@@ -109,51 +101,25 @@ def main():
 			CSQcount=0
 			for mcsq in multipleCsq:
 				CSQcount+=1
-				myres=[]
-				#myres+=[mychr, mypos]
 				dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
-				#print (dCsq) 
-				#myres.append(dCsq['Existing_variation']) 
-				
+								
 				#~~~~~~~~~~~  identify the allele with consequences
-				#linesplit[7]=tempinfo # reset info field
 				mycsqAllele=dCsq["Allele"]
 				GTfields=linesplit[9:]
 				nbAploidSamples=len(GTfields)*2
 				freqCSQ_REF_ALT=gp.AnnotateFreqCSQ_REF_ALT(mycsqAllele,myref, myalt, nbAploidSamples, GTfields)
-				#print(freqCSQ_REF_ALT)
-				#print (dCsq['Consequence'].split("&"))
+				
 				for c in dCsq['Consequence'].split("&"):
 					#~~~~~~~~~~~~ assign severity score at the  most severe csq
 					myindexes=[]
 					myindexes.append(lSOTerm.index(c ))
 					mostSevereCsq=lSOTerm[min(myindexes)]
 					linesplit[7]=tempinfo	# reset info field 
-					myres+=(linesplit[0],linesplit[1],dCsq["VARIANT_CLASS"],dCsq["Allele"],dSOTermRank[mostSevereCsq],c,freqCSQ_REF_ALT[0],freqCSQ_REF_ALT[1],freqCSQ_REF_ALT[2],freqCSQ_REF_ALT[3])
-					filemyres.write("\t".join( map(str, myres ) ) )
-					filemyres.write('\n')
-					#linesplit[7]+=";CSQallele="
-						#linesplit[7]+=dCsq["Allele"]
-						#linesplit[7]+=";Consequence="
-						#linesplit[7]+=c
-						#linesplit[7]+=";CSQrank="
-						#linesplit[7]+=dSOTermRank[mostSevereCsq]
-						#linesplit[7]+=";IMPACT="
-						#linesplit[7]+=dCsq["IMPACT"]
-						#linesplit[7]+=";ExistingVariation="
-						#linesplit[7]+=dCsq["Existing_variation"]
-						#linesplit[7]+=";VariantClass="
-						#linesplit[7]+=dCsq["VARIANT_CLASS"]
-						#linesplit[7]+=";nbCSQ=" # for specify the number of CSQ allele
-						#linesplit[7]+=str(CSQcount) # for specify the number of CSQ allele 
-						#linesplit[7]+=";CSQfreq=%s" %(freqCSQ_REF_ALT[0])
-						#linesplit[7]+=";REFfreq=%s" %(freqCSQ_REF_ALT[1])
-						#linesplit[7]+=";ALTfreq=%s" %(freqCSQ_REF_ALT[2])
-						#linesplit[7]+=";MAF=%s" %(freqCSQ_REF_ALT[3])
-						#filemyres.write("\t".join(linesplit))
-						#filemyres.write("\n")
+					print(linesplit[0],"\t",linesplit[1],"\t",dCsq["VARIANT_CLASS"],"\t",dCsq["Allele"],"\t",dSOTermRank[mostSevereCsq],"\t",c,"\t",freqCSQ_REF_ALT[0],"\t",freqCSQ_REF_ALT[1],"\t",freqCSQ_REF_ALT[2],"\t",freqCSQ_REF_ALT[3],"\t","GREP")
+
+
 	#fileToWrite=open(args.e, 'w')
 	#for i in listOfErrors: fileToWrite.write( i )
-	
+	sys.stdout.close()
 if __name__ == "__main__":
 	main()
