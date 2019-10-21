@@ -19,4 +19,4 @@
 # condition occurred under which email is to be sent, es=end,suspend
 #$ -m es
 
-~/bin/vcftools --gzvcf /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/hgdp_wgs.20190516.full.chr22.vep.vcf.gz --positions /mpba0/vcolonna/gianluca/TESI/hgdp/positionALLuniqB.chr22.bed --recode --recode-INFO-all --out /mpba0/vcolonna/gianluca/TESI/hgdp/merged.chr22.B.fb.vep.vcf
+~/bin/vcftools --gzvcf /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/hgdp_wgs.20190516.full.chr22.vep.vcf.gz --positions /mpba0/vcolonna/gianluca/TESI/hgdp/positionALLuniqB.chr22.bed --recode --recode-INFO-all --out /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/hgdp_wgs.20190516.full.chr22.B.vep.vcf
