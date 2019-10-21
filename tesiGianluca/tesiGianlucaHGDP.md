@@ -23,4 +23,8 @@ cat positionHGDP.chr22.bed >> positionALLuniq.bed
 ```
 cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
-### 3) Recode VCF with (positionALLuniqB.chr22.bed) using 
+### 3) Recode VCF with (positionALLuniqB.chr22.bed) using [kore-recodeGREP.sh](kore-recodeGREP.sh) and [kore-recodeHGDP.sh](kore-recodeHGDP.sh)
+```
+qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.out -N GREPrecode /mpba0/vcolonna/gianluca/job/kore-recode.sh 
+```
+
