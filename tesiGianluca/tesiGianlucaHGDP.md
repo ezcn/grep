@@ -1,4 +1,4 @@
-# MAIN GOAL:  Want to obtain the positions that occurs in our Population (GREP) and in the control one (HGDP), after that we have to take only position that are shared between them. For do that
+# MAIN GOAL:  Want to obtain the positions that occurs in our Population (GREP) and in the control one (HGDP), after that we have to take only position that are shared between them.
 
 # 1) Prepare 1st bed file from GREP and HGDP with [kore-positionGREP.sh](kore-positionGREP.sh) and [kore-positionHGDP](kore-positionHGDP.sh)
 ```
