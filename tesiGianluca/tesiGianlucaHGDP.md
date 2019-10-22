@@ -31,6 +31,9 @@ qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gia
 qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.out -N GREPpy /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
 ```
 # 5) Plot using [hgdp_grep_plot.R](hgdp_grep_plot.R) with [kore-hgdp_grep_plot.sh](kore-hgdp_grep_plot.sh).
+```
+qsub -e /mpba0/vcolonna/gianluca/junkfiles/plotR.err -o /mpba0/vcolonna/gianluca/junkfiles/plotR.out -N plotR /mpba0/vcolonna/gianluca/job/kore-hgdp_grep_plot.sh
+```
 
 ### 5.1) CSQfreq wrap for Consequence and  fill by VariantClass [plot.png](plotWrapConsequence.png)
 
