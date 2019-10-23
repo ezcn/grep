@@ -19,4 +19,4 @@ chr=${chr}
 #$ -m es      
 
 
-python3 /mpba0/vcolonna/gianluca/pythonScript/AFS-GREP_grepl.py -f /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/merged.chr22.B.fb.vep.vcf.gz -o /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/grep.chr22.PyProcessed.tsv -v /mpba0/vcolonna/gianluca/pythonScript/csqimpact.tsv -e /mpba0/vcolonna/gianluca/junkfile/grep.py.err                     
+python3 /mpba0/vcolonna/gianluca/pythonScript/AFS-GREP_grepl.py -f /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/recodeGREP/merged.${chr}.B.fb.vep.vcf.gz -o /mpba0/vcolonna/IMMA/samples/fb/pyProcessed/grep.${chr}.PyProcessed.tsv -v /mpba0/vcolonna/gianluca/pythonScript/csqimpact.tsv -e /mpba0/vcolonna/gianluca/junkfile/grep.py.err                     

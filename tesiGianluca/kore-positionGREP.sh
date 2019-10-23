@@ -20,5 +20,5 @@ chr=${chr}
 #$ -m es
 
 
-zcat /mpba0/vcolonna/IMMA/samples/fb/vep/mergedByChr/merged.chr22.fb.vep.vcf.gz | grep -v '#' | cut -f1,2 | awk '{print $1,$2,$2}'| tr " " "\t" > /mpba0/vcolonna/gianluca/TESI/hgdp/positionGREP.${chr}.bed
+zcat /mpba0/vcolonna/IMMA/samples/fb/vep/mergedByChr/merged.${chr}.fb.vep.vcf.gz | grep -v '#' | cut -f1,2 | awk '{print $1,$2,$2}'| tr " " "\t" > /mpba0/vcolonna/gianluca/TESI/hgdp/positionGREP/positionGREP.${chr}.bed
 

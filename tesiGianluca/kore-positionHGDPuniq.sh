@@ -19,4 +19,6 @@ chr=${chr}
 # condition occurred under which email is to be sent, es=end,suspend
 #$ -m es
 
-~/bin/vcftools --gzvcf /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/hgdp_wgs.20190516.full.${chr}.vep.vcf.gz --positions /mpba0/vcolonna/gianluca/TESI/hgdp/positionALL/positionALLuniqB.${chr}.bed --recode --recode-INFO-all --out /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/recodeHGDP/hgdp_wgs.20190516.full.${chr}.B.vep.vcf
+
+cat /mpba0/vcolonna/gianluca/TESI/hgdp/positionHGDP/positionHGDP.${chr}.bed | sort | uniq -u  > /mpba0/vcolonna/gianluca/TESI/hgdp/positionHGDP/positionHGDPuniq.${chr}.bed
+

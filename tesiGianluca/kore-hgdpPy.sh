@@ -19,4 +19,4 @@
 #$ -m es      
 
 
-python3 /mpba0/vcolonna/gianluca/pythonScript/AFS-HGDP_random_grepl.py -f /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/hgdp_wgs.20190516.full.chr22.B.vep.vcf.gz -o /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/hgdpPyProcessed.tsv -v /mpba0/vcolonna/gianluca/pythonScript/csqimpact.tsv -e /mpba0/vcolonna/gianluca/py.err -m /mpba0/vcolonna/gianluca/TESI/hgdp/hgdp_wgs.20190516.metadata.txt -c 50 -s 899                   
+python3 /mpba0/vcolonna/gianluca/pythonScript/AFS-HGDP_random_grepl.py -f /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/recodeHGDP/hgdp_wgs.20190516.full.${chr}.B.vep.vcf.gz -o /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/pyProcessed/hgdpPyProcessed.${chr}.tsv -v /mpba0/vcolonna/gianluca/pythonScript/csqimpact.tsv -e /mpba0/vcolonna/gianluca/py.err -m /mpba0/vcolonna/gianluca/TESI/hgdp/hgdp_wgs.20190516.metadata.txt -c 50 -s 899                   

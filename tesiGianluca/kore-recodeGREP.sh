@@ -2,7 +2,7 @@
 
 
 #id=${id}
-#chr=${chr}
+chr=${chr}
 
 # -q name of the queue to use
 #$ -q bld.q
@@ -19,4 +19,4 @@
 # condition occurred under which email is to be sent, es=end,suspend
 #$ -m es
 
-~/bin/vcftools --gzvcf /mpba0/vcolonna/IMMA/samples/fb/vep/mergedByChr/merged.chr22.fb.vep.vcf.gz --positions /mpba0/vcolonna/gianluca/TESI/hgdp/positionALLuniqB.chr22.bed --recode --recode-INFO-all --out /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/merged.chr22.B.fb.vep.vcf
+~/bin/vcftools --gzvcf /mpba0/vcolonna/IMMA/samples/fb/vep/mergedByChr/merged.${chr}.fb.vep.vcf.gz --positions /mpba0/vcolonna/gianluca/TESI/hgdp/positionALL/positionALLuniqB.${chr}.bed --recode --recode-INFO-all --out /mpba0/vcolonna/gianluca/TESI/hgdp/bothPos/recodeGREP/merged.${chr}.B.fb.vep.vcf

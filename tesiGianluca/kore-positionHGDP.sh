@@ -20,5 +20,5 @@ chr=${chr}
 #$ -m es
 
 
-cat /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/hgdp_wgs.20190516.full.chr22.vep.vcf | grep -v '#' | cut -f1,2 | awk '{print $1,$2,$2}'| tr " " "\t" > /mpba0/vcolonna/gianluca/TESI/hgdp/positionHGDP.${chr}.bed
+zcat /mpba0/vcolonna/IMMA/samples/hgdp_wgs/vep/hgdp_wgs.20190516.full.${chr}.vep.vcf.gz | grep -v '#' | cut -f1,2 | awk '{print $1,$2,$2}'| tr " " "\t" > /mpba0/vcolonna/gianluca/TESI/hgdp/positionHGDP/positionHGDP.${chr}.bed
 
