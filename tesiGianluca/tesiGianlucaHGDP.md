@@ -2,14 +2,11 @@
 
 # 1) Prepare 1st bed file from GREP and HGDP with [kore-positionGREP.sh](kore-positionGREP.sh) and [kore-positionHGDP](kore-positionHGDP.sh).
 ```
-qsub -e /mpba0/vcolonna/gianluca/junkfiles/positionGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/positionGREP.out -N GREPpos /mpba0/vcolonna/gianluca/job/kore-positionGREP.sh 
+for c in $(seq 1 22); do qsub -e /mpba0/vcolonna/gianluca/junkfiles/positionGREP.$c.err -o /mpba0/vcolonna/gianluca/junkfiles/positionGREP.$c.out -v chr="chr$c" -N GREPpos.$c /mpba0/vcolonna/gianluca/job/kore-positionGREP.sh ; done 
 ```
-# 2) Obtain unique position from both bed.file.
+# 2) Obtain unique position from both bed.file with [kore-positionGREPuniq.sh](kore-positionGREPuniq.sh) and [kore-positionHGDPuniq.sh](kore-positionHGDPuniq.sh)
 ```
-cat positionGREP.chr22.bed | sort | uniq -u > positionGREPuniq.chr22.bed
-```
-```
-cat positionHGDP.chr22.bed | sort | uniq -u > positionHGDPuniq.chr22.bed
+for c in $(seq 1 22); do qsub -e /mpba0/vcolonna/gianluca/junkfiles/positionGREPuniq.$c.err -o /mpba0/vcolonna/gianluca/junkfiles/positionGREPuniq.$c.out -v chr="chr$c" -N GREPposU.$c /mpba0/vcolonna/gianluca/job/kore-positionGREPuniq.sh ; done 
 ```
 ### 2.1) Create one file with both Position.
 ```
