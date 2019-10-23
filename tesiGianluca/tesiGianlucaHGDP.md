@@ -21,11 +21,11 @@ cat positionALLuniq.bed | sort | uniq -d > positionALLuniqB.chr22.bed
 ```
 # 3) Recode VCF with (positionALLuniqB.chr22.bed) using [kore-recodeGREP.sh](kore-recodeGREP.sh) and [kore-recodeHGDP.sh](kore-recodeHGDP.sh).
 ```
-qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.out -N GREPrecode /mpba0/vcolonna/gianluca/job/kore-recode.sh 
+for c in $(seq 1 22); do qsub -e /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.$c.err -o /mpba0/vcolonna/gianluca/junkfiles/recodeGREP.$c.out -v chr="chr$c" -N GREPrecode.$c /mpba0/vcolonna/gianluca/job/kore-recode.sh 
 ```
 # 4) gzip file and use Python script for [GREP](../filtering/AFS-GREP_grepl.py) and [HGDP](../filtering/AFS-HGDP_random_grepl.py) for obtain frequency of alleles in VCF with [kore-grepPy.sh](kore-grepPy.sh) and [kore-hgdpPy.sh](kore-hgdpPy.sh).
 ```
-qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.out -N GREPpy /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
+for c in $(seq 1 22); do qsub -e /mpba0/vcolonna/gianluca/junkfiles/pyGREP.$c.err -o /mpba0/vcolonna/gianluca/junkfiles/pyGREP.$c.out -N GREPpy.$c /mpba0/vcolonna/gianluca/job/kore-grepPy.sh 
 ```
 # 5) Plot using [hgdp_grep_plot.R](hgdp_grep_plot.R) with [kore-hgdp_grep_plot.sh](kore-hgdp_grep_plot.sh).
 ```
