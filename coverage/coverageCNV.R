@@ -104,12 +104,19 @@ imma<-read.table("allsamples.depth.mean.tsv", header=T , sep="\t")
 imma.win <- winsorize(imma, pos.unit = "bp", arms = NULL, method = "mad", tau = 2.5,k = 25, gamma = 40, iter = 1, assembly = "hg19", digits = 4,return.outliers = FALSE, save.res = FALSE  ,verbose = TRUE)
 
 
-#2a) formattare con gather 
-imma.win.gat <- .... 
+#2a) formattare con gather  
+imma.win.gat <- imma.win %>% gather(id,mean, AS006:AS094)
+
+#3) calcolo Zscore
+
+imma.win.gat.st<-imma.win.gat %>% group_by(chrom, pos, id) %>% mutate(Zcov=(Mean - mean(imma.win.gat$Mean))/sd(imma.win.gat$Mean), pval=2*pnorm(-abs(Zcov)))
 
 
 #3) standardization 
-imma.win.gat.st <-
+imma.win.gat.st <-imma.win.gat.st %>% select(chrom, pos, id, Zcov)
+imma.st.2<- imma.st %>% spread(id, Zcov)
+
+
 #imma.win.gat.st <- imma.win %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov)), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
 
 summary(win.gat.st)
@@ -120,7 +127,13 @@ imma.gamma=10
 imma.kmin= 5 
 
 #4) Segmentation on median, mean and zmean zmedian 
-imma.segments <- imma.win.gat %>%> select(chr, bp, mystat... ) %>% pcf( gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
+imma.gamma=2
+imma.kmin=100
+
+imma.segments <- imma.st.2 %>%  pcf( gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
+
+gwALL <- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos) %>% select(segSize, binName, CHR, binMidPoint,mean, n.probes)
+#imma.segments <- imma.win.gat %>%> select(chr, bp, mystat... ) %>% pcf( gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
 
 #imma.segments <- pcf(data=imma.win.gat.st,Y=imma,  gamma=imma.gamma , kmin=imma.kmin, assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
 
