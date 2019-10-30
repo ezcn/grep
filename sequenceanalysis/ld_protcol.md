@@ -17,44 +17,29 @@ Only on chromosome 9 2Mb surrounding rs7859844  chr9:79063076-83063077 - 102856 
 singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/ldchr9/hgdp_wgs.eur.2Mbrs7859844.ld.gz --chr 9 --from-bp 79063076 --to-bp 83063077 --keep EUR.list --ld-window-kb 200 --ld-window-r2 0.4
 ```
 
-
-plink --bfile (chr21) --ld rs183453668  #potrei vedere se vi sono regioni di LD intorno a tale variante, causativa miscarrage (improbabile)
-plink --bfile chr22_1000Gphase3_EUR_snp_maf_rmvsnp --r2 --out chr22_1000Gphase3_EUR_ldtable --ld-window-kb 1000 #LD in quel cromosoma
-
 --r calculates and reports raw inter-variant allele count correlations (reports all results in table format) 
 
 --r2 reports squared correlations (reports all results with a text matrix)
 
 --ld-window-kb 10000000 (diecimila kb)
 
-#Merge cromosomi: 
-#~/bin/bcftools concat -o /mpba0/vcolonna/IMMA/samples/gatkConcat/${id}.chr21.fb.vep.vcf.gz 
+GRAFICO (vim scriptPlinkSoglia.R)
 
-#for id in AS006 AS054 AS064 AS074 AS090 AS094 ;do echo qsub -e /mpba0/vcolonna/flavia/$id.vep.err -o /mpba0/vcolonna/flavia/$id.vep.out -v #id="$id" -N vepmerge$id /mpba0/vcolonna/flavia/job/kore-vep.sh; done
-
-#/mpba0/vcolonna/bin/bcftools merge /mpba0/vcolonna/IMMA/samples/fb/vep/${id}.chr21.fb.vep.vcf.gz -O z -o /mpba0/vcolonna/flavia/WGS/
-#${id}.chr21.fb.vep.merge.vcf.gz
-
-
-GRAFICO
 library(tidyr)
 library(dplyr)
-path_chr21 <- ('/home/flavia/Desktop/GWAS VARIANTS /chr21__EUR_ldtable.ld')
+library(ggplot2)
 
-mysnp=43412110
-halfinterval=5000000
- 	
-data <- read.table(path_chr21, header = T) %>% select(BP_A, BP_B, R2)
+path_chr9 <- ('/mpba0/vcolonna/flavia/WGS/WGS_Variants/HGDP_Soglia/chr9_Ld_Soglia_0.9.ld')
 
-#data <- read.table(path_chr21, header = T)
-#data.filter = data %>% filter(BP_A>mysnp-halfinterval & BP_A<mysnp-halfinterval & BP_B>mysnp-halfinterval & BP_B<mysnp-halfinterval) 
+data_9 <- read.table(path_chr9, header = T) %>% select(BP_A, BP_B, R2)
 
-subData <- data[1:1000,] #metto le prime 100 righe e tutte le colonne tutte
-library(reshape2)
-#convert long-to-wide
+subData <- data[1:100,] #metto le prime 100 righe e le colonne tutte
 
-x <- dcast(subData, BP_A ~ BP_B, value.var = "R2")
-# convert to matrix with column AND rownames
+#subData <- data[7653:7667, 1:3] #righe che contengono le varianti di interesse
+
+library(reshape2) #convert long-to-wide
+
+x <- dcast(subData, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames
 
 myM <- as.matrix(x[ , -1 ])
 row.names(myM) <- x$BP_A
@@ -64,21 +49,40 @@ row.names(myM) <- x$BP_A
 myM[ is.na(myM) ] <- 0
 library(gplots)
 
-heatmap.2(myM, Colv = NA, Rowv = NA, scale = "none", col = bluered(100), trace = "none", density.info = "none")
+myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD
+myMask[myMask] = '' # Hack per mettere ovunque stringa vuota
+
+# Inserimento coppie di interesse:
+# - round ti esprime il valore con 2 cifre decimali
+# - format fa si che 1 sia mostrato come 1.00 (sempre con 2 cifre decimali)
+
+myMask['81062998', '81063077'] = format(round(myM ['81062998', '81063077'], 2), nsmall = 2)
+myMask['81063001', '81063077'] = format(round(myM ['81063001', '81063077'], 2), nsmall = 2)
+myMask['81063077', '81063204'] = format(round(myM ['81063077', '81063204'], 2), nsmall = 2)
 
 my_palette <- colorRampPalette(c("white", "yellow","orange", "red"))(n = 299)
-heatmap.2(myM, Colv = NA, Rowv = NA, scale = "none", col = my_palette, trace = "none", density.info = "none")
 
-ggsave("/mpba0/vcolonna/flavia/CDrate.png", plot= myplot, device="png", width = 20, height = 15, units = "cm", dpi = 300)
+png('/mpba0/vcolonna/flavia/Chr9LD.png", device="png", width = 20, height = 15, units = "cm", dpi = 300)
+
+heatmap.2(
+ myM,
+ key.xlab="LD",
+ cellnote = myMask,
+ notecol="black",
+ Colv = NA, Rowv = NA,
+ scale = "none",
+ col = my_palette, 
+ trace = "none",
+ density.info = "none",
+ margins = c(7,14),
+ main = "Linkage Disequilibrium"
+ )
+
+dev.off()
+#ggsave("/mpba0/vcolonna/flavia/Chr9LD.png", plot= myplot, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 
 
-2)singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr21.vcf.gz --r2 --out chr21__threshold_ldtable --ld-window-kb 10000000 --ld-window-r2 0.5  #soglia R2
- 
-Variante chr21: rs183453668 #10 MB prima e dopo dalla variante
-
-
-
-a)Importarlo in R 
+a)Importarlo in R senza MASK
 
 library(tidyr)
 library(dplyr)
@@ -101,10 +105,5 @@ heatmap.2(myMLD, Colv = NA, Rowv = NA, scale = "none", col = my_palette, trace =
 
 
 
-2)extract the variants which fall in the intervals linkage disequilibrium
 
-tabix /mpba0/vcolonna/IMMA/samples/fb/vep/AS054.chr21.fb.vep.vcf.gz  -B intervals_to_check.bed (regioni in linkage disequilibrium) > chr21.fb.subset.vcf
-
-
-Fenomeno per cui a livello di popolazione specifiche combinazioni di alleli a due o più loci concatenati tendono a trovarsi insieme sullo stesso cromosoma piu' frequentemente di quanto ci si attenda per caso.
 
