@@ -17,53 +17,43 @@ Only on chromosome 9 2Mb surrounding rs7859844  chr9:79063076-83063077 - 102856 
 singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/ldchr9/hgdp_wgs.eur.2Mbrs7859844.ld.gz --chr 9 --from-bp 79063076 --to-bp 83063077 --keep EUR.list --ld-window-kb 200 --ld-window-r2 0.4
 ```
 
---r calculates and reports raw inter-variant allele count correlations (reports all results in table format) 
-
---r2 reports squared correlations (reports all results with a text matrix)
-
---ld-window-kb 10000000 (diecimila kb)
-
-GRAFICO (vim scriptPlinkSoglia.R)
+### 4. plot LD matrix  using [plotLDfromPlink.R]()
 
 library(tidyr)
 library(dplyr)
 library(ggplot2)
-
-path_chr9 <- ('/mpba0/vcolonna/flavia/WGS/WGS_Variants/HGDP_Soglia/chr9_Ld_Soglia_0.9.ld')
-
-data_9 <- read.table(path_chr9, header = T) %>% select(BP_A, BP_B, R2)
-
-subData <- data[1:100,] #metto le prime 100 righe e le colonne tutte
-
-#subData <- data[7653:7667, 1:3] #righe che contengono le varianti di interesse
-
-library(reshape2) #convert long-to-wide
-
-x <- dcast(subData, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames
-
-myM <- as.matrix(x[ , -1 ])
-row.names(myM) <- x$BP_A
-
-# I am converting all NAs to 0, reconsider if this is suitable in your case.
-
-myM[ is.na(myM) ] <- 0
+library(reshape2)
 library(gplots)
 
+#####1.import data
+path_chr9 <- ('hgdp_wgs.eur.2Mbrs7859844.ld.gz.ld')
+data_9 <- read.table(path_chr9, header = T) %>% select(BP_A, BP_B, R2)
+
+######2.convert long-to-wide
+data_9_matrix <- dcast(data_9, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames
+myM <- as.matrix(data_9_matrix[ , -1 ])
+row.names(myM) <- data_9_matrix$BP_A
+#I am converting all NAs to 0, reconsider if this is suitable in your case.
+#myM[ is.na(myM) ] <- 0
+
+
+######3.create a mask for loci of interest 
 myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD
 myMask[myMask] = '' # Hack per mettere ovunque stringa vuota
 
-# Inserimento coppie di interesse:
-# - round ti esprime il valore con 2 cifre decimali
-# - format fa si che 1 sia mostrato come 1.00 (sempre con 2 cifre decimali)
+#Inserimento coppie di interesse:
+#- round ti esprime il valore con 2 cifre decimali
+#- format fa si che 1 sia mostrato come 1.00 (sempre con 2 cifre decimali)
 
 myMask['81062998', '81063077'] = format(round(myM ['81062998', '81063077'], 2), nsmall = 2)
 myMask['81063001', '81063077'] = format(round(myM ['81063001', '81063077'], 2), nsmall = 2)
 myMask['81063077', '81063204'] = format(round(myM ['81063077', '81063204'], 2), nsmall = 2)
 
+
+#####4. plot 
 my_palette <- colorRampPalette(c("white", "yellow","orange", "red"))(n = 299)
 
-png('/mpba0/vcolonna/flavia/Chr9LD.png", device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
+png("LD.png", width = 20, height = 15, units = "cm", res = 300)
 heatmap.2(
  myM,
  key.xlab="LD",
@@ -79,27 +69,6 @@ heatmap.2(
  )
 
 dev.off()
-#ggsave("/mpba0/vcolonna/flavia/Chr9LD.png", plot= myplot, device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
-
-a)Importarlo in R senza MASK
-
-library(tidyr)
-library(dplyr)
-path_chr21ld = ('/home/flavia/Desktop/GWAS_VARIANTS/chr21_ld_snp.ld')
-dataLD <- read.table(path_chr21ld, header = T) %>% select(BP_A, BP_B, R2)
-subDataLD <- dataLD[1:100,]
-library(reshape2)
-xLD <- dcast(subDataLD, BP_A ~ BP_B, value.var = "R2")
-myMLD <- as.matrix(xLD[ , -1 ])
-row.names(myMLD) <- xLD$BP_A
-myMLD[ is.na(myMLD) ] <- 0
-library(gplots)
-my_palette <- colorRampPalette(c("white", "yellow","orange", "red"))(n = 299)
-heatmap.2(myMLD, Colv = NA, Rowv = NA, scale = "none", col = my_palette, trace = "none", density.info = "none")
-
-
-
 
 
 
