@@ -10,7 +10,10 @@ path_chr9 <- ('hgdp_wgs.eur.2Mbrs7859844.ld.gz.ld')
 data_9 <- read.table(path_chr9, header = T) %>% select(BP_A, BP_B, R2)
 
 ######2.convert long-to-wide 
-data_9_matrix <- dcast(data_9, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames myM <- as.matrix(data_9_matrix[ , -1 ]) row.names(myM) <- data_9_matrix$BP_A #I am converting all NAs to 0, reconsider if this is suitable in your case. #myM[ is.na(myM) ] <- 0
+data_9_matrix <- dcast(data_9, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames 
+myM <- as.matrix(data_9_matrix[ , -1 ]) 
+row.names(myM) <- data_9_matrix$BP_A #I am converting all NAs to 0, reconsider if this is suitable in your case. 
+#myM[ is.na(myM) ] <- 0
 
 ######3.create a mask for loci of interest 
 myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD 
