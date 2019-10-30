@@ -13,7 +13,10 @@ bedtools slop -i paper_miscarriage.bed -g /mpba0/vcolonna/IMMA/hg38p12/hg38.p12.
 Only on chromosome 9 
 
 ```
-singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out chr9_ld_snp --chr 9 --from-bp 42412110 --to-bp 44412110 
+``singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/WGS/WGS_Variants/HGDP_Soglia/chr9_Ld_2MB_Soglia --chr 9 --from-bp 79063076 --to-bp 83063077 --ld-window-r2 0.5
+
+singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/WGS/WGS_Variants/HGDP_Soglia/chr9_Ld_2MB_Soglia --chr 9 --from-bp 79063076 --to-bp 83063077
+`
 ```
 
 plink --bfile (chr21) --ld rs183453668  #potrei vedere se vi sono regioni di LD intorno a tale variante, causativa miscarrage (improbabile)
