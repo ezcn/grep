@@ -11,7 +11,8 @@ path_chr9 <- ('hgdp_wgs.eur.2Mbrs7859844.ld.gz.ld') data_9 <- read.table(path_ch
 data_9_matrix <- dcast(data_9, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames myM <- as.matrix(data_9_matrix[ , -1 ]) row.names(myM) <- data_9_matrix$BP_A #I am converting all NAs to 0, reconsider if this is suitable in your case. #myM[ is.na(myM) ] <- 0
 
 ######3.create a mask for loci of interest 
-myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD myMask[myMask] = '' # Hack per mettere ovunque stringa vuota
+myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD 
+myMask[myMask] = '' # Hack per mettere ovunque stringa vuota
 
 #Inserimento coppie di interesse: 
 #- round ti esprime il valore con 2 cifre decimali 
@@ -27,3 +28,8 @@ png("LD.png", width = 20, height = 15, units = "cm", res = 300)
 heatmap.2(myM, key.xlab="LD", cellnote = myMask, notecol="black", Colv = NA, Rowv = NA, scale = "none", col = my_palette, trace = "none", density.info = "none", margins = c(7,14), main = "Linkage Disequilibrium")
 
 dev.off()
+
+#####5.job  [kore-plotLDfromPlink.sh]
+singularity exec /mpba0/mpba-sw/biocontainers/r-bioconductor-base2.img Rscript /mpba0/vcolonna/flavia/scriptR/kore-plotLDfromPlink.R
+
+
