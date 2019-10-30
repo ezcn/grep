@@ -6,12 +6,12 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do for c in $(seq 1 22); do qsub 
 ```
 for chrX
 ```
-for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrX.depth.err -o /mpba0/vcolonna/silvia/out/$id.chrX.depth.out -v id="$id",chr="chrX" -N $id.chrX.depth kore-chrdepth.sh; done; done
+for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrX.depth.err -o /mpba0/vcolonna/silvia/out/$id.chrX.depth.out -v id="$id",chr="chrX" -N $id.chrX.depth kore-chrdepth.sh; done
 
 ```
 for chrY
 ```
-for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrY.depth.err -o /mpba0/vcolonna/silvia/out/$id.chrY.depth.out -v id="$id",chr="chrY" -N $id.chrY.depth kore-chrdepth.sh; done; done
+for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrY.depth.err -o /mpba0/vcolonna/silvia/out/$id.chrY.depth.out -v id="$id",chr="chrY" -N $id.chrY.depth kore-chrdepth.sh; done
 
 ```
 #### 2.  post process samtoolsdepth output to make a bed file[kore-bedDepth](jobs/kore-bedDepth.sh)
