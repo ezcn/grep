@@ -14,10 +14,10 @@ Only on chromosome 9 2Mb surrounding rs7859844  chr9:79063076-83063077 - 102856 
 
 
 ```
-singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/ldchr9/hgdp_wgs.eur.2Mbrs7859844.ld.gz --chr 9 --from-bp 79063076 --to-bp 83063077 --keep EUR.list --ld-window-kb 200 --ld-window-r2 0.4
+singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf /mpba0/vcolonna/flavia/WGS/hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out /mpba0/vcolonna/flavia/ldchr9/hgdp_wgs.eur.2Mbrs7859844.ld.gz --chr 9 --from-bp 79063076 --to-bp 83063077 --keep EUR.list --ld-window-kb 200 
 ```
 
-### 4. plot LD matrix  using [plotLDfromPlink.R]()
+### 4. plot LD matrix using [plotLDfromPlink.R]()
 
 library(tidyr)
 library(dplyr)
@@ -47,7 +47,6 @@ myMask[myMask] = '' # Hack per mettere ovunque stringa vuota
 
 myMask['81062998', '81063077'] = format(round(myM ['81062998', '81063077'], 2), nsmall = 2)
 myMask['81063001', '81063077'] = format(round(myM ['81063001', '81063077'], 2), nsmall = 2)
-myMask['81063077', '81063204'] = format(round(myM ['81063077', '81063204'], 2), nsmall = 2)
 
 
 #####4. plot 
