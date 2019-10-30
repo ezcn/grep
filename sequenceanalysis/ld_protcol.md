@@ -1,36 +1,20 @@
 
-#create a bed file
-Chr-start-end (+1)
+# 1. create a bed file
+paper_miscarriage.bed: Chr-start-end (+1)
 
-# create intervals from paper coordinates
-bedtools slop -i paper_miscarriage.bed -g /mpba0/vcolonna/IMMA/hg38p12/hg38.p12.fa.fai -b 500 > intervals_to_check.bed    # -b: add a fixed number of bases in each direction
+# 2. create 2Mb intervals from paper coordinates
+```
+bedtools slop -i paper_miscarriage.bed -g /mpba0/vcolonna/IMMA/hg38p12/hg38.p12.fa.fai -b 2000000 > intervals_to_check.bed    # 
+```
+-b: add a fixed number of bases in each direction
 
-# if necessary, create the index
-tabix -h AS054.chr21.fb.vep.vcf.gz
+# 3. Calculate Linkage Disequilibrium from HGDP database using PLINK using kore-plinkLD.sh
 
-# extract the variants which fall in the intervals
-tabix /mpba0/vcolonna/IMMA/samples/fb/vep/AS054.chr21.fb.vep.vcf.gz -B intervals_to_check.bed > chr21.fb.subset.vcf
+Only on chromosome 9 
 
-# if necessary, annotate extracted variants with VEP (ok)
-
-# filter out variants with allele frequency in the population greater than a threshold (fr > 90 %?)
-...
-
-
-Calculate Linkage Disequilibrium from HGD database
-
-PLINK 
-
-#Converting VCF files to Plink Format
-#-vcftools --vcf input_data.vcf --plink --chr 1 --out output_in_plink
-
-singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink
-
-#singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr21.vcf.gz --make-bed --out bedfile #ho bam, bim, fam
-
-#singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr21.vcf.gz --make-bed --out results --freq --keep-autoconv 
-
-1)singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr21.vcf.gz --r2 --out chr21__EUR_ldtable --ld-window-kb 10000000 
+```
+singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr9.vcf.gz --r2 --out chr9_ld_snp --chr 9 --from-bp 42412110 --to-bp 44412110 
+```
 
 plink --bfile (chr21) --ld rs183453668  #potrei vedere se vi sono regioni di LD intorno a tale variante, causativa miscarrage (improbabile)
 plink --bfile chr22_1000Gphase3_EUR_snp_maf_rmvsnp --r2 --out chr22_1000Gphase3_EUR_ldtable --ld-window-kb 1000 #LD in quel cromosoma
@@ -90,7 +74,7 @@ ggsave("/mpba0/vcolonna/flavia/CDrate.png", plot= myplot, device="png", width = 
  
 Variante chr21: rs183453668 #10 MB prima e dopo dalla variante
 
-singularity exec /mpba0/mpba-sw/biocontainers/plink.img plink --vcf hgdp_wgs.20190516.full.chr21.vcf.gz --r2 --out chr21_ld_snp --chr 21 --from-bp 42412110 --to-bp 44412110 
+
 
 a)Importarlo in R 
 
