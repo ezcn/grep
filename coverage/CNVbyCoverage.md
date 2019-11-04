@@ -73,6 +73,13 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
 #### 6. run R script to have files with mean depth for each sample[depthMean.R](depthMean.R)
 
 #### 7. analize and plot depth data with R[coverageCNV.R](coverageCNV.R)
+   ## args list: 
+      [1]= input file
+      [2]= gamma
+      [3]=kmin
+      [4]=experimentset(plot title)
+      [5]=plot name in ggsave
+      [6]=output file
 
 
 
