@@ -4,14 +4,12 @@
 - same nb as array CGH: 60,000 probes of 100bp --> 6,000,000 bp --> 6Mbp/3,600Mbp = 0.0016 of the genome 
 - 10% of the genome: 3,600,000 probes of 100bp --> 360,000,000 bp --> 360Mbp/3,600Mbp = 0.10 of the genome 
 
+probes generation bedtools Random 
 
 #### 0b Rationale for coverage 
 - 30X --> 100% of reads 
 - 15X --> 50% of reads 
 - 1X --> 3.3% of reads 
-
-
-#### 0 probes generation bedtools Random 
 
 
 #### 1. estimate read depth for all samples (only for positions of CGH probes)[kore-chrdepth.sh](jobs/kore-chrdepth.sh)
