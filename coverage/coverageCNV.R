@@ -9,6 +9,11 @@ library(DNAcopy)
 library(tidyr)
 
 
+args = commandArgs(trailingOnly=TRUE)
+imma.gamma=args[1]
+imma.kmin=args[2]
+
+
 gg.manhattan <- function(df, thresholdGain, thresholdLoss, ylims, title){
 #https://github.com/pcgoddard/Burchardlab_Tutorials/wiki/GGplot2-Manhattan-Plot-Function
 #Format GWAS results as you would for qqman: SNP CHR BP P (tab-delim)
@@ -107,8 +112,9 @@ imma<-na.omit(imma)
 imma.win <- winsorize(imma, pos.unit = "bp", arms = NULL, method = "mad", tau = 2.5,k = 25, gamma = 40, iter = 1, assembly = "hg19", digits = 4,return.outliers = FALSE, save.res = FALSE  ,verbose = TRUE)
 
 #3)Define gamma
-imma.gamma=10
-imma.kmin=5
+# see args 
+#imma.gamma=10
+#imma.kmin=5
 
 #4) Segmentation
 imma.segments <- pcf(data=imma.win,Y=imma,  gamma=imma.gamma , assembly="hg19", return.est=FALSE, save.res=FALSE,  normalize = FALSE)
