@@ -6,7 +6,9 @@
 
 
 #### 0b Rationale for coverage 
-30X; 15X; 1X 
+- 30X --> 100% of reads 
+- 15X --> 50% of reads 
+- 1X --> 3.3% of reads 
 
 
 #### 0 probes generation bedtools Random 
