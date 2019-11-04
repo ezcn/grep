@@ -10,9 +10,15 @@ library(tidyr)
 
 
 args = commandArgs(trailingOnly=TRUE)
-imma.gamma=args[1]
-imma.kmin=args[2]
+imma.gamma=as.numeric(args[2])
+imma.kmin=as.numeric(args[3])
 
+
+
+#Plot data
+#png ("imma.cnv.pls.png", res=300, width=25 ,height=10, units="cm") 
+#plotAberration(segments=imma.segments, thres.gain=imma.thr.gain , thres.loss =imma.thr.loss)
+#dev.off()
 
 gg.manhattan <- function(df, thresholdGain, thresholdLoss, ylims, title){
 #https://github.com/pcgoddard/Burchardlab_Tutorials/wiki/GGplot2-Manhattan-Plot-Function
@@ -83,18 +89,17 @@ gwZcov.graph <- function(df, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
  
   # create list of id to loop over
   id_list <- unique(df$sampleID)
- 
+  experimentSet=args[4]
   # create for loop to produce ggplot2 graphs
   for (i in id_list) {
    
     # create plot for each id in df
    
-    myp<- gg.manhattan (subset(df, sampleID==i), imma.thr.gain, imma.thr.loss,  ylim, title=i)
+    myp<- gg.manhattan (subset(df, sampleID==i), imma.thr.gain, imma.thr.loss,  ylim, title=paste(i, experimentSet, sep=" "))
    
-    ggsave(paste("gw.", i, ".png"), plot = myp, scale = 1, width = 40, height = 15 ,units = "cm", dpi = 300)
+    ggsave(paste( args[5] ,i,".png"), plot = myp, scale = 1, width = 40, height = 15 ,units = "cm", dpi = 300)
   }
 }
-
 
 
 ######  INPUT imma.segments=segmentazione fatta con copynumber
@@ -103,7 +108,7 @@ gwZcov.graph <- function(df, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
 
 
 #1) open file with coverage for all sample 
-imma<-read.table("/home/silvia/misc/coverageCNV/input/allsamples.10.mean.tsv", header=T , sep="\t")
+imma<-read.table(args[1], header=T , sep="\t")
 imma<-na.omit(imma)
 #imma$CHR<-as.character(imma$CHR)
 #imma$CHR<-as.numeric(strsplit(imma$CHR, split='chr')[[1]][2])
@@ -132,7 +137,7 @@ imma.thr.loss= mean(imma.segments$mean)-nbsd*sd(imma.segments$mean)
 # sampleID chrom arm start.pos end.pos n.probes    mean
 # AS006     1   p    120908  867593       11 32.2964
 
-gwALL <- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov), nprobes=n.probes ) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
+gwALL<- imma.segments %>% group_by(sampleID, chrom, start.pos, end.pos)  %>%  mutate(segSize=end.pos-start.pos , binName=paste(chrom, start.pos+50, sep="_") , CHR=chrom, binMidPoint=(end.pos-start.pos)/2+start.pos, Zcov=(mean - mean(imma.segments$mean))/sd(imma.segments$mean), pval=2*pnorm(-abs(Zcov)), nprobes=n.probes) %>% select(segSize, binName, CHR, binMidPoint, Zcov,pval, nprobes)
 
 gwALL$CHR<- factor(gwALL$CHR, levels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12","13","14","15","16","17","18","19","20","21","22","X", "Y"))
 
@@ -141,6 +146,6 @@ imma.thr.gain= mean(gwALL$Zcov)+nbsd*sd(gwALL$Zcov)
 imma.thr.loss= mean(gwALL$Zcov)-nbsd*sd(gwALL$Zcov)
 ylim=c(imma.thr.loss-1.5, imma.thr.gain+1.5)
 
-write.table(gwALL, "/home/silvia/misc/coverageCNV/table/depth_mean_03X.tsv", quote=F, sep="\t", col.names=T, row.names=F)
+write.table(gwALL, args[6], quote=F, sep="\t", col.names=T, row.names=F)
 
 gwZcov.graph(gwALL, na.rm = TRUE,  imma.thr.gain, imma.thr.loss,  ylim)
