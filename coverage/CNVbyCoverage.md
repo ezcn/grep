@@ -72,9 +72,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
 
 #### 6. run R script to have files with mean depth for each sample[depthMean.R](depthMean.R)
 
-#### 7. analize and plot depth data with R[windsorization_segmentation.R](winsorization_segmentation.R)
-
-#### 8. analize and plot depth data with R[coverageCNV.R](coverageCNV.R)
+#### 7. analize and plot depth data with R[coverageCNV.R](coverageCNV.R)
 
 
 
