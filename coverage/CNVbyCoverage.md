@@ -2,6 +2,7 @@
 60,000 probes is the number of probes of the arrayCGH 
 
 - same nb as array CGH: 60,000 probes of 100bp --> 6,000,000 bp --> 6Mbp/3,600Mbp = 0.0016 of the genome 
+- 1% of the genome: 360,000 probes 100bp --> 36,000,000 --> 36Mbp/3,600Mbp = 0.01 of the genome 
 - 10% of the genome: 3,600,000 probes of 100bp --> 360,000,000 bp --> 360Mbp/3,600Mbp = 0.10 of the genome 
 
 probes generation bedtools Random 
