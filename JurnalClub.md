@@ -12,9 +12,23 @@ https://www.biorxiv.org/content/10.1101/494203v1
 ```
 
 # 3)Human structural variation: mechanisms of chromosome rearrangements
-all chromosomal rearrangements, methods for SV detection and mutational mechanisms
+All chromosomal rearrangements, methods for SV detection and mutational mechanisms
 
 ```
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4600437/
+```
+
+# 4) Multi-axial self-organization properties of mouse embryonic stem cells into gastruloids
+Experiments using gastuloid models
+
+```
+https://www.ncbi.nlm.nih.gov/pubmed/30283134
+```
+
+# 5) Chromosome errors in human eggs shape natural fertility overreproductive life span
+How chromosome errors, or aneuploidy, affect human conception causing pregnancy loss and congenital disorders
+
+```
+https://www.ncbi.nlm.nih.gov/pubmed/31604276
 ```
 
