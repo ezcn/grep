@@ -1,4 +1,4 @@
-# Variatn Effect Prediction
+# Variant Effect Prediction
 
 ### 1) Use [VEP](kore-vep.sh) for predict variant effect 
 ```
