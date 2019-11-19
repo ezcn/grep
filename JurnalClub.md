@@ -38,3 +38,8 @@ Discovery and genotyping of new SV using different techniques and studies on pop
 ```
 https://www.ncbi.nlm.nih.gov/pubmed/26432246
 ```
+# 7) Potential genetic causes of miscarriage in euploid pregnancies: a systematic review
+
+```
+https://academic.oup.com/humupd/article/25/4/452/5509621
+```
