@@ -32,3 +32,9 @@ How chromosome errors, or aneuploidy, affect human conception causing pregnancy 
 https://www.ncbi.nlm.nih.gov/pubmed/31604276
 ```
 
+# 6) An integrated map of structural variation in 2,504 human genomes
+Discovery and genotyping of new SV using different techniques and studies on population diversity of SVs
+
+```
+https://www.ncbi.nlm.nih.gov/pubmed/26432246
+```
