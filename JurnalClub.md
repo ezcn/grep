@@ -11,3 +11,10 @@ https://www.intechopen.com/books/next-generation-sequencing-advances-application
 https://www.biorxiv.org/content/10.1101/494203v1
 ```
 
+# 3)Human structural variation: mechanisms of chromosome rearrangements
+all chromosomal rearrangements, methods for SV detection and mutational mechanisms
+
+```
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4600437/
+```
+
