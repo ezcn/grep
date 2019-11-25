@@ -73,7 +73,10 @@ def main():
 
 	sys.stdout=open(args.o, 'w') 
 	listOfErrors=[]
-	print('Chr','\t','Number_of_Cycle','\t','SNV_mean','\t','Indel_mean','\t','SequenceAlt_mean','\t','Insertion_mean','\t','transcript_ablation','\t','splice_acceptor_variant','\t','splice_donor_variant','\t','stop_gained','\t','frameshift_variant','\t','stop_lost','\t','start_lost','\t','transcript_amplification','\t','inframe_insertion','\t','inframe_deletion','\t','missense_variant','\t','protein_altering_variant','\t','splice_region_variant','\t','incomplete_terminal_codon_variant','\t','start_retained_variant','\t','stop_retained_variant','\t','synonymous_variant','\t','coding_sequence_variant','\t','mature_miRNA_variant','\t','5_prime_UTR_variant','\t','3_prime_UTR_variant','\t','non_coding_transcript_exon_variant','\t','intron_variant','\t','NMD_transcript_variant','\t','non_coding_transcript_variant','\t','upstream_gene_variant','\t','downstream_gene_variant','\t','TFBS_ablation','\t','TFBS_amplification','\t','TF_binding_site_variant','\t','regulatory_region_ablation','\t','regulatory_region_amplification','\t','feature_elongation','\t','regulatory_region_variant','\t','feature_truncation','\t','intergenic_variant')
+	preHeader=['Chr','Number_of_Cycle','SNV_mean','Indel_mean','SequenceAlt_mean','Insertion_mean']
+	Header=preHeader+lSOTerm
+	print ("\t".join([i for i in Header]))
+	#print('Chr','\t','Number_of_Cycle','\t','SNV_mean','\t','Indel_mean','\t','SequenceAlt_mean','\t','Insertion_mean','\t','transcript_ablation','\t','splice_acceptor_variant','\t','splice_donor_variant','\t','stop_gained','\t','frameshift_variant','\t','stop_lost','\t','start_lost','\t','transcript_amplification','\t','inframe_insertion','\t','inframe_deletion','\t','missense_variant','\t','protein_altering_variant','\t','splice_region_variant','\t','incomplete_terminal_codon_variant','\t','start_retained_variant','\t','stop_retained_variant','\t','synonymous_variant','\t','coding_sequence_variant','\t','mature_miRNA_variant','\t','5_prime_UTR_variant','\t','3_prime_UTR_variant','\t','non_coding_transcript_exon_variant','\t','intron_variant','\t','NMD_transcript_variant','\t','non_coding_transcript_variant','\t','upstream_gene_variant','\t','downstream_gene_variant','\t','TFBS_ablation','\t','TFBS_amplification','\t','TF_binding_site_variant','\t','regulatory_region_ablation','\t','regulatory_region_amplification','\t','feature_elongation','\t','regulatory_region_variant','\t','feature_truncation','\t','intergenic_variant')
 	cycle=0
 	element=['SNV','indel','sequence_alteration','deletion','insertion']
 	counter=[]
@@ -156,8 +159,12 @@ def main():
 		for key in dSOTcount:
 			if dSOTcount[key]!=0:
 				dSOTmean[key]=(dSOTfreq[key]/dSOTcount[key])
-		#--------------------------
 		
+		#preResult={'chr':mychr,'cycle':cycle}
+		#Result=preResult.update(dmean)
+		#ResultToPrint=Result.update(dSOTmean)
+		#--------------------------
+		#print ("\t".join([i for i in ResultToPrint]))
 		print(mychr,'\t',cycle,'\t',dmean['SNV'],'\t',dmean['indel'],'\t',dmean['sequence_alteration'],'\t',dmean['insertion'],'\t',dSOTmean['transcript_ablation'],'\t',dSOTmean['splice_acceptor_variant'],'\t',dSOTmean['splice_donor_variant'],'\t',dSOTmean['stop_gained'],'\t',dSOTmean['frameshift_variant'],'\t',dSOTmean['stop_lost'],'\t',dSOTmean['start_lost'],'\t',dSOTmean['transcript_amplification'],'\t',dSOTmean['inframe_insertion'],'\t',dSOTmean['inframe_deletion'],'\t',dSOTmean['missense_variant'],'\t',dSOTmean['protein_altering_variant'],'\t',dSOTmean['splice_region_variant'],'\t',dSOTmean['incomplete_terminal_codon_variant'],'\t',dSOTmean['start_retained_variant'],'\t',dSOTmean['stop_retained_variant'],'\t',dSOTmean['synonymous_variant'],'\t',dSOTmean['coding_sequence_variant'],'\t',dSOTmean['mature_miRNA_variant'],'\t',dSOTmean['5_prime_UTR_variant'],'\t',dSOTmean['3_prime_UTR_variant'],'\t',dSOTmean['non_coding_transcript_exon_variant'],'\t',dSOTmean['intron_variant'],'\t',dSOTmean['NMD_transcript_variant'],'\t',dSOTmean['non_coding_transcript_variant'],'\t',dSOTmean['upstream_gene_variant'],'\t',dSOTmean['downstream_gene_variant'],'\t',dSOTmean['TFBS_ablation'],'\t',dSOTmean['TFBS_amplification'],'\t',dSOTmean['TF_binding_site_variant'],'\t',dSOTmean['regulatory_region_ablation'],'\t',dSOTmean['regulatory_region_amplification'],'\t',dSOTmean['feature_elongation'],'\t',dSOTmean['regulatory_region_variant'],'\t',dSOTmean['feature_truncation'],'\t',dSOTmean['intergenic_variant'])
 
 
