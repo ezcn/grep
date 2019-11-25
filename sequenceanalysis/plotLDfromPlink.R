@@ -18,8 +18,7 @@ data_9s <- subset(data_9,(abs(BP_A - 81063077) <= distance_b) | (abs(BP_B - 8106
 ######2.convert long-to-wide 
 data_9_matrix <- dcast(data_9s, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames 
 myM <- as.matrix(data_9_matrix[ , -1 ]) 
-row.names(myM) <- data_9_matrix$BP_A #I am converting all NAs to 0, reconsider if this is suitable in your case. 
-#myM[ is.na(myM) ] <- 0
+row.names(myM) <- data_9_matrix$BP_A 
 
 ######3.create a mask for loci of interest 
 myMask = myM != 'X' # Hack per inizializzare un dataframe uguale a quello contenente i LD 
@@ -43,8 +42,8 @@ dev.off()
 #####5. new plot
 data_9_matrix <- dcast(data_9s, BP_A ~ BP_B, value.var = "R2") # convert to matrix with column AND rownames 
 myM <- as.matrix(data_9_matrix[ , -1 ]) 
-row.names(myM) <- data_9_matrix$BP_A #I am converting all NAs to 0, reconsider if this is suitable in your case. 
-myM[ is.na(myM) ] <- 0
+row.names(myM) <- data_9_matrix$BP_A 
+myM[ is.na(myM) ] <- 0 #I am converting all NAs to 0, reconsider if this is suitable in your case. 
 
 png("Ldchr9.png", width = 20, height = 15, units = "cm", res = 300)
 LD.plot(myM)
