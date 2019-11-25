@@ -41,6 +41,6 @@ qsub -e /mpba0/vcolonna/gianluca/junkfiles/plotR.err -o /mpba0/vcolonna/gianluca
 ### 5.4) CSQfreq > 0 wrap for CSQrank and  fill by VariantClass [plot.png](plotWrapCSQrankMTZ.png)
 
 
-# 6) Instead of obtain a big file I have made another script in python [AFS-grepMean.py](AFS-grepMean.py) for our Population and [AFS-hgdpMean.py](AFS-hgdpMean.py) for the Control-Population.
+# 6) Instead of obtain a big file I have made another script in python [AFS-grepMean.py](AFS-grepMean.py) for our Population and [AFS-hgdpMean.py](AFS-hgdpMean.py) for the Control one.
 
 ### 6.1) [This](hgdp_grep_mean.tsv) is an Output file obtained for each Chromosome of Control-Population (HGDP) and in each row there is a "MEAN" for each Variant_class and Consequence of this Chromosome , repeted "n" time for "6" (our population is 6 samples) randomized samples in HGDP population. In the end we have also one line for each Chromosome for my GREP population.
