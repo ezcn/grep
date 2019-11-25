@@ -45,4 +45,4 @@ qsub -e /mpba0/vcolonna/gianluca/junkfiles/plotR.err -o /mpba0/vcolonna/gianluca
 
 ### 6.1) [This](hgdp_grep_mean.tsv) is an Output file obtained for each Chromosome of Control-Population (HGDP) and in each row there is a "MEAN" for each Variant_class and Consequence of this Chromosome , repeted "n" time for "6" (our population is 6 samples) randomized samples in HGDP population. In the end we have also one line for each Chromosome for my GREP population.
 
-# 7) [this](hgdp_grep_mean.tsv) file have to be processed with R for visualize an enrichment in specific Variant Class or Consequences.
+# 7) The output [file](hgdp_grep_mean.tsv) have to be processed with R for visualize an enrichment in specific Variant Class or Consequences.
