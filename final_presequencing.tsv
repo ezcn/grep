@@ -1,0 +1,119 @@
+grepID	type	shippedToNapoli	qf_sex	qf_outcome	qf_type	array_outcome	array_quality	qf_arraycgh_outcome	Result	quality
+AS001	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS002	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS003	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS004	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS005	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS006	MiscarriageFirst	20180306	femmina	ok	normale	normale	good	normal cariotype	Sequence	Quantity, Smear
+AS007	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS008	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS009	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS010	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS011	MiscarriageRecurrent	20190408	femmina	alterations	trisomia22	notnecessary	notnecessary	22_trisomy	NA	NA
+AS012	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS013	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS014	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS015	MiscarriageFirst	20180508	femmina	ok	normale	unclear	low	unclear	NA	NA
+AS016	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS017	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS018	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS019	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS020	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS021	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS022	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS023	MiscarriageFirst	no	femmina	ok	normale	normale	good	normal cariotype	NA	NA
+AS024	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS025	MiscarriageFirst	no	maschio	ok	normale	normale	verylow	unclear	NA	NA
+AS026	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS027	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS028	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS029	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS030	MiscarriageRecurrent	20180508	maschio	ok	normale	unclear	verylow	unclear	NA	NA
+AS031	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS032	MiscarriageRecurrent	20180306	maschio	alterations	trisomia22	trisomia22	low	22_trisomy	NA	NA
+AS034	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS035	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS036	MiscarriageFirst	20180508	femmina	ok	normale	unclear	verylow	unclear	NA	NA
+AS037	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS038	MiscarriageRecurrent	20190408	maschio	alterations	trisomia21	notnecessary	notnecessary	21_trisomy	NA	NA
+AS039	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS040	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS041	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS042	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS043	MiscarriageFirst	20180508	maschio	ok	normale	trisomia7	low	7_trisomy	NA	NA
+AS044	MiscarriageRecurrent	20190408	femmina	alterations	trisomia15	notnecessary	notnecessary	15_trisomy	NA	NA
+AS045	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS046	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS047	MiscarriageRecurrent	20180508	maschio	alterations	trisomia22	notnecessary	notnecessary	22_trisomy	NA	NA
+AS048	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS049	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS050	MiscarriageFirst	no	maschio	alterations	trisomia13	notnecessary	notnecessary	13_trisomy	NA	NA
+AS051	MiscarriageFirst	20180508	femmina	alterations	monosomiaX	notnecessary	notnecessary	X_monosomy	NA	NA
+AS052	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS053	MiscarriageFirst	20180508	femmina	alterations	trisomia16	notnecessary	notnecessary	16_trisomy	NA	NA
+AS054	MiscarriageFirst	20180508	maschio	ok	normale	normale	good	normal cariotype	Sequence	Quantity,Smear
+AS055	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS056	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS057	MiscarriageRecurrent	20180306	maschio	alterations	trisomia22	notnecessary	notnecessary	22_trisomy	NA	NA
+AS058	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS059	MiscarriageFirst	20180508	femmina	contamination	contamination	notnecessary	notnecessary	maternal contamination	NA	NA
+AS060	MiscarriageRecurrent	20190408	femmina	contamination	contamination	contamination	contamination	maternal contamination	NA	NA
+AS061	MiscarriageRecurrent	20180508	femmina	alterations	trisomia16	notnecessary	notnecessary	16_trisomy	NA	NA
+AS062	MiscarriageFirst	no	femmina	alterations	unbalanced18	duplication22	good	22_duplication	NA	NA
+AS063	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS064	MiscarriageFirst	20180508	femmina	ok	normale	unclear	good	unclear	Sequence	Quantity
+AS065	MiscarriageFirst	20180508	maschio	ok	normale	unclear	good	unclear	Fail	Quantity
+AS066	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS067	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS068	MiscarriageFirst	20180508	femmina	ok	normale	notAvailable	notAvailable	notAvailable	NA	NA
+AS069	MiscarriageFirst	20180306	femmina	ok	normale	normale	good	normal cariotype	Fail	Quantity
+AS070	MiscarriageRecurrent	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS071	MiscarriageFirst	20180508	maschio	ok	normale	trisomia22	good	22_trisomy	NA	NA
+AS072	MiscarriageFirst	20180508	femmina	contamination	contamination	notnecessary	notnecessary	maternal contamination	NA	NA
+AS073	MiscarriageRecurrent	20180508	maschio	alterations	trisomia18	notnecessary	notnecessary	18_trisomy	NA	NA
+AS074	MiscarriageFirst	20180508	femmina	ok	normale	trisomia8	good	8_trisomy	Sequence	Smear
+AS075	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS076	MiscarriageFirst	20180508	femmina	alterations	trisomia13	notnecessary	notnecessary	13_trisomy	NA	NA
+AS077	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS078	MiscarriageFirst	20180508	femmina	ok	normale	unclear	low	unclear	NA	NA
+AS079	MiscarriageRecurrent	20190408	femmina	contamination	contamination	contamination	contamination	maternal contamination	NA	NA
+AS080	MiscarriageRecurrent	20180306	maschio	ok	normale	unclear	low	unclear	Fail	Quantity
+AS081	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS082	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS083	MiscarriageRecurrent	20180508	femmina	alterations	trisomia21	notnecessary	notnecessary	21_trisomy	NA	NA
+AS084	MiscarriageRecurrent	20190408	NA	NA	NA	NA	NA	NA	NA	NA
+AS085	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS086	MiscarriageFirst	20180306	femmina	ok	normale	trisomia12	good	12_trisomy	NA	NA
+AS087	MiscarriageRecurrent	20180306	maschio	ok	normale	normale	good	normal cariotype	Fail	Quantity, Smear
+AS088	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS089	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS090	MiscarriageFirst	20180306	maschio	ok	normale	normale	good	normal cariotype	Sequence	Quantity, Smear
+AS091	MiscarriageFirst	20180306	masc hio	alterations	triploide	notnecessary	notnecessary	triploid	NA	NA
+AS092	MiscarriageRecurrent	20180306	maschio	alterations	trisomia22	notnecessary	notnecessary	22_trisomy	NA	NA
+AS093	MiscarriageRecurrent	20180508	femmina	ok	normale	unclear	low	unclear	NA	NA
+AS094	MiscarriageRecurrent	20180508	femmina	ok	normale	normale	good	normal cariotype	Sequence	Smear2
+AS095	MiscarriageFirst	20180508	femmina	alterations	monosomiaX	notnecessary	notnecessary	X_monosomy	NA	NA
+AS096	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS097	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS098	MiscarriageFirst	20180508	femmina	contamination	contamination	notnecessary	notnecessary	maternal contamination	NA	NA
+AS099	MiscarriageFirst	20180508	na	alterations	trisomia18	notnecessary	notnecessary	18_trisomy	NA	NA
+AS100	MiscarriageRecurrent	20190408	femmina	alterations	trisomia16	notnecessary	notnecessary	16_trisomy	NA	NA
+AS101	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS103	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS104	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS105	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS106	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS107	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS108	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS109	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS110	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS111	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS112	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS113	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS114	MiscarriageRecurrent	20190408	femmina	alterations	trisomia22	notnecessary	notnecessary	22_trisomy	NA	NA
+AS115	MiscarriageRecurrent	20190408	maschio	alterations	trisomia16	notnecessary	notnecessary	16_trisomy	NA	NA
+AS116	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS117	MiscarriageFirst	20180508	NA	NA	NA	NA	NA	NA	NA	NA
+AS118	MiscarriageRecurrent	20190408	femmina	ok	normale	trisomia3	good	3_trisomy	NA	NA
+AS119	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
+AS120	MiscarriageFirst	no	NA	NA	NA	NA	NA	NA	NA	NA
