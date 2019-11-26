@@ -76,28 +76,15 @@ def main():
 	preHeader=['Chr','Number_of_Cycle','SNV_mean','Indel_mean','SequenceAlt_mean','Insertion_mean']
 	Header=preHeader+lSOTerm
 	print ("\t".join([i for i in Header]))
-	#print('Chr','\t','Number_of_Cycle','\t','SNV_mean','\t','Indel_mean','\t','SequenceAlt_mean','\t','Insertion_mean','\t','transcript_ablation','\t','splice_acceptor_variant','\t','splice_donor_variant','\t','stop_gained','\t','frameshift_variant','\t','stop_lost','\t','start_lost','\t','transcript_amplification','\t','inframe_insertion','\t','inframe_deletion','\t','missense_variant','\t','protein_altering_variant','\t','splice_region_variant','\t','incomplete_terminal_codon_variant','\t','start_retained_variant','\t','stop_retained_variant','\t','synonymous_variant','\t','coding_sequence_variant','\t','mature_miRNA_variant','\t','5_prime_UTR_variant','\t','3_prime_UTR_variant','\t','non_coding_transcript_exon_variant','\t','intron_variant','\t','NMD_transcript_variant','\t','non_coding_transcript_variant','\t','upstream_gene_variant','\t','downstream_gene_variant','\t','TFBS_ablation','\t','TFBS_amplification','\t','TF_binding_site_variant','\t','regulatory_region_ablation','\t','regulatory_region_amplification','\t','feature_elongation','\t','regulatory_region_variant','\t','feature_truncation','\t','intergenic_variant')
 	cycle=0
 	element=['SNV','indel','sequence_alteration','deletion','insertion']
-	counter=[]
-	for i in element:
-		counter.append(0)
-	counterSOTerm=[]
-	for i in lSOTerm:
-		counterSOTerm.append(0)
 	while cycle < args.c:
 		cycle+=1
 		myinput=gzip.open(args.f, 'r')
 		dInfo={}
 		column2retain=[]
-		dcount=dict(zip(element,counter))
-		dmean=dict(zip(element,counter))
-		dfreq=dict(zip(element,counter))
-		dSOTcount=dict(zip(lSOTerm,counterSOTerm))
-		dSOTmean=dict(zip(lSOTerm,counterSOTerm))
-		dSOTfreq=dict(zip(lSOTerm,counterSOTerm))
+                dElem={}; dSOT={}; dImpact={}
 		sampleToConsider=random.sample(EURsorted, 6)
-		#print(cycle)
 		for line in myinput:
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 			if re.match('##', decodedLine):
@@ -143,31 +130,27 @@ def main():
 						myindexes=[]
 						myindexes.append(lSOTerm.index(cons))
 						mostSevereCsq=lSOTerm[min(myindexes)]
-					
-					#print(freqCSQ_REF_ALT[0])
-					for key in dSOTcount:
-						if dCsq['Consequence'] in key and freqCSQ_REF_ALT[0]!='NA':
-							dSOTcount[dCsq['Consequence']]+=int(1)
-							dSOTfreq[dCsq['Consequence']]+=float(freqCSQ_REF_ALT[0])
-					for key in dcount:
-						if dCsq['VARIANT_CLASS'] in key and freqCSQ_REF_ALT[0]!='NA':
-							dcount[dCsq['VARIANT_CLASS']]+=int(1)
-							dfreq[dCsq['VARIANT_CLASS']]+=float(freqCSQ_REF_ALT[0])
-		for key in dcount:
-			if dcount[key]!=0:
-				dmean[key]=(dfreq[key]/dcount[key])
-		for key in dSOTcount:
-			if dSOTcount[key]!=0:
-				dSOTmean[key]=(dSOTfreq[key]/dSOTcount[key])
-		
-		#preResult={'chr':mychr,'cycle':cycle}
-		#Result=preResult.update(dmean)
-		#ResultToPrint=Result.update(dSOTmean)
-		#--------------------------
-		#print ("\t".join([i for i in ResultToPrint]))
-		print(mychr,'\t',cycle,'\t',dmean['SNV'],'\t',dmean['indel'],'\t',dmean['sequence_alteration'],'\t',dmean['insertion'],'\t',dSOTmean['transcript_ablation'],'\t',dSOTmean['splice_acceptor_variant'],'\t',dSOTmean['splice_donor_variant'],'\t',dSOTmean['stop_gained'],'\t',dSOTmean['frameshift_variant'],'\t',dSOTmean['stop_lost'],'\t',dSOTmean['start_lost'],'\t',dSOTmean['transcript_amplification'],'\t',dSOTmean['inframe_insertion'],'\t',dSOTmean['inframe_deletion'],'\t',dSOTmean['missense_variant'],'\t',dSOTmean['protein_altering_variant'],'\t',dSOTmean['splice_region_variant'],'\t',dSOTmean['incomplete_terminal_codon_variant'],'\t',dSOTmean['start_retained_variant'],'\t',dSOTmean['stop_retained_variant'],'\t',dSOTmean['synonymous_variant'],'\t',dSOTmean['coding_sequence_variant'],'\t',dSOTmean['mature_miRNA_variant'],'\t',dSOTmean['5_prime_UTR_variant'],'\t',dSOTmean['3_prime_UTR_variant'],'\t',dSOTmean['non_coding_transcript_exon_variant'],'\t',dSOTmean['intron_variant'],'\t',dSOTmean['NMD_transcript_variant'],'\t',dSOTmean['non_coding_transcript_variant'],'\t',dSOTmean['upstream_gene_variant'],'\t',dSOTmean['downstream_gene_variant'],'\t',dSOTmean['TFBS_ablation'],'\t',dSOTmean['TFBS_amplification'],'\t',dSOTmean['TF_binding_site_variant'],'\t',dSOTmean['regulatory_region_ablation'],'\t',dSOTmean['regulatory_region_amplification'],'\t',dSOTmean['feature_elongation'],'\t',dSOTmean['regulatory_region_variant'],'\t',dSOTmean['feature_truncation'],'\t',dSOTmean['intergenic_variant'])
+                                                
+                                                if freqCSQ_REF_ALT[0]!='NA':
+                                                    if not dCsq['Consequence'] in dSOT: dSOT[dCsq['Consequence']]=[0,0] #inizialize di dictionary with [counter, allele freq] if the key is not present 
+                                                    dSOT[dCsq['Consequence']][0]+=1 #add +1 to the counter  
+                                                    dSOT[dCsq['Consequence']][1]+=float(freqCSQ_REF_ALT[0]) #add the value of the consequence allele 
+                                                    if not dCsq['VARIANT_CLASS'] in dElem: dElem[dCsq['VARIANT_CLASS']]=[0,0]
+                                                    
+                                                    dElem[dCsq['VARIANT_CLASS']][0]+=1
+                                                    dElem[dCsq['VARIANT_CLASS']][1]+=float(freqCSQ_REF_ALT[0])
+                                                else: listOfErrors.append((mychr, mypos,myref, myalt, dCsq["Allele"]) ) #to be printed in the error file to compare allele matching  
+        
+            myres=[mychr]
+            for vel in element:
+                if vel in dElem:  myres.append(dElem[vel][1]/float(dElem[vel][0]))
+                else: myres.append('na')
+            for vcsq in lSOTerm:
+                if vcsq in dSOT: myres.append(dSOT[vel][1]/float(dSOT[vel][0]))
+                else: myres.append('na')
 
+            print ("\t".join(map(str, myres) ))
 
-	
+						
 if __name__ == '__main__':
 	main()
