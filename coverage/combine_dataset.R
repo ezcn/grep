@@ -142,7 +142,7 @@ ggplot(subset(total, chrom==12 ) , aes(x=start.pos, y=Zcov, xend=end.pos, yend=Z
 
 # new variable to plot only values >0.95 quantile e <0.05 
 
-new<-myd %>% filter(sampleID=="AS054" | sampleID=="AS064" |sampleID=="AS074" |sampleID=="AS094" |sampleID=="AS090" ) %>% group_by(type,newvar) %>% mutate(plot=(ifelse(type=="array", "yes", ifelse(Zcov>quantile(Zcov, .95) | Zcov<quantile(Zcov, .05), "yes", "no"))))
+new<-total %>% filter(sampleID=="AS054" | sampleID=="AS064" |sampleID=="AS074" |sampleID=="AS094" |sampleID=="AS090" ) %>% group_by(type,newvar) %>% mutate(plot=(ifelse(type=="array", "yes", ifelse(Zcov>quantile(Zcov, .95) | Zcov<quantile(Zcov, .05), "yes", "no"))))
 
 new$plotf=as.factor(new$plot)
 
