@@ -60,12 +60,12 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do for c in $(seq 1 22); do qsub 
 ```
 for chrX
 ```
-for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrX.intersect.err -o /mpba0/vcolonna/silvia/out/$id.chrX.intersect.out -v id="$id",chr="chrX" -N $id.chrX.int kore-bedtoolsIntersect.sh; done; done
+for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrX.intersect.err -o /mpba0/vcolonna/silvia/out/$id.chrX.intersect.out -v id="$id",chr="chrX" -N $id.chrX.int kore-bedtoolsIntersect.sh; done
 
 ```
 for chrY
 ```
-for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrY.intersect.err -o /mpba0/vcolonna/silvia/out/$id.chrY.intersect.out -v id="$id",chr="chrY" -N $id.chrY.int kore-bedtoolsIntersect.sh; done; done
+for id in AS054 AS090; do qsub -e /mpba0/vcolonna/silvia/err/$id.chrY.intersect.err -o /mpba0/vcolonna/silvia/out/$id.chrY.intersect.out -v id="$id",chr="chrY" -N $id.chrY.int kore-bedtoolsIntersect.sh; done
 
 ```
 
@@ -82,6 +82,6 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
       [5]=plot name in ggsave
       [6]=output file
 
-
+#### 8. Merge all the output files of the previous step and plot results[combine_dataset.R](combine_dataset.R) 
 
 
