@@ -82,6 +82,6 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094; do qsub -e /mpba0/vcolonna/silvia
       [5]=plot name in ggsave
       [6]=output file
 
-
+#### 8. Merge all the output files of the previous step and plot results[combine_dataset.R](combine_dataset.R) 
 
 
