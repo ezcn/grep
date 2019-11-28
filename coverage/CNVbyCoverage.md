@@ -5,7 +5,7 @@
 - 1% of the genome: 360,000 probes 100bp --> 36,000,000 --> 36Mbp/3,600Mbp = 0.01 of the genome 
 - 10% of the genome: 3,600,000 probes of 100bp --> 360,000,000 bp --> 360Mbp/3,600Mbp = 0.10 of the genome 
 
-probes generation bedtools Random 
+probes generation [bedtools Random](jobs/kore-bedtoolsRandom.sh) 
 
 #### 0b Rationale for coverage 
 - 30X --> 100% of reads 
