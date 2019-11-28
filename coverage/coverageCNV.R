@@ -8,6 +8,14 @@ library(copynumber)
 library(DNAcopy)
 library(tidyr)
 
+#args list
+  #[1]= input file
+  #[2]= gamma
+  #[3]=kmin
+  #[4]=experimentset(plot title)
+  #[5]=plot name in ggsave
+  #[6]=output file
+
 
 args = commandArgs(trailingOnly=TRUE)
 imma.gamma=as.numeric(args[2])
