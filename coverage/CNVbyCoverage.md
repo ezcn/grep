@@ -12,6 +12,7 @@ probes generation [bedtools Random](jobs/kore-bedtoolsRandom.sh)
 - 15X --> 50% of reads 
 - 1X --> 3.3% of reads 
 
+bam files created with [samtools view](jobs/kore-downsamplingRandom.sh)
 
 #### 1. estimate read depth for all samples (only for positions of CGH probes)[kore-chrdepth.sh](jobs/kore-chrdepth.sh)
 for chr 1-22
