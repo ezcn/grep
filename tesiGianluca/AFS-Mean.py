@@ -7,7 +7,7 @@ import gzip
 import random
 #from __future__ import division
 
-########################################################
+######################################################## prova
 def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm)
 """
 VEPannotatedVCF= vcf annotated using VEP 
