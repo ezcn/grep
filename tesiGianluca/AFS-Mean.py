@@ -31,7 +31,7 @@ lSOTerm= list of Sequence Ontolgy terms that define variant consequences
 					temp=i.split('=')
 					dInfo[temp[0]]=temp[1]
 					
-				else: pass 
+				else: pass
 					
 			##~~ work on dInfo[CSQ]
 			
