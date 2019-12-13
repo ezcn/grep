@@ -47,9 +47,9 @@ lSOTerm= list of Sequence Ontolgy terms that define variant consequences
 				mycsqAllele=dCsq['Allele']
 				GTfields=[]
 				for col in range(args.n): GTfields+=[linesplit[column2retain[col]]]
-				nbAploidSamples=len(GTfields)*2
+				#nbAploidSamples=len(GTfields)*2
 				
-				freqCSQ_REF_ALT=gp.AnnotateFreqCSQ_REF_ALT(mycsqAllele,myref, myalt, nbAploidSamples, GTfields) # calculate allelic frequencies 
+				freqCSQ_REF_ALT=gp.AnnotateFreqCSQ_REF_ALT(mycsqAllele,myref, myalt, GTfields) # calculate allelic frequencies 
 				
 				for cons in dCsq['Consequence'].split('&'):
 					#~~~~~~~~~~~~ assign severity score at the  most severe csq
@@ -62,7 +62,7 @@ lSOTerm= list of Sequence Ontolgy terms that define variant consequences
 
 					else: listOfErrors.append((mychr, mypos,myref, myalt, dCsq["Allele"]) ) #to be printed in the error file to compare allele matching  
 	
-	CsqMeans=[mychr]
+	CsqMeans=[mychr,freqCSQ_REF_ALT[4]]
 	for vcsq in lSOTerm:
 		if vcsq in dSOT: CsqMeans.append(dSOT[vel][1]/float(dSOT[vel][0]))
 		else: CsqMeans.append('na')
@@ -127,17 +127,17 @@ def main():
 
 	random.seed(args.s) ## need a sorted list of EUR
 	
-	GREPtoretain=[key  for (key, value) in dSampleRegion.items() if value == 'GREP']
+	#GREPtoretain=[key  for (key, value) in dSampleRegion.items() if value == 'GREP']
 	#sampleToConsider=random.sample(EUR, 6)
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
 
 	sys.stdout=open(args.o, 'w') 
 	listOfErrors=[]
-	preHeader=['replicate', 'chr']
+	preHeader=['replicate', 'chr','heterozigosity']
 	Header=preHeader+lSOTerm
 	print ("\t".join([i for i in Header]))
-	cycle=
+	cycle=0
 	while cycle < args.c:
 		cycle+=1
 		dInfo={};  dSOT={}; dImpact={}
@@ -150,10 +150,10 @@ def main():
 		print ("\t".join(map(str, myres) ))
 		
 		
-	myresGREP=[0]
-	vectorOfMeansGREP=averagesFromFile(args.f, GREPtoretain ,  lSOTerm)
-	myresGREP+=vectorOfMeansGREP
-	print ("\t".join(map(str, myresGREP) ))
+	#myresGREP=[0]
+	#vectorOfMeansGREP=averagesFromFile(args.f, GREPtoretain ,  lSOTerm)
+	#myresGREP+=vectorOfMeansGREP
+	#print ("\t".join(map(str, myresGREP) ))
 
 						
 if __name__ == '__main__':

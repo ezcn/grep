@@ -93,9 +93,8 @@ def main():
 					myres+=[mychr, mypos]
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
 					#print (dCsq) 
-                                        myres.append(dCsq['Existing_variation']) # Existing_variation = identificativo 'rs'
-	
-					#~~~~~~~~~~~  identify the allele with consequences
+                                        myres.append(dCsq['Existing_variation']) # Existing_variation = identificativo rs
+                                        #~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
 					#~~~~~~~~~~~  csq allele features : number of allele with consequences and genotype likelihood  
 					featMultiOut=gp.csqAlleleFeaturesMulti( dFormat["GT"], mycsqAllele, myref, myalt, dInfo["AC"], dFormat["GL"] ) ## features of csqAll				
