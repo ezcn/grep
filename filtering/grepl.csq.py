@@ -24,11 +24,10 @@ def main():
 
 	## READ weights 
 	dWeights={}
-	for wline in open (args.w): 
- 		w=wline.rstrip().split() 
+	for wline in open (args.w):
+		w=wline.rstrip().split() 
 		dWeights[w[1]]=w[2]
-
-	##  READ VEP consequences rank ########
+        ##  READ VEP consequences rank ########
 	"""read external file with info on VEP consequences  """
 	dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
 	dSOTermRank={}
@@ -100,7 +99,7 @@ def main():
 					myres+=[mychr, mypos]
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
 					#print (dCsq) 
-                                        myres.append(dCsq['Existing_variation']) # Existing_variation = identificativo 'rs'
+					myres.append(dCsq['Existing_variation']) # Existing_variation = identificativo 'rs'
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
 					#~~~~~~~~~~~  csq allele features : number of allele with consequences and genotype likelihood  
@@ -160,8 +159,8 @@ def main():
 					myres.append(DDD)
 					
 					###~~~ List of miscarriages Madhuri 
-                                        if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeigths[wMisc]
-                                        myres.append(DDD)
+					if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeigths[wMisc]
+					myres.append(DDD)
 
 					###~~~ List of lethal genes in mouse 
 						
