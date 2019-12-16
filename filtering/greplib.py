@@ -47,7 +47,7 @@ def csqAlleleFeaturesMulti(genotype, csqAllele, refAllele, altAlleles, altAllele
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def checkFreq (listFreq, threshold): 
-""" check if a variant is rare:  none of the populations in listfreq has frequency greater than threshold"""
+# check if a variant is rare:  none of the populations in listfreq has frequency greater than threshold
 	rare=True
 	if len(listFreq) >0: 
 		for freq in listFreq:

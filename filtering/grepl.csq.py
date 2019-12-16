@@ -166,9 +166,9 @@ def main():
 					if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeig['wMisc']
 					myres.append(DDD)
 
-					###~~~ List of candidate lethal genes 
-                                        if re.search("ANN_6", decodedLine): lethal=True; gpScore+=1*dWeig['wLethal']
-                                        myres.append(lethal)
+					###~~~ List of candidate lethal genes
+					if re.search("ANN_6", decodedLine): lethal=True; gpScore+=1*dWeig['wLethal']
+					myres.append(lethal)
 
 					##~~~~~~~~~~ ANNOVAR 
 					##~~~ CONSERVATION SCORE 
