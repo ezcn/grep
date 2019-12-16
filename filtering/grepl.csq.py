@@ -144,7 +144,7 @@ def main():
 					elif rare=="NOB": gpScore+=1*dWeig['wNOB']
 				
 					#~~~~~~~~~~ check if row have Embryo,CellCycle,DDD,GmomAD genes
-					embryo = DDD = cellcycle = gnomAD = miscarriages = False 
+					embryo = DDD = cellcycle = gnomAD = miscarriages = lethal = False  
 				
 					###~~~  Gene Ontology  embryo development GO:0009790	
 					if re.search("ANN_1", decodedLine): embryo=True; gpScore+=1*dWeig['wEmbryoDev']
