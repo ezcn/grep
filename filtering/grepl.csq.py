@@ -23,10 +23,11 @@ def main():
 	
 
 	## READ weights 
-	dWeights={}
+	dWeig={}
 	for wline in open (args.w):
 		w=wline.rstrip().split() 
-		dWeights[w[1]]=w[2]
+		dWeig[w[1]]=int(w[2])
+	#print (dWeights)
         ##  READ VEP consequences rank ########
 	"""read external file with info on VEP consequences  """
 	dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
@@ -55,7 +56,7 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD",'\n']
+	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage",  "gpscore" ,'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
 	for line in gzip.open(args.f, 'r'):
@@ -111,7 +112,7 @@ def main():
 					else: 
 						myres+=featMultiOut; 
 						csqAllCount=int(featMultiOut[1])
-						gpScore+=featMultiOut[1]*dWeigths[wCAC]
+						gpScore+=featMultiOut[1] * dWeig['wCAC']
 
 					#~~~~~~~~~~~ append ENSTID to myres	
 					if  dCsq['Feature'] is not '':	myres.append(dCsq['Feature'])
@@ -124,42 +125,45 @@ def main():
 					mostSevereCsq=lSOTerm[min(myindexes)]
 					myres.append( dSOTermRank[mostSevereCsq ]) ## score based on the impact of the consequence       	
 					myres.append( dSOTermFineRank[mostSevereCsq ])
-					gpScore+=dSOTermFineRank[mostSevereCsq ]* dWeigths[wRank]	
+					gpScore+=dSOTermFineRank[mostSevereCsq ]* dWeig['wRank']	
 					#~~~~~~~~~~~~~~ find out if a variant is rare 
-					listOfRelevantPopulations=[]	
+					listOfRelevantPopulations=[]	# vector with 
 					listOfVEPPopulations=["AFR_AF", "AMR_AF", "EAS_AF", "EUR_AF", "SAS_AF", "gnomAD_AFR_AF", "gnomAD_AMR_AF", "gnomAD_ASJ_AF", "gnomAD_EAS_AF", "gnomAD_FIN_AF", "gnomAD_NFE_AF", "gnomAD_OTH_AF", "gnomAD_SAS_AF"] #data from VEP data format is a float or NULL (empty )
-					for vp in listOfVEPPopulations: 
-						listOfRelevantPopulations.append(dCsq[vp])
-					listOfAnnovarPopulations=["ExAC_ALL","ExAC_AFR","ExAC_AMR","ExAC_EAS","ExAC_FIN","ExAC_NFE","ExAC_OTH","ExAC_SAS"]
-					for ap in listOfAnnovarPopulations: 
-						if dInfo[ap] !=  ".": listOfRelevantPopulations.append(dInfo[ap])			
+					for vp in listOfVEPPopulations:
+						listOfRelevantPopulations.append(dCsq[vp])    
+
+					#listOfAnnovarPopulations=["ExAC_ALL","ExAC_AFR","ExAC_AMR","ExAC_EAS","ExAC_FIN","ExAC_NFE","ExAC_OTH","ExAC_SAS"]
+					#for ap in listOfAnnovarPopulations: #annovar mette "." quanod e' vuoto
+					#	if dInfo[ap] !=  ".": listOfRelevantPopulations.append(dInfo[ap])			
+
 					freqlist = [float(x) for x in listOfRelevantPopulations if x ] 
+				
 					rare = gp.checkFreq (freqlist, args.r) # check if it is a rare variant (af<thresh)  
 					myres.append(rare)
-					if rare== True: gpScore+=1*dWeigths[wRare] 
-					elif rare=="NOB": gpScore+=1*dWeigths[wNOB]
+					if rare== True: gpScore+=1*dWeig['wRare'] 
+					elif rare=="NOB": gpScore+=1*dWeig['wNOB']
 				
 					#~~~~~~~~~~ check if row have Embryo,CellCycle,DDD,GmomAD genes
 					embryo = DDD = cellcycle = gnomAD = miscarriages = False 
 				
 					###~~~  Gene Ontology  embryo development GO:0009790	
-					if re.search("ANN_1", decodedLine): embryo=True; gpScore+=1*dWeigths[wEmbryoDev]
+					if re.search("ANN_1", decodedLine): embryo=True; gpScore+=1*dWeig['wEmbryoDev']
 					myres.append(embryo)
 
 					###~~~ gene in Loss of Function list 	source? 
-					if re.search("ANN_4", decodedLine): gnomAD=True; gpScore+=1*dWeigths[wGnomeAD]
+					if re.search("ANN_4", decodedLine): gnomAD=True; gpScore+=1*dWeig['wGnomeAD']
 					myres.append(gnomAD)
 
 					###~~~ gene ontology cell cycle  GO:XXXXX
-					if re.search("ANN_3", decodedLine): cellcycle=True; gpScore+=1*dWeigths[wCellCycle]
+					if re.search("ANN_3", decodedLine): cellcycle=True; gpScore+=1*dWeig['wCellCycle']
 					myres.append(cellcycle)
 
 					###~~~ DDD
-					if re.search("ANN_2", decodedLine): DDD=True; gpScore+=1*dWeigths[wDDD]
+					if re.search("ANN_2", decodedLine): DDD=True; gpScore+=1*dWeig['wDDD']
 					myres.append(DDD)
 					
 					###~~~ List of miscarriages Madhuri 
-					if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeigths[wMisc]
+					if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeig['wMisc']
 					myres.append(DDD)
 
 					###~~~ List of lethal genes in mouse 

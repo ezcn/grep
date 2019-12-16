@@ -1,0 +1,75 @@
+chr	pos	Existing_variation	csqAllel	csqAlleleCount	GTLiklihood	ENSTID	ImpactScore	FineImpactScore	rare	Embryo	GnomAD	CellCycle	DDD	miscarriage	gpscore	
+chr5	64548	rs6694994	C	1	0	ENST00000536055	4	35	True	True	True	True	True	True	41
+chr1	10623	rs1207502826	C	2	0	na	1	10	NOB	False	False	False	False	False	13
+chr1	10623	rs1207502826	C	2	0	ENST00000456328	1	10	NOB	False	False	False	False	False	13
+chr1	10623	rs1207502826	C	2	0	ENST00000488147	1	9	NOB	False	False	False	False	False	12
+chr1	95068	rs867757274	A	1	0	ENST00000466430	1	13	NOB	False	True	False	False	False	16
+chr1	95068	rs867757274	A	1	0	ENST00000477740	1	13	NOB	False	True	False	False	False	16
+chr1	95068	rs867757274	A	1	0	ENST00000495576	1	10	NOB	False	True	False	False	False	13
+chr1	942451	rs6672356	C	2	0	ENST00000327044	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000341065	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000342066	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000420190	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000455979	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000464948	1	14	False	False	True	False	False	False	17
+chr1	942451	rs6672356	C	2	0	ENST00000466827	1	14	False	False	True	False	False	False	17
+chr1	942451	rs6672356	C	2	0	ENST00000474461	1	14	False	False	True	False	False	False	17
+chr1	942451	rs6672356	C	2	0	ENST00000477976	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000478729	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000483767	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000496938	1	9	False	False	True	False	False	False	12
+chr1	942451	rs6672356	C	2	0	ENST00000616016	2	19	False	False	True	False	False	False	22
+chr1	942451	rs6672356	C	2	0	ENST00000616125	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000617307	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000618181	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000618323	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000618779	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000620200	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENST00000622503	3	25	False	False	True	False	False	False	28
+chr1	942451	rs6672356	C	2	0	ENSR00000249804	1	2	False	False	True	False	False	False	5
+chr1	942451	rs6672356	C	2	0	ENSR00000344437	1	2	False	False	True	False	False	False	5
+chr1	1519044	rs147532057	T	1	0	ENST00000339113	1	13	NOB	False	True	False	True	True	17
+chr1	1519044	rs147532057	T	1	0	ENST00000378755	1	13	NOB	False	True	False	True	True	17
+chr1	1519044	rs147532057	T	1	0	ENST00000378756	1	13	NOB	False	True	False	True	True	17
+chr1	1519044	rs147532057	T	1	0	ENST00000429957	1	13	NOB	False	True	False	True	True	17
+chr1	1519044	rs147532057	T	1	0	ENST00000439513	1	9	NOB	False	True	False	True	True	13
+chr1	1519044	rs147532057	T	1	0	ENST00000536055	1	13	NOB	False	True	False	True	True	17
+chr1	1532798	rs6694994	C	1	0	ENST00000339113	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000378733	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000378755	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000378756	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000400830	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000425828	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000536055	1	13	False	False	True	False	True	True	16
+chr1	1368763	rs36066545	A	1	0	ENST00000321751	1	9	False	False	True	True	False	False	12
+chr1	1368763	rs36066545	A	1	0	ENST00000338338	1	9	False	False	True	True	False	False	12
+chr1	1368763	rs36066545	A	1	0	ENST00000338370	1	9	False	False	True	True	False	False	12
+chr1	1368763	rs36066545	A	1	0	ENST00000378853	1	9	False	False	True	True	False	False	12
+chr1	1330690	rs560700595	G	1	0	ENST00000339381	1	10	True	True	True	False	True	True	15
+chr1	1330690	rs560700595	G	1	0	ENST00000343938	1	9	True	True	True	False	True	True	14
+chr1	1330690	rs560700595	G	1	0	ENST00000378888	1	9	True	True	True	False	True	True	14
+chr1	1330690	rs560700595	G	1	0	ENST00000378891	1	9	True	True	True	False	True	True	14
+chr1	1330690	rs560700595	G	1	0	ENST00000464957	1	9	True	True	True	False	True	True	14
+chr1	1330690	rs560700595	G	1	0	ENST00000488011	1	9	True	True	True	False	True	True	14
+chr1	1330690	rs560700595	G	1	0	ENST00000610709	1	9	True	True	True	False	True	True	14
+chr1	15274	rs2758118	G	1	0	ENST00000450305	1	9	False	False	False	False	False	False	10
+chr1	15274	rs2758118	T	1	0	ENST00000450305	1	9	False	False	False	False	False	False	10
+chr1	15274	rs2758118	G	1	0	ENST00000456328	1	9	False	False	False	False	False	False	10
+chr1	15274	rs2758118	T	1	0	ENST00000456328	1	9	False	False	False	False	False	False	10
+chr1	15274	rs2758118	G	1	0	ENST00000488147	1	13	False	False	False	False	False	False	14
+chr1	15274	rs2758118	T	1	0	ENST00000488147	1	13	False	False	False	False	False	False	14
+chr1	15274	rs2758118	G	1	0	ENST00000619216	1	9	False	False	False	False	False	False	10
+chr1	15274	rs2758118	T	1	0	ENST00000619216	1	9	False	False	False	False	False	False	10
+chr1	1532798	rs6694994	C	1	0	ENST00000339113	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000378733	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000378755	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000378756	1	13	False	False	True	False	True	True	16
+chr1	1532798	rs6694994	C	1	0	ENST00000400830	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000425828	1	9	False	False	True	False	True	True	12
+chr1	1532798	rs6694994	C	1	0	ENST00000536055	1	13	False	False	True	False	True	True	16
+chr2	11308832		T	2	0	ENST00000261535	1	13	NOB	True	True	True	False	False	19
+chr2	11308832		T	2	0	ENST00000315872	1	13	NOB	True	True	True	False	False	19
+chr2	11308832		T	2	0	ENST00000456674	1	14	NOB	True	True	True	False	False	20
+chr2	11308832		T	2	0	ENST00000462366	1	13	NOB	True	True	True	False	False	19
+chr2	11308832		T	2	0	ENST00000616279	1	13	NOB	True	True	True	False	False	19
+chr2	11308832		T	2	0	ENSR00000597147	1	2	NOB	True	True	True	False	False	8

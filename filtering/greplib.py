@@ -18,7 +18,7 @@ def csqAlleleFeaturesMulti(genotype, csqAllele, refAllele, altAlleles, altAllele
 	allCounts=[2-sum( map(int, templist) )]+templist
 	dCount=dict(zip(allAlleles, allCounts)) 
 	if csqAllele in dCount:  
-		csqCount=dCount[csqAllele]
+		csqCount=int(dCount[csqAllele]) 
 
 		""" there is no itertool or numpy therfore I HAVE TO write the following...
 		it MUST be rewritten to take the upperdiagonal 
@@ -47,6 +47,7 @@ def csqAlleleFeaturesMulti(genotype, csqAllele, refAllele, altAlleles, altAllele
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def checkFreq (listFreq, threshold): 
+""" check if a variant is rare:  none of the populations in listfreq has frequency greater than threshold"""
 	rare=True
 	if len(listFreq) >0: 
 		for freq in listFreq:
