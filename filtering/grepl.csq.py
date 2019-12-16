@@ -56,7 +56,7 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage",  "gpscore" ,'\n']
+	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage","lethal",  "gpscore" ,'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
 	for line in gzip.open(args.f, 'r'):
@@ -166,8 +166,9 @@ def main():
 					if re.search("ANN_5", decodedLine): miscarriages=True; gpScore+=1*dWeig['wMisc']
 					myres.append(DDD)
 
-					###~~~ List of lethal genes in mouse 
-						
+					###~~~ List of candidate lethal genes 
+                                        if re.search("ANN_6", decodedLine): lethal=True; gpScore+=1*dWeig['wLethal']
+                                        myres.append(lethal)
 
 					##~~~~~~~~~~ ANNOVAR 
 					##~~~ CONSERVATION SCORE 
