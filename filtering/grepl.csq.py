@@ -171,8 +171,9 @@ def main():
 					myres.append(lethal)
 
                                         ###~~~ List of essential genes
-                                        if re.search("essential", decodedLine): essential=True; gpScore+=1*dWeig['wEssential']*dInfo['essential']
-                                        myres.append(essential)
+					
+					if re.search("essential", decodedLine): essential=True; gpScore+=(1*dWeig['wEssential'])*int(dInfo['essential'])
+					myres.append(essential)
 
 					##~~~~~~~~~~ ANNOVAR 
 					##~~~ CONSERVATION SCORE 
