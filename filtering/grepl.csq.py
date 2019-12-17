@@ -56,9 +56,10 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage","lethal", "essential", "gpscore" ,'\n']
-	filemyres.write("\t".join(map(str, header)))   
-
+	header=["chr", "pos", "Existing_variation", "quality", "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage","lethal", "essential", "gpscore"]
+	filemyres.write("\t".join(map(str, header)))
+	filemyres.write("\n")   
+	
 	for line in gzip.open(args.f, 'r'):
 		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 		if re.match('#', decodedLine):
@@ -70,7 +71,7 @@ def main():
 			#print("this is a new line ") ## line split by  tab
 			linesplit=decodedLine.rstrip().split()
 			
-			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4] ## basic info  
+			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=linesplit[5] ## basic info  
 
 			nbOfAltAlleles=len(myalt.split(","))			
 
@@ -101,6 +102,8 @@ def main():
 					dCsq=dict(zip(csqHeader, mcsq.split("|") ))  #############    ALL VEP INFO 
 					#print (dCsq) 
 					myres.append(dCsq['Existing_variation']) # Existing_variation = identificativo 'rs'
+					#~~~~~~~~~~~ append quality
+					myres.append(myqual)										
 					#~~~~~~~~~~~  identify the allele with consequences
 					mycsqAllele=dCsq["Allele"] 
 					#~~~~~~~~~~~  csq allele features : number of allele with consequences and genotype likelihood  
