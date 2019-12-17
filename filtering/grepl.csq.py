@@ -191,7 +191,8 @@ def main():
 				
 					#if dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and embryo==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and cellcycle==True: #or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and DDD==True or dSOTermFineRank[mostSevereCsq ] > args.i and rare==True and gnomAD==True:	
 					#if dSOTermFineRank[mostSevereCsq ] > args.i and csqAllCount>args.c: #and rare==True and csqAllCount>args.c: 
-					myres.append(gpScore, gpScore/float(gpweig) )
+					myres.append(gpScore) 
+					myres.append(gpScore/float(gpweig) )
 					filemyres.write("\t".join( map(str, myres ) ) )
 					filemyres.write('\n')
 
