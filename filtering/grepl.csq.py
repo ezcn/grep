@@ -56,7 +56,7 @@ def main():
 	filemyres=open(args.o, 'w')
 	listOfErrors=[]
 	dInfo={}
-	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage","lethal",  "gpscore" ,'\n']
+	header=["chr", "pos", "Existing_variation",  "csqAllel", "csqAlleleCount", "GTLiklihood" , "ENSTID", "ImpactScore", "FineImpactScore", "rare","Embryo","GnomAD","CellCycle","DDD","miscarriage","lethal", "essential", "gpscore" ,'\n']
 	filemyres.write("\t".join(map(str, header)))   
 
 	for line in gzip.open(args.f, 'r'):
@@ -144,7 +144,7 @@ def main():
 					elif rare=="NOB": gpScore+=1*dWeig['wNOB']
 				
 					#~~~~~~~~~~ check if row have Embryo,CellCycle,DDD,GmomAD genes
-					embryo = DDD = cellcycle = gnomAD = miscarriages = lethal = False  
+					embryo = DDD = cellcycle = gnomAD = miscarriages = lethal = essential = False  
 				
 					###~~~  Gene Ontology  embryo development GO:0009790	
 					if re.search("ANN_1", decodedLine): embryo=True; gpScore+=1*dWeig['wEmbryoDev']
@@ -169,6 +169,10 @@ def main():
 					###~~~ List of candidate lethal genes
 					if re.search("ANN_6", decodedLine): lethal=True; gpScore+=1*dWeig['wLethal']
 					myres.append(lethal)
+
+                                        ###~~~ List of essential genes
+                                        if re.search("essential", decodedLine): essential=True; gpScore+=1*dWeig['wEssential']*dInfo['essential']
+                                        myres.append(essential)
 
 					##~~~~~~~~~~ ANNOVAR 
 					##~~~ CONSERVATION SCORE 
