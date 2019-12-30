@@ -32,7 +32,7 @@ def getfreqfromVEPbulck (listOfrsid):
 		freq_dict={}
 		for var in elem["colocated_variants"]:
 			#rsid=var["id"]
-			if 'frequencies' in var: freq_dict=var["frequencies"] 
+                        if 'frequencies' in var: freq_dict=var["frequencies"]: 
 		listOfDict.append((rsid, freq_dict))
 
 	return listOfDict
