@@ -14,22 +14,37 @@ def checkInList(gene, listOfGenes):
         return IsIn
 
 def getfreqfromVep (Position):
-	freq_dict={}
-	server="https://rest.ensembl.org"
-	ext = "/vep/human/region/"+ Position +"?"
-	r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
-	if not r.ok:
-		r.raise_for_status()
-		sys.exit()
-	decoded= r.json()
-	if "colocated_variants" in decoded[0]:
-		if "id" in decoded[0]["colocated_variants"][0] :
-			freq_dict["id"]=decoded[0]["colocated_variants"][0]["id"]
-		for var in decoded[0]["colocated_variants"] :
-			if "frequencies" in var: freq_dict=var["frequencies"]
-	if "most_severe_consequence" in decoded[0]:
-		freq_dict["most_severe_consequence"]=decoded[0]["most_severe_consequence"]
-	return freq_dict
+    freq_dict={}
+    server="https://rest.ensembl.org"
+    ext = "/vep/human/region/"+ Position +"?"
+    r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
+    if not r.ok:
+        r.raise_for_status()
+        sys.exit()
+    decoded= r.json()
+    if "colocated_variants" in decoded[0]:
+        if "id" in decoded[0]["colocated_variants"][0] :
+            freq_dict["id"]=decoded[0]["colocated_variants"][0]["id"]
+        for var in decoded[0]["colocated_variants"] :
+            if "frequencies" in var: freq_dict=var["frequencies"]
+
+    if "most_severe_consequence" in decoded[0]:
+        freq_dict["most_severe_consequence"]=decoded[0]["most_severe_consequence"]
+        most=freq_dict["most_severe_consequence"]
+        if 'transcript_consequences' in decoded[0]: 
+            for i in decoded[0]['transcript_consequences']:
+                if most in  i['consequence_terms'] :
+                    csqAllele=i['variant_allele']
+                    freq_dict['csqAllele']=csqAllele
+                    freq_dict['gene_id']=i['gene_id']
+                    freq_dict['gene_symbol']=i['gene_symbol']
+                else:
+                    if 'regulatory_feature_consequences' in decoded[0]: 
+                        for r  in decoded[0]['regulatory_feature_consequences']:
+                            if most in  r['consequence_terms']: 
+                                csqAllele=r['variant_allele']
+                                freq_dict['csqAllele']=csqAllele
+            return freq_dict
 
 
 def main():
@@ -105,16 +120,19 @@ def main():
         print(locusID)
         dVepValue=getfreqfromVep (locusID)
         print("ho finito dVep")
-        if 'gene_symbol' in dVepValue:
-            print("guardo la lista")
-            lethalValue=checkInList(dVepValue, lethalList)
-            dVepValue["lethal"]=lethalValue
-  
-        dVep[locusID]=dVepValue
-
+        print(dVepValue) 
+        if dVepValue: 
+            if 'gene_symbol' in dVepValue.keys():
+                print("guardo la lista")
+                lethalValue=checkInList(dVepValue, lethalList)
+                dVepValue["lethal"]=lethalValue
+      
+            dVep[locusID]=dVepValue
+        else: 
+            listOfErrors.append(locusID)
     print(dVep) 
-    #fileToWrite=open(args.e, 'w')
-    #for i in listOfErrors: fileToWrite.write( i )
+    fileToWrite=open(args.e, 'w')
+    for i in listOfErrors: fileToWrite.write( i )
  
 
 if __name__ == "__main__":
