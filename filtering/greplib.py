@@ -68,12 +68,13 @@ def getInfoFromVep (Position):
                                 freq_dict['csqAllele']=csqAllel
     return freq_dict
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount): 
+def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, ploidy): 
 	#csqAllele= cons allele  from vep  
 	#altAlleleCount= integer, alternate allele count 
+	# ploidy = number of allels at one locus 
 	
-	if csqAllele == altAllele: mycsqAlleleCount = altAlleleCount      ## csqAllele counts  
-	else: mycsqAlleleCount = 2-altAlleleCount 
+	if csqAllele == altAllele: mycsqAlleleCount = altAlleleCount      ## Consequence allele is the alternate allele 
+	else: mycsqAlleleCount = ploidy-altAlleleCount    ## Consequence allele is the reference allele;
 	
 	return [ csqAllele, mycsqAlleleCount]
 
