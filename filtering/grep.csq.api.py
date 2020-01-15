@@ -39,7 +39,7 @@ def main():
     #print (dWeights)
     
     ##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
-    listOfErrors=[]
+    
     dVcf={}
     for line in gzip.open(args.f, 'r'):
         decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
@@ -60,6 +60,7 @@ def main():
     #for i in lethalFile: lethalList.append(i.strip('\n'))
     
     ##### 3. get VEP info 
+    listOfErrors=[]
     dVep={}
     for locusID in dVcf.keys(): 
         #print(locusID)
