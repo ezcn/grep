@@ -2,7 +2,7 @@
 import requests, json 
 
 
-def VepRankingInfo (vepinfofile)
+def VepRankingInfo (vepinfofile): 
     """read external file with info on VEP consequences  """
     dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
     dSOTermRank={}

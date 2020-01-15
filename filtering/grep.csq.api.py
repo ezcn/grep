@@ -29,7 +29,7 @@ def main():
     #print(args)
         
     ##### 0a. retrieve VEP ranking info   
-    dSOTermFineRank=VepRankingInfo(args.v)
+    dSOTermFineRank=gp.VepRankingInfo(args.v)
          
     ##### 0b. read weights 
     dWeig={}
@@ -64,7 +64,7 @@ def main():
     dVep={}
     for locusID in dVcf.keys(): 
         #print(locusID)
-        dVepValue=getInfoFromVep (locusID)
+        dVepValue=gp.getInfoFromVep (locusID)
         #print("ho finito dVep")
         #print(dVepValue) 
         if dVepValue: 
