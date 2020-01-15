@@ -56,7 +56,7 @@ def main():
 
                         for altAl in altAlleles:
                             mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-                            dVcf[mykey]=[myref, myqual, dFormat["GT"]]
+                            dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
 
     ##### 2. load genes list
     gene_list = pd.read_csv(args.m,sep="\t")
@@ -66,16 +66,13 @@ def main():
     dVep={}
     for locusID in dVcf.keys(): 
         #print(locusID)
-        dVepValue=getInfoFromVep (locusID)
+        dVepValue=gp.getInfoFromVep (locusID)
         #print("ho finito dVep")
-        #print(dVepValue) 
+        #prnt(dVepValue) 
         if dVepValue: 
-            #if 'gene_symbol' in dVepValue.keys():
-                #print("guardo la lista")
-             #   lethalValue=checkInList(dVepValue, lethalList)
-              #  dVepValue["lethal"]=lethalValue
-      
             dVep[locusID]=dVepValue
+            dVep["csqCount"]= gp.CountCSQ_REF_ALT(dVep["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
+            
         else: 
             listOfErrors.append(locusID)
 
