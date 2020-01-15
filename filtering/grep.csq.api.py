@@ -12,42 +12,7 @@ def checkInList(gene, listOfGenes):
         if gene in listOfGenes:
             IsIn=True
         return IsIn
-
-def getInfoFromVep (Position):
-    """ MOVE TO grep.py 
-    Position =  1:333333:/T (T is the alternate allele)   """
-    freq_dict={}
-    server="https://rest.ensembl.org"
-    ext = "/vep/human/region/"+ Position +"?"
-    r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
-    if not r.ok:
-        r.raise_for_status()
-        sys.exit()
-    decoded= r.json()
-    if "colocated_variants" in decoded[0]:
-        if "id" in decoded[0]["colocated_variants"][0] :
-            freq_dict["id"]=decoded[0]["colocated_variants"][0]["id"]
-        for var in decoded[0]["colocated_variants"] :
-            if "frequencies" in var: freq_dict=var["frequencies"]
-
-    if "most_severe_consequence" in decoded[0]:
-        freq_dict["most_severe_consequence"]=decoded[0]["most_severe_consequence"]
-        most=freq_dict["most_severe_consequence"]
-        if 'transcript_consequences' in decoded[0]: 
-            for i in decoded[0]['transcript_consequences']:
-                if most in  i['consequence_terms'] :
-                    csqAllele=i['variant_allele']
-                    freq_dict['csqAllele']=csqAllele
-                    freq_dict['gene_id']=i['gene_id']
-                    freq_dict['gene_symbol']=i['gene_symbol']
-                else:
-                    if 'regulatory_feature_consequences' in decoded[0]: 
-                        for r  in decoded[0]['regulatory_feature_consequences']:
-                            if most in  r['consequence_terms']: 
-                                csqAllele=r['variant_allele']
-                                freq_dict['csqAllele']=csqAllele
-            return freq_dict
-
+#########################################################
 
 def main():
     parser = argparse.ArgumentParser()
@@ -62,42 +27,20 @@ def main():
     args = parser.parse_args()
     #output = open(args.o,'w')
     #print(args)
-
-    ## READ weights 
+        
+    ##### 0a. retrieve VEP ranking info   
+    dSOTermFineRank=VepRankingInfo(args.v)
+         
+    ##### 0b. read weights 
     dWeig={}
     for wline in open (args.w):
         w=wline.rstrip().split() 
         dWeig[w[1]]=int(w[2])
     #print (dWeights)
     
-    ##  READ VEP consequences rank ########
-    """read external file with info on VEP consequences  """
-    dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
-    dSOTermRank={}
-    lSOTerm=[]  ### list of SOTerm ordered by severity
-
-    countlinesCsq= True
-    for csqLine in open(args.v, 'r'):
-        if countlinesCsq:
-            csqTitle=csqLine.rstrip().split('\t')
-            countlinesCsq=False
-        else:
-            myRowList=csqLine.rstrip().split('\t')
-            dCsq= dict(zip(csqTitle, myRowList ))
-            dSOTermRank[dCsq['SO term']]=dRank[dCsq['IMPACT']]
-            lSOTerm.append(myRowList[0])
-
-    #print (lSOTerm)
-    lScores=list(reversed(range(len(lSOTerm)))) 
-    #print (lScores) 
-    dSOTermFineRank=dict(zip(lSOTerm, map(int, lScores) ))
-    #print (dSOTermFineRank)
-
-
-##########~~~~~~~~~~~~~~  Loop of vcf lines 
+    ##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
     #filemyres=open(args.o, 'w')
     listOfErrors=[]
-    ##### 1. parse vcf 
     dVcf={}
     for line in gzip.open(args.f, 'r'):
         decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
