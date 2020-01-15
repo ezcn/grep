@@ -1,6 +1,32 @@
 #!/usr/bin/python3
 import requests, json 
 
+
+def VepRankingInfo (vepinfofile)
+    """read external file with info on VEP consequences  """
+    dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
+    dSOTermRank={}
+    lSOTerm=[]  ### list of SOTerm ordered by severity
+
+    countlinesCsq= True
+    for csqLine in open(vepinfofile, 'r'):
+        if countlinesCsq:
+            csqTitle=csqLine.rstrip().split('\t')
+            countlinesCsq=False
+        else:
+            myRowList=csqLine.rstrip().split('\t')
+            dCsq= dict(zip(csqTitle, myRowList ))
+            dSOTermRank[dCsq['SO term']]=dRank[dCsq['IMPACT']]
+            lSOTerm.append(myRowList[0])
+
+    #print (lSOTerm)
+    lScores=list(reversed(range(len(lSOTerm)))) 
+    #print (lScores) 
+    dSOTermFineRank=dict(zip(lSOTerm, map(int, lScores) ))
+    #print (dSOTermFineRank)
+    return dSOTermFineRank
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def getInfoFromVep (Position):
     """Retrieves information from Variant Effect Predictor API
     dependencies: requests, json 
@@ -35,9 +61,11 @@ def getInfoFromVep (Position):
                         for r  in decoded[0]['regulatory_feature_consequences']:
                             if most in  r['consequence_terms']: 
                                 csqAllele=r['variant_allele']
-                                freq_dict['csqAllele']=csqAllele
-            return freq_dict
+                                freq_dict['csqAllele']=csqAllel
+    return freq_dict
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, GL ): 
 	#csqAllele= cons allele  from vep  
 	#altAlleleCount= integer, alternate allele count 
