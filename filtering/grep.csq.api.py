@@ -13,7 +13,9 @@ def checkInList(gene, listOfGenes):
             IsIn=True
         return IsIn
 
-def getfreqfromVep (Position):
+def getInfoFromVep (Position):
+    """ MOVE TO grep.py 
+    Position =  1:333333:/T (T is the alternate allele)   """
     freq_dict={}
     server="https://rest.ensembl.org"
     ext = "/vep/human/region/"+ Position +"?"
@@ -67,7 +69,8 @@ def main():
         w=wline.rstrip().split() 
         dWeig[w[1]]=int(w[2])
     #print (dWeights)
-        ##  READ VEP consequences rank ########
+    
+    ##  READ VEP consequences rank ########
     """read external file with info on VEP consequences  """
     dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
     dSOTermRank={}
