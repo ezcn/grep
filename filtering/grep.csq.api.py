@@ -39,7 +39,6 @@ def main():
     #print (dWeights)
     
     ##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
-    #filemyres=open(args.o, 'w')
     listOfErrors=[]
     dVcf={}
     for line in gzip.open(args.f, 'r'):
@@ -76,8 +75,11 @@ def main():
             dVep[locusID]=dVepValue
         else: 
             listOfErrors.append(locusID)
-    print(dVep)
-    print(dVcf)
+
+    filemyres=open(args.o, 'w')
+    for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
+    for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
+
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
  

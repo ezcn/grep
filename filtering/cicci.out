@@ -1,0 +1,26 @@
+5:64548:/A # {'most_severe_consequence': 'intergenic_variant'}
+1:10623:/C # {'id': 'rs1207502826', 'most_severe_consequence': 'upstream_gene_variant', 'csqAllele': 'C', 'gene_id': 'ENSG00000223972', 'gene_symbol': 'DDX11L1'}
+1:95068:/A # {'id': 'rs867757274', 'most_severe_consequence': 'intron_variant', 'csqAllele': 'A', 'gene_id': 'ENSG00000238009', 'gene_symbol': 'AL627309.1'}
+1:942451:/C # {'C': {'afr': 1, 'amr': 1, 'gnomad_sas': 0.9997, 'gnomad_afr': 0.9994, 'eas': 1, 'gnomad_fin': 1, 'gnomad_amr': 0.9999, 'eur': 1, 'gnomad_oth': 1, 'sas': 1, 'gnomad': 0.9999, 'gnomad_nfe': 0.9999, 'gnomad_eas': 1, 'gnomad_asj': 1}, 'most_severe_consequence': 'missense_variant', 'csqAllele': 'C', 'gene_id': 'ENSG00000187634', 'gene_symbol': 'SAMD11'}
+1:1519044:/T # {'id': 'rs147532057', 'most_severe_consequence': 'intron_variant', 'csqAllele': 'T', 'gene_id': 'ENSG00000197785', 'gene_symbol': 'ATAD3A'}
+1:1532798:/C # {'C': {'sas': 0.8466, 'eas': 0.998, 'eur': 0.4722, 'amr': 0.7392, 'afr': 0.9713}, 'most_severe_consequence': 'intron_variant', 'csqAllele': 'C', 'gene_id': 'ENSG00000197785', 'gene_symbol': 'ATAD3A'}
+1:1368763:/A # {'A': {'eas': 0.8155, 'sas': 0.498, 'afr': 0.2557, 'eur': 0.1074, 'amr': 0.4107}, 'most_severe_consequence': 'downstream_gene_variant', 'csqAllele': 'A', 'gene_id': 'ENSG00000175756', 'gene_symbol': 'AURKAIP1'}
+1:1330690:/G # {'G': {'eas': 0, 'sas': 0, 'afr': 0, 'eur': 0.001, 'amr': 0}, 'most_severe_consequence': 'upstream_gene_variant', 'csqAllele': 'G', 'gene_id': 'ENSG00000169962', 'gene_symbol': 'TAS1R3'}
+1:15274:/G # {'G': {'sas': 0.3497, 'eas': 0.4812, 'amr': 0.2752, 'eur': 0.2922, 'afr': 0.323}, 'most_severe_consequence': 'intron_variant', 'csqAllele': 'G', 'gene_id': 'ENSG00000227232', 'gene_symbol': 'WASH7P'}
+1:15274:/T # {'T': {'eas': 0.5188, 'sas': 0.6472, 'eur': 0.7078, 'amr': 0.7205, 'afr': 0.6369}, 'most_severe_consequence': 'intron_variant', 'csqAllele': 'T', 'gene_id': 'ENSG00000227232', 'gene_symbol': 'WASH7P'}
+1:10349:/CCCTAACCCTA # {'most_severe_consequence': 'upstream_gene_variant', 'csqAllele': 'CCCTAACCCTA', 'gene_id': 'ENSG00000223972', 'gene_symbol': 'DDX11L1'}
+1:64548:/CCTAAA # {'most_severe_consequence': 'upstream_gene_variant', 'csqAllele': 'CCTAAA', 'gene_id': 'ENSG00000186092', 'gene_symbol': 'OR4F5'}
+2:11308832:/T # {'id': 'rs10205944', 'most_severe_consequence': 'non_coding_transcript_exon_variant', 'csqAllele': 'T', 'gene_id': 'ENSG00000230154', 'gene_symbol': 'AC018463.1'}
+5:64548:/A # ['C', 132.585, '0/1']
+1:10623:/C # ['T', 91.9314, '1/1']
+1:95068:/A # ['G', 27.5869, '0/1']
+1:942451:/C # ['T', 1228.0, '1/1']
+1:1519044:/T # ['C', 56.8885, '0/1']
+1:1532798:/C # ['T', 333.667, '0/1']
+1:1368763:/A # ['G', 413.467, '0/1']
+1:1330690:/G # ['C', 406.933, '0/1']
+1:15274:/G # ['A', 74.9102, '1/2']
+1:15274:/T # ['A', 74.9102, '1/2']
+1:10349:/CCCTAACCCTA # ['CCCTACCCTA', 93.1669, '0/1']
+1:64548:/CCTAAA # ['ACTAG', 132.585, '0/1']
+2:11308832:/T # ['A', 1417.68, '1/1']
