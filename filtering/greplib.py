@@ -139,6 +139,52 @@ def checkFreq (listFreq, threshold):
 	else: rare="NOB" #never observed 
 	return(rare)
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def CountCSQ_REF_ALT (csqAllele, refAllele, altAlleles, GTfields):
+	"""csqAllele = type: string, consequence allele  from vep  
+	refAllele = type: string, reference allele from variant calling
+	altAlleles = type: string, comma-separated list of alternate allele from variant calling
+	nbAploidSamples = type: int, number of total Alleles
+	GTfields = type: list, linesplit[9:] (take only from 9° column to the end) ["0/0:.:.:.:.:.:.:.","1/1:16:0,16:0:0:16:628:-34.365,-4.81648,0"]
+	hetGenotypes = type: int, heterozygosity in samples
+	countPassLine = type: int, line the are PASS in frequency analisys	"""
+	myres=False
+	splitAltAlleles=altAlleles.split(",")
+	allAlleles=[refAllele]+ splitAltAlleles
+	mygstring=""; hetGenotypes=0; countPassLine=0;
+	GTsplit=[i.split(":")[0] for i in GTfields]
+	
+	for idx, item in enumerate(GTsplit):
+		if item !='./.':#if i is not "./.":
+			mygstring+=item; 
+			if item[0]!=item[2]: hetGenotypes+=1
+	CountAlleles=[]
+	for i in range(len(allAlleles)):
+		#if str(i) in mygstring:
+		CountAlleles.append(mygstring.count(str(i)))
+	dAllele=dict(zip(allAlleles,CountAlleles))
+		
+	freqREF="{0:4.2f}".format(dAllele[refAllele])
+        
+        #### ALT freq 
+	sumALT=0
+	for i in splitAltAlleles:
+		sumALT+=dAllele[i]
+	freqALT="{0:4.2f}".format(sumALT)
+	#### MAF freq
+	MAF=min(freqALT,freqREF)
+	#### CSQ freq
+	if csqAllele in dAllele: 
+		csqAllCount=dAllele[csqAllele]	
+		freqCsq="{0:4.2f}".format(csqAllCount) 
+			
+	else: freqCsq='NA'
+
+	#### define myres 
+	myres= [freqCsq, freqREF, freqALT, MAF]
+	return myres
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, GTfields):
