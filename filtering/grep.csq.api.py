@@ -56,22 +56,22 @@ def main():
                             dVcf[mykey]=[myref, myqual, dFormat["GT"]]
 
     ##### 2. load lists of genes          
-    lethalFile=open('lethal_candidate.bed','r')
-    lethalList=[]
-    for i in lethalFile: lethalList.append(i.strip('\n'))
+    #lethalFile=open('lethal_candidate.bed','r')
+    #lethalList=[]
+    #for i in lethalFile: lethalList.append(i.strip('\n'))
     
     ##### 3. get VEP info 
     dVep={}
     for locusID in dVcf.keys(): 
         #print(locusID)
-        dVepValue=getfreqfromVep (locusID)
+        dVepValue=getInfoFromVep (locusID)
         #print("ho finito dVep")
-        print(dVepValue) 
+        #print(dVepValue) 
         if dVepValue: 
-            if 'gene_symbol' in dVepValue.keys():
+            #if 'gene_symbol' in dVepValue.keys():
                 #print("guardo la lista")
-                lethalValue=checkInList(dVepValue, lethalList)
-                dVepValue["lethal"]=lethalValue
+             #   lethalValue=checkInList(dVepValue, lethalList)
+              #  dVepValue["lethal"]=lethalValue
       
             dVep[locusID]=dVepValue
         else: 
