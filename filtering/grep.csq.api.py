@@ -71,7 +71,10 @@ def main():
         #prnt(dVepValue) 
         if dVepValue: 
             dVep[locusID]=dVepValue
-            dVep["csqCount"]= gp.CountCSQ_REF_ALT(dVep["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
+            if "csqAllele" in dVep[locusID]:
+                dVep[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVep[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
+            else:
+                dVep[locusID]["csqCount"] = np.nan
             
         else: 
             listOfErrors.append(locusID)
@@ -99,8 +102,31 @@ def main():
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
 
+    pop = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas',
+       'gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas',
+       'gnomad_nfe']
 
+    def label_race (row):
+        if (row[pop] < 0.05).any():
+            return 1
+        if row[pop].isnull().all():
+            return 0.5
+        return 0
 
+    df.loc[:,"rare"] = df.apply(lambda row: label_race(row), axis=1)
+
+    soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
+    df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").rename({"index_x" : "variant"},axis=1).drop("index_y",axis=1)
+    #drop columns
+    df_last.drop(pop,axis=1,inplace=True)
+
+    wCAC = 1
+    wRare = 1
+    wRank = 1
+    #final score
+    df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * wCAC) + (df_last.rare.astype(float) * wRare) + (df_last.soScore.astype(float) * wRank) + df_last.score_gene_list.astype(float)
+
+    df_last.to_csv(arg.o,sep="\t",index=False)
 
 if __name__ == "__main__":
     main()
