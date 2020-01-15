@@ -68,9 +68,18 @@ def getInfoFromVep (Position):
                                 freq_dict['csqAllele']=csqAllel
     return freq_dict
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount): 
+	#csqAllele= cons allele  from vep  
+	#altAlleleCount= integer, alternate allele count 
+	
+	if csqAllele == altAllele: mycsqAlleleCount = altAlleleCount      ## csqAllele counts  
+	else: mycsqAlleleCount = 2-altAlleleCount 
+	
+	return [ csqAllele, mycsqAlleleCount]
 
 
-def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, GL ): 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def csqAlleleFeaturesLike (csqAllele, altAllele, altAlleleCount, GL ): 
 	#csqAllele= cons allele  from vep  
 	#altAlleleCount= integer, alternate allele count 
 	#GL, string, comma separated vector of genotpe likelihoods
