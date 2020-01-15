@@ -2,6 +2,9 @@
 import re, sys, argparse, gzip, requests, json 
 sys.path.append('/home/enza/ezcngit/grep/filtering/greplib.py')
 import greplib as gp
+import pandas as pd
+import numpy as np
+
 
 
 ########################################################
@@ -17,6 +20,7 @@ def checkInList(gene, listOfGenes):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="path to  input  file ",type=str,required=True)
+    parser.add_argument("-g", help="path to gene file list ",required=True)
     #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
     parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
     parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
@@ -54,17 +58,15 @@ def main():
                             mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                             dVcf[mykey]=[myref, myqual, dFormat["GT"]]
 
-    ##### 2. load lists of genes          
-    #lethalFile=open('lethal_candidate.bed','r')
-    #lethalList=[]
-    #for i in lethalFile: lethalList.append(i.strip('\n'))
+    ##### 2. load genes list
+    gene_list = pd.read_csv(args.m,sep="\t")
     
     ##### 3. get VEP info 
     listOfErrors=[]
     dVep={}
     for locusID in dVcf.keys(): 
         #print(locusID)
-        dVepValue=gp.getInfoFromVep (locusID)
+        dVepValue=getInfoFromVep (locusID)
         #print("ho finito dVep")
         #print(dVepValue) 
         if dVepValue: 
@@ -83,7 +85,25 @@ def main():
 
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
- 
+    
+    ###### 4. create dataframe from dVEP
+    '''
+                     most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
+    5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
+    1:10623:/C     upstream_gene_variant  rs1207502826         C  ENSG00000223972     DDX11L1        NaN        NaN        NaN ....
+    1:95068:/A            intron_variant   rs867757274         A  ENSG00000238009  AL627309.1        NaN        NaN        NaN ....
+    1:942451:/C         missense_variant     rs6672356         C  ENSG00000187634      SAMD11     0.9999          1          1 ....
+    1:1519044:/T          intron_variant   rs147532057         T  ENSG00000197785      ATAD3A        NaN        NaN        NaN ....
+    '''
+
+    df = pd.DataFrame(dVep).T
+
+    ####### 5 check for common genes and add it!
+    common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
+    df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
+
+
+
 
 if __name__ == "__main__":
     main()

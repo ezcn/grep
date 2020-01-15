@@ -9,7 +9,7 @@ output_matrix_sep = '\t'
 output_matrixes_encoding = 'utf-8'
 output_na_rep = ''  # how to WRITE missing data
 # About input
-input_matrixes_sep = '\t'
+input_matrixes_sep = ' '
 input_matrixes_encoding = 'utf-8'
 #color bash
 g = '\033[92m'
@@ -69,6 +69,7 @@ file6 = args.file6
 file7 = args.file7
 file8 = args.file8
 
+
 #file1 = "gene_list.bed"
 #file2 = "gene_list1.bed"
 #file3 = "gene_list2.bed"
@@ -85,14 +86,26 @@ df = pd.DataFrame()
 #read each file and append to create a unique dataframe
 for file in list_file:
 	if file != "":
-		df = df.append(pd.read_csv(file,sep=output_matrix_sep,header=None,encoding=output_matrixes_encoding))
+		df = df.append(pd.read_csv(file,sep=input_matrixes_sep,header=None,encoding=output_matrixes_encoding))
 #remove duplicates
 df.drop_duplicates(inplace=True)
 #add columns name
-df.columns = ["chr","start","end","ensID","gene_type"]
+df.columns = ["chr","start","end","ensID","gene_type","score_tmp"]
+df.loc[:,"chr"] = df["chr"].str.replace("chr","")
+#read assign weight
+weight = pd.read_csv("gp.weight",sep=" ",header=None)
+#assign name to columns
+weight.columns = ["term","gene_type","score"]
+#remove first columns
+weight.drop("term",axis=1,inplace=True)
+#merge the 2 dataframe
+final_df = df.merge(weight,on="gene_type")
+
+#assign final score
+final_df.loc[:,"final_score"] = final_df.score_tmp.fillna(1) * final_df.score
 
 #save file
-df.to_csv("merged_output_list.bed",sep=output_matrix_sep,encoding=output_matrixes_encoding)
+final_df.to_csv("merged_output_list.bed",sep=output_matrix_sep,encoding=output_matrixes_encoding,index=False)
 
 #quit
 exit()

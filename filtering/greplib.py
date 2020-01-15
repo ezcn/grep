@@ -40,25 +40,29 @@ def getInfoFromVep (Position):
         r.raise_for_status()
         sys.exit()
     decoded= r.json()
-    if "colocated_variants" in decoded[0]:
-        if "id" in decoded[0]["colocated_variants"][0] :
-            freq_dict["id"]=decoded[0]["colocated_variants"][0]["id"]
-        for var in decoded[0]["colocated_variants"] :
-            if "frequencies" in var: freq_dict=var["frequencies"]
+    info = decoded[0]
+    if "colocated_variants" in info:
+        id_search = info["colocated_variants"][0]
+        if "id" in id_search :
+            freq_dict["id"] = id_search["id"]
+        if 'frequencies' in id_search:
+            to_parse = list(id_search["frequencies"].values())[0]
+            for var in to_parse.keys():
+                freq_dict[var]=to_parse[var]
 
-    if "most_severe_consequence" in decoded[0]:
-        freq_dict["most_severe_consequence"]=decoded[0]["most_severe_consequence"]
+    if "most_severe_consequence" in info:
+        freq_dict["most_severe_consequence"]=info["most_severe_consequence"]
         most=freq_dict["most_severe_consequence"]
-        if 'transcript_consequences' in decoded[0]: 
-            for i in decoded[0]['transcript_consequences']:
+        if 'transcript_consequences' in info: 
+            for i in info['transcript_consequences']:
                 if most in  i['consequence_terms'] :
                     csqAllele=i['variant_allele']
                     freq_dict['csqAllele']=csqAllele
                     freq_dict['gene_id']=i['gene_id']
                     freq_dict['gene_symbol']=i['gene_symbol']
                 else:
-                    if 'regulatory_feature_consequences' in decoded[0]: 
-                        for r  in decoded[0]['regulatory_feature_consequences']:
+                    if 'regulatory_feature_consequences' in info: 
+                        for r  in info['regulatory_feature_consequences']:
                             if most in  r['consequence_terms']: 
                                 csqAllele=r['variant_allele']
                                 freq_dict['csqAllele']=csqAllel
@@ -72,8 +76,10 @@ def csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, GL ):
 	#GL, string, comma separated vector of genotpe likelihoods
 	#"""
 
-	if csqAllele == altAllele: mycsqAlleleCount = altAlleleCount      ## csqAllele counts  
-	else: mycsqAlleleCount = 2-altAlleleCount 
+	if csqAllele == altAllele: 
+		mycsqAlleleCount = altAlleleCount      ## csqAllele counts  
+	else: 
+		mycsqAlleleCount = 2-altAlleleCount 
 	Likl=GL.split(",")[altAlleleCount] ## csqAllele Likelihood 
 	return [ csqAllele, mycsqAlleleCount, Likl]
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
