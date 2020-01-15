@@ -117,20 +117,21 @@ def main():
     ##### 3. get VEP info 
     dVep={}
     for locusID in dVcf.keys(): 
-        print(locusID)
+        #print(locusID)
         dVepValue=getfreqfromVep (locusID)
-        print("ho finito dVep")
+        #print("ho finito dVep")
         print(dVepValue) 
         if dVepValue: 
             if 'gene_symbol' in dVepValue.keys():
-                print("guardo la lista")
+                #print("guardo la lista")
                 lethalValue=checkInList(dVepValue, lethalList)
                 dVepValue["lethal"]=lethalValue
       
             dVep[locusID]=dVepValue
         else: 
             listOfErrors.append(locusID)
-    print(dVep) 
+    print(dVep)
+    print(dVcf)
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
  
