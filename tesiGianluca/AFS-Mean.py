@@ -80,7 +80,8 @@ def main():
 	parser.add_argument('-c', help='number of random cycle',type=int,required=False, default=1)
 	parser.add_argument('-s', help='seeds number',type=int,required=True)
 	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True))
-	#parser.add_argument("-p", help="population to analyze",type=str,required=True)) #EURsorted or GREPsorted
+	parser.add_argument("-p1", help="population to analyze",type=str,required=True)) #EUROPE
+	parser.add_argument("-p2", help="population to analyze",type=str,required=True)) #GREP
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -88,23 +89,8 @@ def main():
 
 #############################################################
 
-##########~~~~~~~~~~~~~~ READ VEP consequences rank
-	
-	#read external file with info on VEP consequences 
-	dRank={'HIGH':'HIGH', 'LOW': 'LOW', 'MODERATE':'MODERATE', 'MODIFIER':'MODIFIER'}
-	dSOTermRank={}
-	lSOTerm=[]  ### list of SOTerm ordered by severity
-
-	countlinesCsq= True
-	for csqLine in open(args.v, 'r'):
-		if countlinesCsq:
-			csqTitle=csqLine.rstrip().split('\t')
-			countlinesCsq=False
-		else:
-			myRowList=csqLine.rstrip().split('\t')
-			dvepCsq= dict(zip(csqTitle, myRowList ))
-			dSOTermRank[dvepCsq['SO term']]=dRank[dvepCsq['IMPACT']]			
-			lSOTerm.append(myRowList[0]) # list of Consequence
+##### 0a. retrieve VEP ranking info   
+    dSOTermFineRank=gp.VepRankingInfo(args.v)
 			
 
 ##########~~~~~~~~~~~~~~ Read metadata
@@ -122,16 +108,12 @@ def main():
 			Sample.append(dMeta['sample'])
 
 	dSampleRegion=dict(zip(Sample, Region))
-	
-	EUR = [key  for (key, value) in dSampleRegion.items() if value == 'EUROPE']
-
-	EURsorted = sorted(EUR) ## needed for seed
-
+	#### 
+	pop1 = [key  for (key, value) in dSampleRegion.items() if value == args.p1]
+	pop1sorted = sorted(EUR) ## needed for seed
 	random.seed(args.s) ## need a sorted list of EUR
-	
-	GREPtoretain=[key  for (key, value) in dSampleRegion.items() if value == 'GREP']
-
-	GREPsorted = sorted(GREPtoretain)
+	pop2=[key  for (key, value) in dSampleRegion.items() if value == args.p2]
+	pop2sorted = sorted(GREPtoretain)
 	#sampleToConsider=random.sample(EUR, 6)
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
@@ -146,21 +128,21 @@ def main():
 		cycle+=1
 		#dInfo={};  dSOT={}; dImpact={}
 		column2retain=[]
-		sampleToConsider=random.sample(, args.n)
-		pop="HGDP"
-		myres=[cycle]
-		myres+=pop
-		vectorOfMeans=averagesFromFile(args.f, column2retain ,  lSOTerm, )
-		myres+=vectorOfMeans
-		print ("\t".join(map(str, myres) ))
+		sampleToConsider=random.sample(pop1sorted, args.n)
+		pop=args.p1
+		myresPop1=[cycle]
+		myresPop1+=pop
+		vectorOfMeansPop1=averagesFromFile(args.f, column2retain ,  lSOTerm, )
+		myresPop1+=vectorOfMeansPop1
+		print ("\t".join(map(str, myresPop1) ))
 		
 		
-	pop="GREP"
-	myresGREP=[0]
-	myresGREP+=pop
-	vectorOfMeansGREP=averagesFromFile(args.f, GREPsorted ,  lSOTerm)
-	myresGREP+=vectorOfMeansGREP
-	print ("\t".join(map(str, myresGREP) ))
+	pop=args.p2
+	myresPop2=[0]
+	myresPop2+=pop
+	vectorOfMeansPop2=averagesFromFile(args.f, pop2sorted ,  lSOTerm)
+	myresPop2+=vectorOfMeansPop2
+	print ("\t".join(map(str, myresPop2) ))
 						
 if __name__ == '__main__':
 	main()
