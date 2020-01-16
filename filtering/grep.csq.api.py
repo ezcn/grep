@@ -101,22 +101,28 @@ def main():
     ####### 5 check for common genes and add it!
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
+    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
+    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
 
-    pop = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas','sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
+    col_freq = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
+    common = set(df.columns).intersection(col_freq) 
 
     def label_race (row):
-        if (row[pop] < 0.05).any():
+        if (row[common] < 0.05).any():
             return 1
-        if row[pop].isnull().all():
+        if row[common].isnull().all():
             return 0.5
         return 0
 
     df.loc[:,"rare"] = df.apply(lambda row: label_race(row), axis=1)
 
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-    df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").rename({"index_x" : "variant"},axis=1).drop("index_y",axis=1)
+    df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
     #drop columns
-    df_last.drop(pop,axis=1,inplace=True)
+    df_last = df_last.set_index("variant").drop(common,axis=1)
+    df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
+
+    df_for_stats = df_last[['most_severe_consequence', 'csqCount','csqAllele','gene_id', 'score_gene_list', 'wCellCycle', 'wDDD','wEmbryoDev', 'wEssential', 'wLethal', 'wMisc', 'rare', 'soScore']]
 
     wCAC = 1
     wRare = 1
