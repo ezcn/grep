@@ -21,6 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="path to  input  file ",type=str,required=True)
     parser.add_argument("-g", help="path to gene file list ",required=True)
+    #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
     parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
     parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
     parser.add_argument("-o", help="path to output file  ",type=str, required= True)
@@ -28,18 +29,14 @@ def main():
     parser.add_argument("-e", help="path to error file",type=str,required=True)
     parser.add_argument("-c", help="consequence allele count ",type=int,required=False, default=0)
     parser.add_argument("-w", help="path to  weight  file ",type=str,required=True)
-    #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
-
     args = parser.parse_args()
     #output = open(args.o,'w')
     #print(args)
         
-    ##### 0a. retrieve VEP ranking info
-
+    ##### 0a. retrieve VEP ranking info   
     dSOTermFineRank=gp.VepRankingInfo(args.v)
          
-    ##### 0b. read weights
-
+    ##### 0b. read weights 
     dWeig={}
     for wline in open (args.w):
         w=wline.rstrip().split() 
@@ -49,24 +46,23 @@ def main():
     ##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
     
     dVcf={}
-    for line in gzip.open(arg.f, 'r'):
+    for line in gzip.open(args.f, 'r'):
         decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
         if not re.match('#', decodedLine):
-            linesplit=decodedLine.rstrip().split()
-            mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
-            tempformattitle=linesplit[8].split(":")
-            tempformatcontent=linesplit[9].split(":")
-            dFormat=dict(zip(tempformattitle, tempformatcontent))
-            for altAl in altAlleles:
-                mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-                dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
+                        linesplit=decodedLine.rstrip().split()
+                        mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
+                        tempformattitle=linesplit[8].split(":")
+                        tempformatcontent=linesplit[9].split(":")
+                        dFormat=dict(zip(tempformattitle, tempformatcontent))
+
+                        for altAl in altAlleles:
+                            mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+                            dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
     print("ho letto il vcf")
     ##### 2. load genes list
-
     gene_list = pd.read_csv(args.g,sep="\t")
     print("ho letto la lista dei geni")
-    ##### 3. get VEP info
-
+    ##### 3. get VEP info 
     listOfErrors=[]
     dVep={}
     for locusID in dVcf.keys(): 
@@ -87,7 +83,6 @@ def main():
     #filemyres=open(args.o, 'w')
     #for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
     #for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
-
     print("ho preso le info da VEP")
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
@@ -105,10 +100,10 @@ def main():
     df = pd.DataFrame(dVep).T
     print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
-
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
-    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",values="value",data=gene_list).fillna(0).reset_index()
+    gene_list.loc[:,"value"] = 1
+    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
     df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
 
     col_freq = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
@@ -126,7 +121,6 @@ def main():
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
     #drop columns
-
     df_last = df_last.set_index("variant").drop(common,axis=1)
     df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
 
@@ -136,7 +130,6 @@ def main():
     wRare = 1
     wRank = 1
     #final score
-
     df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * wCAC) + (df_last.rare.astype(float) * wRare) + (df_last.soScore.astype(float) * wRank) + df_last.score_gene_list.astype(float)
 
     df_last.to_csv(arg.o,sep="\t",index=True)
