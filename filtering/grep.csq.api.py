@@ -25,6 +25,7 @@ def main():
     parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
     parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
     parser.add_argument("-o", help="path to output file  ",type=str, required= True)
+    parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
     parser.add_argument("-e", help="path to error file",type=str,required=True)
     parser.add_argument("-c", help="consequence allele count ",type=int,required=False, default=0)
     parser.add_argument("-w", help="path to  weight  file ",type=str,required=True)
@@ -130,7 +131,9 @@ def main():
     #final score
     df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * wCAC) + (df_last.rare.astype(float) * wRare) + (df_last.soScore.astype(float) * wRank) + df_last.score_gene_list.astype(float)
 
-    df_last.to_csv(arg.o,sep="\t",index=False)
+    df_last.to_csv(arg.o,sep="\t",index=True)
+    df_for_stats.to_csv(arg.st,sep="\t",index=True)
+
 
 if __name__ == "__main__":
     main()
