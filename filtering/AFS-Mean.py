@@ -1,6 +1,7 @@
 import re 
 import sys
-sys.path.append('/mpba0/vcolonna/gianluca/pythonScript/greplib.py')
+#sys.path.append('/mpba0/vcolonna/gianluca/pythonScript/greplib.py')
+sys.path.append('/home/enza/ezcngit/grep/filtering/greplib.py')
 import greplib as gp
 import argparse
 import gzip
@@ -9,12 +10,12 @@ import pandas as pd
 #from __future__ import division
 
 ########################################################
-def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm)
-"""
-VEPannotatedVCF= vcf annotated using VEP
-column2retain= list, index of samples to consider
-lSOTerm= list of Sequence Ontolgy terms that define variant consequences
-"""
+def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm):
+	"""
+	VEPannotatedVCF= vcf annotated using VEP
+	column2retain= list, index of samples to consider
+		lSOTerm= list of Sequence Ontolgy terms that define variant consequences
+	"""
 	dInfo={};  dSOT={}; dImpact={}
 	for line in gzip.open(args.f, 'r'):
 		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
@@ -81,9 +82,9 @@ def main():
 	parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
 	parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
 	parser.add_argument('-s', help='seeds number',type=int,required=True)
-	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True))
-	parser.add_argument("-p1", help="population to analyze",type=str,required=True)) #EUROPE
-	parser.add_argument("-p2", help="population to analyze",type=str,required=True)) #GREP
+	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True)
+	parser.add_argument("-p1", help="population to analyze",type=str,required=True) #EUROPE
+	parser.add_argument("-p2", help="population to analyze",type=str,required=True) #GREP
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -92,7 +93,7 @@ def main():
 #############################################################
 
 ##### 0a. retrieve VEP ranking info   
-        lSOTerm=gp.VepSOTermInfo(args.v)
+	lSOTerm=gp.VepSOTermInfo(args.v)
 			
 
 ##########~~~~~~~~~~~~~~ Read metadata
@@ -141,22 +142,25 @@ def main():
 
 	##### 2. get VEP info for dVcf.keys()
 	listOfErrors=[]
-	dVep={}
+	#dVep={}
 	for locusID in dVcf.keys(): 
 		#print(locusID)
-		dVepValue=gp.getMostSevereCsqFromVep(locusID)
+		dVepSearch=gp.getMostSevereCsqFromVep(locusID)
 		#print("ho finito dVep")
 		#prnt(dVepValue) 
-		if dVepValue: 
-			dVep[locusID]=dVepValue
-			if "csqAllele" in dVep[locusID]:
-				dVep[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVep[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
+		if dVepSearch: 
+			dVcf[locusID]=dVepSearch
+			if "csqAllele" in dVcf[locusID]:
+				dVcf[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVcf[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
 			else:
-				dVep[locusID]["csqCount"] = np.nan
+				dVcf[locusID]["csqCount"] = np.nan
 		else: 
 			listOfErrors.append(locusID)
+			
 	df = pd.DataFrame(dVep).T
-	cycle=0
+	print(dVcf) 
+	print(df) 
+"""	cycle=0
 	while cycle < args.c1:
 		cycle+=1
 		#dInfo={};  dSOT={}; dImpact={}
@@ -176,6 +180,6 @@ def main():
 	vectorOfMeansPop2=averagesFromFile(args.f, pop2sorted ,  lSOTerm)
 	myresPop2+=vectorOfMeansPop2
 	print ("\t".join(map(str, myresPop2) ))
-						
+"""						
 if __name__ == '__main__':
 	main()
