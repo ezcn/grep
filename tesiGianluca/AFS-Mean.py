@@ -90,7 +90,7 @@ def main():
 #############################################################
 
 ##### 0a. retrieve VEP ranking info   
-    dSOTermFineRank=gp.VepRankingInfo(args.v)
+        lSOTerm=gp.VepSOTermInfo(args.v)
 			
 
 ##########~~~~~~~~~~~~~~ Read metadata
