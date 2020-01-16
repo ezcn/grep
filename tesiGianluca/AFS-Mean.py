@@ -5,6 +5,7 @@ import greplib as gp
 import argparse
 import gzip
 import random
+import pandas as pd
 #from __future__ import division
 
 ########################################################
@@ -77,7 +78,8 @@ def main():
 	parser.add_argument('-o', help='path to output file  ',type=str, required= True)
 	parser.add_argument('-e', help='path to error file',type=str,required=True)
 	parser.add_argument('-m', help='path to metadata file',type=str,required=True)
-	parser.add_argument('-c', help='number of random cycle',type=int,required=False, default=1)
+	parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
+	parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
 	parser.add_argument('-s', help='seeds number',type=int,required=True)
 	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True))
 	parser.add_argument("-p1", help="population to analyze",type=str,required=True)) #EUROPE
@@ -118,13 +120,44 @@ def main():
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
 
-	sys.stdout=open(args.o, 'w') 
+	#sys.stdout=open(args.o, 'w') 
 	listOfErrors=[]
-	preHeader=['replicate','pop', 'chr','heterozigosity']
-	Header=preHeader+lSOTerm
-	print ("\t".join([i for i in Header]))
+	#preHeader=['replicate','pop', 'chr','heterozigosity']
+	#Header=preHeader+lSOTerm
+	#print ("\t".join([i for i in Header]))
+
+	##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
+	dVcf={}
+	for line in gzip.open(args.f, 'r'):
+		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
+		if not re.match('#', decodedLine):
+			linesplit=decodedLine.rstrip().split()
+			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
+			tempformattitle=linesplit[8].split(":")
+			tempformatcontent=linesplit[9].split(":")
+			for altAl in altAlleles:
+				mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+				dVcf[mykey]=[myref, myalt, myqual, [gg.split(":")[0] for gg in linesplit[9:]] ] 
+
+	##### 2. get VEP info for dVcf.keys()
+	listOfErrors=[]
+	dVep={}
+	for locusID in dVcf.keys(): 
+		#print(locusID)
+		dVepValue=gp.getMostSevereCsqFromVep(locusID)
+		#print("ho finito dVep")
+		#prnt(dVepValue) 
+		if dVepValue: 
+			dVep[locusID]=dVepValue
+			if "csqAllele" in dVep[locusID]:
+				dVep[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVep[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
+			else:
+				dVep[locusID]["csqCount"] = np.nan
+		else: 
+			listOfErrors.append(locusID)
+	df = pd.DataFrame(dVep).T
 	cycle=0
-	while cycle < args.c:
+	while cycle < args.c1:
 		cycle+=1
 		#dInfo={};  dSOT={}; dImpact={}
 		column2retain=[]
@@ -132,9 +165,9 @@ def main():
 		pop=args.p1
 		myresPop1=[cycle]
 		myresPop1+=pop
-		vectorOfMeansPop1=averagesFromFile(args.f, column2retain ,  lSOTerm, )
-		myresPop1+=vectorOfMeansPop1
-		print ("\t".join(map(str, myresPop1) ))
+		#vectorOfMeansPop1=averagesFromFile(args.f, column2retain ,  lSOTerm, )
+		#myresPop1+=vectorOfMeansPop1
+		#print ("\t".join(map(str, myresPop1) ))
 		
 		
 	pop=args.p2
