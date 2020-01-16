@@ -60,7 +60,7 @@
  
  ```
  
- #### 9. make index from VCF file  [kore-vcfindex](jobs/kore-vcfindex.sh)
+ #### 9. make index from VCF file  [kore-tabix](jobs/kore-tabix.sh)
  ```
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.out -e /mpba0/vcolonna/gianluca/error_out/$id.chr$c.index.err -v id="$id",chr="chr$c" -N $id.chr$c.index  /mpba0/vcolonna/gianluca/kore-vcfindex.sh; done; done
  
@@ -81,8 +81,9 @@ cycle for ID for chr Y
 for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.filt.out -e /mpba0/vcolonna/silvia/err/$id.chrY.fb.filt.err -v id="$id",chr="chrY" -N $id.chrY.fb.filt  kore-vcfFilterfb.sh ; done
 
 ```
+#### 11. make index from VCF file  [kore-tabix](jobs/kore-tabix.sh)
 
- #### 11. VCF normalize [kore-vtnormalizeFb](jobs/kore-vtnormalizeFb.sh)
+ #### 12. VCF normalize [kore-vtnormalizeFb](jobs/kore-vtnormalizeFb.sh)
  cycle for ID for chr 1-22
  ```
 for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.norm  /mpba0/vcolonna/silvia/job/kore-vtnormalize.sh ; done; done
@@ -99,8 +100,9 @@ for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.norm.
 
 ```
 
+#### 13. make index from VCF file  [kore-tabix](jobs/kore-tabix.sh)
 
- #### 12. VCF Decompose (decomposes biallelic block substitutions into its constituent SNPs) [kore-decomposeblock](jobs/kore-decomposeblock.sh)
+ #### 14. VCF Decompose (decomposes biallelic block substitutions into its constituent SNPs) [kore-decomposeblock](jobs/kore-decomposeblock.sh)
  cycle for ID for chr 1-22
  ```
  for id in AS006 AS054 AS064 AS090 AS094 AS074; do for c in $(seq 1 22); do  qsub -o /mpba0/vcolonna/silvia/out/$id.chr$c.fb.norm.dec.out -e /mpba0/vcolonna/silvia/err/$id.chr$c.fb.norm.dec.err -v id="$id",chr="chr$c" -N $id.chr$c.fb.dec  /mpba0/vcolonna/silvia/job/kore-decomposeblock.sh ; done; done
@@ -116,9 +118,9 @@ cycle for ID for chr Y
 for id in AS054 AS090 ;  do qsub -o /mpba0/vcolonna/silvia/out/$id.chrY.fb.dec.out -e /mpba0/vcolonna/silvia/err/$id.chrY.fb.dec.err -v id="$id",chr="chrY" -N $id.chrY.fb.dec  kore-decomposeblock.sh  ; done
 
 ```
+ #### 15. make index from VCF file  [kore-tabix](jobs/kore-tabix.sh)
  
- 
-#### 13. make stats from VCF file  [kore-bcfstats](jobs/kore-bcfstats.sh) - [kore-bcfQUAL](jobs/kore-bcfQUALstats.sh)
+#### 16. make stats from VCF file  [kore-bcfstats](jobs/kore-bcfstats.sh) - [kore-bcfQUAL](jobs/kore-bcfQUALstats.sh)
  ```
 qsub -o /mpba0/vcolonna/gianluca/AS006.bcfstats.out -e /mpba0/vcolonna/gianluca/AS006.bcfstats.err -v id="AS006",chr="chr1" -N AS006bstats /mpba0/vcolonna/gianluca/kore-bcfstats.sh
 
