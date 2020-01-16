@@ -4,7 +4,7 @@ import requests, json
 def VepSOTermInfo (vepinfofile): 
     """read external file with info on VEP consequences  """
     lSOTerm=[]  ### list of SOTerm 
-	
+    
     countlinesCsq= True
     for csqLine in open(vepinfofile, 'r'):
         if countlinesCsq:
@@ -14,7 +14,7 @@ def VepSOTermInfo (vepinfofile):
             myRowList=csqLine.rstrip().split('\t')
             lSOTerm.append(myRowList[0])
 
-     return  lSOTerm
+    return  lSOTerm
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def VepRankingInfo (vepinfofile): 
@@ -46,14 +46,14 @@ def getInfoFromVep (Position):
     """Retrieves information from Variant Effect Predictor API
     dependencies: requests, json 
     Position =  1:333333:/T (T is the alternate allele)   """
-
     freq_dict={}
     server="https://rest.ensembl.org"
     ext = "/vep/human/region/"+ Position +"?"
     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
     if not r.ok:
-        r.raise_for_status()
-        sys.exit()
+        return Position
+        #r.raise_for_status()
+        #sys.exit()
     decoded= r.json()
     info = decoded[0]
     if "colocated_variants" in info:
