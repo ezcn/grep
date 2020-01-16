@@ -4,7 +4,7 @@ sys.path.append('/lustrehome/gianluca/scripts/greplib.py')
 import greplib as gp
 import pandas as pd
 import numpy as np
-
+print("ho caricato i moduli")
 
 
 ########################################################
@@ -57,10 +57,10 @@ def main():
                         for altAl in altAlleles:
                             mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                             dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
-
+    print("ho letto il vcf")
     ##### 2. load genes list
     gene_list = pd.read_csv(args.g,sep="\t")
-    
+    print("ho letto la lista dei geni")
     ##### 3. get VEP info 
     listOfErrors=[]
     dVep={}
@@ -69,23 +69,23 @@ def main():
         dVepValue=gp.getInfoFromVep (locusID)
         #print("ho finito dVep")
         #prnt(dVepValue) 
-        if dVepValue: 
+        if type(dVepValue) is not str: 
             dVep[locusID]=dVepValue
             if "csqAllele" in dVep[locusID]:
                 dVep[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVep[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
             else:
                 dVep[locusID]["csqCount"] = np.nan
-            
+        
         else: 
             listOfErrors.append(locusID)
 
-    filemyres=open(args.o, 'w')
-    for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
-    for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
-
+    #filemyres=open(args.o, 'w')
+    #for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
+    #for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
+    print("ho preso le info da VEP")
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
-    
+    print("ho scritto il file di errore")
     ###### 4. create dataframe from dVEP
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
@@ -97,7 +97,7 @@ def main():
     '''
 
     df = pd.DataFrame(dVep).T
-
+    print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
