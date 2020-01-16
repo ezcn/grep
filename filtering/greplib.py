@@ -1,7 +1,22 @@
 #!/usr/bin/python3
 import requests, json 
 
+def VepSOTermInfo (vepinfofile): 
+    """read external file with info on VEP consequences  """
+    lSOTerm=[]  ### list of SOTerm 
+	
+    countlinesCsq= True
+    for csqLine in open(vepinfofile, 'r'):
+        if countlinesCsq:
+            csqTitle=csqLine.rstrip().split('\t')
+            countlinesCsq=False
+        else:
+            myRowList=csqLine.rstrip().split('\t')
+            lSOTerm.append(myRowList[0])
 
+     return  lSOTerm
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def VepRankingInfo (vepinfofile): 
     """read external file with info on VEP consequences  """
     dRank={"HIGH":4, "LOW": 2, "MODERATE":3, "MODIFIER":1}
