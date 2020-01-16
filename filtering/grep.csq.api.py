@@ -102,9 +102,7 @@ def main():
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
 
-    pop = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas',
-       'gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas',
-       'gnomad_nfe']
+    pop = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas','sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
 
     def label_race (row):
         if (row[pop] < 0.05).any():
