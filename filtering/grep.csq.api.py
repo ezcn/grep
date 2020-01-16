@@ -1,6 +1,6 @@
 # -*- coding: utf-8
 import re, sys, argparse, gzip, requests, json 
-sys.path.append('/home/enza/ezcngit/grep/filtering/greplib.py')
+sys.path.append('/lustrehome/gianluca/scripts/greplib.py')
 import greplib as gp
 import pandas as pd
 import numpy as np
@@ -59,7 +59,7 @@ def main():
                             dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
 
     ##### 2. load genes list
-    gene_list = pd.read_csv(args.m,sep="\t")
+    gene_list = pd.read_csv(args.g,sep="\t")
     
     ##### 3. get VEP info 
     listOfErrors=[]
