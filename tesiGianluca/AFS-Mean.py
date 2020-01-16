@@ -10,14 +10,15 @@ import random
 ########################################################
 def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm)
 """
-VEPannotatedVCF= vcf annotated using VEP 
+VEPannotatedVCF= vcf annotated using VEP
 column2retain= list, index of samples to consider
-lSOTerm= list of Sequence Ontolgy terms that define variant consequences 
+lSOTerm= list of Sequence Ontolgy terms that define variant consequences
 """
+	dInfo={};  dSOT={}; dImpact={}
 	for line in gzip.open(args.f, 'r'):
 		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 		if re.match('##', decodedLine):
-			if re.search('ID=CSQ' , decodedLine ): csqHeader=decodedLine.rstrip().split(':')[1].lstrip().rstrip('\'>').split('|')		
+			if re.search('ID=CSQ' , decodedLine ): csqHeader=decodedLine.rstrip().split(':')[1].lstrip().rstrip('\'>').split('|')
 		elif re.match('#', decodedLine):
 			for ind in sampleToConsider:
 				column2retain.append(decodedLine.split().index(ind))
@@ -79,6 +80,7 @@ def main():
 	parser.add_argument('-c', help='number of random cycle',type=int,required=False, default=1)
 	parser.add_argument('-s', help='seeds number',type=int,required=True)
 	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True))
+	#parser.add_argument("-p", help="population to analyze",type=str,required=True)) #EURsorted or GREPsorted
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -127,34 +129,38 @@ def main():
 
 	random.seed(args.s) ## need a sorted list of EUR
 	
-	#GREPtoretain=[key  for (key, value) in dSampleRegion.items() if value == 'GREP']
+	GREPtoretain=[key  for (key, value) in dSampleRegion.items() if value == 'GREP']
+
+	GREPsorted = sorted(GREPtoretain)
 	#sampleToConsider=random.sample(EUR, 6)
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
 
 	sys.stdout=open(args.o, 'w') 
 	listOfErrors=[]
-	preHeader=['replicate', 'chr','heterozigosity']
+	preHeader=['replicate','pop', 'chr','heterozigosity']
 	Header=preHeader+lSOTerm
 	print ("\t".join([i for i in Header]))
 	cycle=0
 	while cycle < args.c:
 		cycle+=1
-		dInfo={};  dSOT={}; dImpact={}
+		#dInfo={};  dSOT={}; dImpact={}
 		column2retain=[]
-		sampleToConsider=random.sample(EURsorted, args.n)
-		
+		sampleToConsider=random.sample(, args.n)
+		pop="HGDP"
 		myres=[cycle]
-		vectorOfMeans=averagesFromFile(args.f, column2retain ,  lSOTerm)
+		myres+=pop
+		vectorOfMeans=averagesFromFile(args.f, column2retain ,  lSOTerm, )
 		myres+=vectorOfMeans
 		print ("\t".join(map(str, myres) ))
 		
 		
-	#myresGREP=[0]
-	#vectorOfMeansGREP=averagesFromFile(args.f, GREPtoretain ,  lSOTerm)
-	#myresGREP+=vectorOfMeansGREP
-	#print ("\t".join(map(str, myresGREP) ))
-
+	pop="GREP"
+	myresGREP=[0]
+	myresGREP+=pop
+	vectorOfMeansGREP=averagesFromFile(args.f, GREPsorted ,  lSOTerm)
+	myresGREP+=vectorOfMeansGREP
+	print ("\t".join(map(str, myresGREP) ))
 						
 if __name__ == '__main__':
 	main()
