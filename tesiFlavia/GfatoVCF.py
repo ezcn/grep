@@ -4,16 +4,63 @@ import odgi
 g = odgi.graph()
 g.load("/home/flavia/Lab/vgpop/lil.odgi")
 
+def process_step(s):
+    h = g.get_handle_of_step(s) # gets the handle (both node and orientation) of the step
+    is_rev = g.get_is_reverse(h)
+    id = g.get_id(h)
+    return str(id) + ("+" if not is_rev else "-")
 
-start_node = g.get_handle(1)
-g.get_id(start_node), g.get_sequence(start_node)
+path_to_steps_dict = {}
 
-g_dfs = odgi.graph() # Array to keep track of visited nodes.
+def create_into_dict(path, step):       #dizionario nodo id come chiave e come valore un altro dizionario che ha come chiave il nome del path
+    path_name = g.get_path_name(path)
+    if path_name not in path_to_steps_dict:
+        path_to_steps_dict[path_name] = []
+    path_to_steps_dict[path_name].append(process_step(step))
 
-def create_edge_and_so_on(handle1, handle2, so_on_function, *args):
-    handle1_id = g.get_id(handle1)
+g.for_each_path_handle(
+    lambda p:
+        g.for_each_step_in_path(p, lambda s: create_into_dict(p, s))
+)
+
+
+node_id_to_path_and_pos_dict = {}
+for path_name, steps_list in path_to_steps_dict.items():
+    #print(path_name)
+
+    pos = 0
+    for nodeId_isRev in steps_list:
+        node_id = int(nodeId_isRev[:-1])
+        is_rev = nodeId_isRev[-1]
+        
+        node_handle = g.get_handle(node_id)
+        seq = g.get_sequence(node_handle)
+        
+        if node_id not in node_id_to_path_and_pos_dict:
+            node_id_to_path_and_pos_dict[node_id] = {}
+        
+        if path_name not in node_id_to_path_and_pos_dict[node_id]:
+            node_id_to_path_and_pos_dict[node_id][path_name] = pos
+        
+        
+        pos += len(seq)  #per ogni posizione aggiunghimi la lunghezza della sequenza
+
+for node_id in sorted(node_id_to_path_and_pos_dict.keys()):
+    path_and_pos_dict = node_id_to_path_and_pos_dict[node_id]
+    print('node_id:', node_id)
+    
+    for path, pos in path_and_pos_dict.items():
+        print('path:', path,'- pos:', pos)
+
+start_node = g.get_handle(1)   #radice
+g.get_id(start_node), g.get_sequence(start_node)  #id:seq
+
+g_dfs = odgi.graph() # Array to keep track of visited nodes
+
+def create_edge_and_so_on(handle1, handle2, so_on_function, *args):   #albero con DFS
+    handle1_id = g.get_id(handle1)     
     handle2_id = g.get_id(handle2)
-    if not g_dfs.has_node(handle2_id):
+    if not g_dfs.has_node(handle2_id):   
         so_on_function(args[0])
 
         if not g_dfs.has_node(handle1_id):
@@ -28,7 +75,7 @@ def create_edge_and_so_on(handle1, handle2, so_on_function, *args):
                 handle2_id
             )
         g_dfs.create_edge(handle1, handle2)
-        print('\tNew edge:', handle1_id, '-->', handle2_id)
+        print('\tNew edge:', handle1_id, '-->', handle2_id) #create edge 
 
 
 def dfs(node_id):
@@ -41,7 +88,7 @@ def dfs(node_id):
         False,
 
         lambda neighbour:
-            create_edge_and_so_on(
+            create_edge_and_so_on(                       #partendo da un nodo vado ad esplorare il resto
                 current_node, neighbour, dfs, g.get_id(neighbour)
             )
     )
@@ -78,7 +125,7 @@ def bfs_distances(graph, starting_node_id):
     Q = queue.Queue()
   
     Q.put(starting_node_id)
-    visited_node_id_set.add(starting_node_id)
+    visited_node_id_set.add(starting_node_id) #parte dal nodo di start
     while not Q.empty():
         current_node_id = Q.get()
         current_node = g.get_handle(current_node_id)
@@ -142,13 +189,11 @@ for node_id in ordered_node_id_list:        #per ogni distanza nella lista di no
     key = distances_dict[node_id]
     if dist_to_num_nodes[key] == 1:  #se la distanza è univoca printa start altrimenti no
         if start:
-            print(node_id, 'START') 
+            print(node_id, 'START', node_id_to_path_and_pos_dict[node_id],g_dfs.get_sequence(g_dfs.get_handle(node_id)))
+            start = not start
         else:
-            print(node_id, 'END')
-            print(get_sequences, 'seq')
-            #print(node_id, 'START')
-        start = not start
-    if dist_to_num_nodes[key] != 1:
-            print(node_id, 'Bolla')   
-            print(sequence_node, "seq")
-
+            print(node_id, 'END', node_id_to_path_and_pos_dict[node_id],g_dfs.get_sequence(g_dfs.get_handle(node_id)))
+            print(node_id, 'START', node_id_to_path_and_pos_dict[node_id],g_dfs.get_sequence(g_dfs.get_handle(node_id)))
+    else:
+        #print(get_sequence(node_id), 'sequence') 
+        print(node_id, 'Bolla', node_id_to_path_and_pos_dict[node_id],g_dfs.get_sequence(g_dfs.get_handle(node_id)))
