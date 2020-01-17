@@ -49,15 +49,15 @@ def main():
     for line in gzip.open(args.f, 'r'):
         decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
         if not re.match('#', decodedLine):
-                        linesplit=decodedLine.rstrip().split()
-                        mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
-                        tempformattitle=linesplit[8].split(":")
-                        tempformatcontent=linesplit[9].split(":")
-                        dFormat=dict(zip(tempformattitle, tempformatcontent))
+            linesplit=decodedLine.rstrip().split()
+            mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
+            tempformattitle=linesplit[8].split(":")
+            tempformatcontent=linesplit[9].split(":")
+            dFormat=dict(zip(tempformattitle, tempformatcontent))
 
-                        for altAl in altAlleles:
-                            mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-                            dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
+            for altAl in altAlleles:
+                mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+                dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
     print("ho letto il vcf")
     ##### 2. load genes list
     gene_list = pd.read_csv(args.g,sep="\t")
