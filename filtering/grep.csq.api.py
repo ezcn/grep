@@ -132,8 +132,8 @@ def main():
     #final score
     df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * wCAC) + (df_last.rare.astype(float) * wRare) + (df_last.soScore.astype(float) * wRank) + df_last.score_gene_list.astype(float)
 
-    df_last.to_csv(arg.o,sep="\t",index=True)
-    df_for_stats.to_csv(arg.st,sep="\t",index=True)
+    df_last.to_csv(args.o,sep="\t",index=True)
+    df_for_stats.to_csv(args.st,sep="\t",index=True)
 
 
 if __name__ == "__main__":
