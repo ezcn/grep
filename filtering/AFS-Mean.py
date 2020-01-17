@@ -148,7 +148,7 @@ def main():
 		dVepSearch=gp.getMostSevereCsqFromVep(locusID)
 		#print("ho finito dVep")
 		#prnt(dVepValue) 
-		if dVepSearch: 
+		if type(dVepSearch) is not str: 
 			dVcf[locusID]=dVepSearch
 			if "csqAllele" in dVcf[locusID]:
 				dVcf[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVcf[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
