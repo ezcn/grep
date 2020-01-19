@@ -58,8 +58,11 @@ def getInfoFromVep (Position):
     info = decoded[0]
     if "colocated_variants" in info:
         id_search = info["colocated_variants"][0]
-        if "id" in id_search :
+        if "id" in id_search:
             freq_dict["id"] = id_search["id"]
+        # adding info for starting position, this is needed for merging with CADD score.
+        #if "start" in id_search: 
+        #	freq_dict["starting_position"] = id_search["start"]   
         if 'frequencies' in id_search:
             to_parse = list(id_search["frequencies"].values())[0]
             for var in to_parse.keys():
