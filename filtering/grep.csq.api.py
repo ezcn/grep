@@ -1,6 +1,6 @@
 # -*- coding: utf-8
 import re, sys, argparse, gzip, requests, json 
-sys.path.append('/lustrehome/gianluca/scripts/greplib.py')
+sys.path.append('../filtering')
 import greplib as gp
 import pandas as pd
 import numpy as np
