@@ -4,17 +4,9 @@ sys.path.append('/lustrehome/gianluca/scripts/greplib.py')
 import greplib as gp
 import pandas as pd
 import numpy as np
-print("ho caricato i moduli")
+#print("ho caricato i moduli")
 
 
-########################################################
-
-def checkInList(gene, listOfGenes):
-        #gene=(mydict['gene_symbol'])
-        IsIn=False
-        if gene in listOfGenes:
-            IsIn=True
-        return IsIn
 #########################################################
 
 def main():
@@ -25,10 +17,10 @@ def main():
     parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
     parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
     parser.add_argument("-o", help="path to output file  ",type=str, required= True)
-    parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
+    #parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
     parser.add_argument("-e", help="path to error file",type=str,required=True)
     parser.add_argument("-c", help="consequence allele count ",type=int,required=False, default=0)
-    parser.add_argument("-w", help="path to  weight  file ",type=str,required=True)
+    parser.add_argument("-w", help="path to  weights  file ",type=str,required=True)
     args = parser.parse_args()
     #output = open(args.o,'w')
     #print(args)
@@ -58,10 +50,13 @@ def main():
             for altAl in altAlleles:
                 mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                 dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
-    print("ho letto il vcf")
+    #print("ho letto il vcf")
+   
+        
     ##### 2. load genes list
     gene_list = pd.read_csv(args.g,sep="\t")
-    print("ho letto la lista dei geni")
+    #print("ho letto la lista dei geni")
+
     ##### 3. get VEP info 
     listOfErrors=[]
     dVep={}
@@ -83,10 +78,10 @@ def main():
     #filemyres=open(args.o, 'w')
     #for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
     #for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
-    print("ho preso le info da VEP")
+    #print("ho preso le info da VEP")
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
-    print("ho scritto il file di errore")
+    #print("ho scritto il file di errore")
     ###### 4. create dataframe from dVEP
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
@@ -98,7 +93,7 @@ def main():
     '''
 
     df = pd.DataFrame(dVep).T
-    print("ho creato il DataFrame")
+   #print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
@@ -110,7 +105,7 @@ def main():
     common = set(df.columns).intersection(col_freq) 
 
     def label_race (row):
-        if (row[common] < 0.05).any():
+        if (row[common] < args.r).any(): ## TODO: instead of 0.05 use args.r 
             return 1
         if row[common].isnull().all():
             return 0.5
@@ -124,16 +119,13 @@ def main():
     df_last = df_last.set_index("variant").drop(common,axis=1)
     df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
 
-    df_for_stats = df_last[['most_severe_consequence', 'csqCount','csqAllele','gene_id', 'score_gene_list', 'wCellCycle', 'wDDD','wEmbryoDev', 'wEssential', 'wLethal', 'wMisc', 'rare', 'soScore']]
+    #df_for_stats = df_last[['most_severe_consequence', 'csqCount','csqAllele','gene_id', 'score_gene_list', 'wCellCycle', 'wDDD','wEmbryoDev', 'wEssential', 'wLethal', 'wMisc', 'rare', 'soScore']]
 
-    wCAC = 1
-    wRare = 1
-    wRank = 1
     #final score
-    df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * wCAC) + (df_last.rare.astype(float) * wRare) + (df_last.soScore.astype(float) * wRank) + df_last.score_gene_list.astype(float)
+    df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
 
     df_last.to_csv(args.o,sep="\t",index=True)
-    df_for_stats.to_csv(args.st,sep="\t",index=True)
+    #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
 
 if __name__ == "__main__":
