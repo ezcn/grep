@@ -1,5 +1,5 @@
 #### 1. variant calling 
-for all samples[kore-freebayes](job/kore-freebayes_all_mt.sh)
+for all samples [kore-freebayes](job/kore-freebayes_all_mt.sh)
 
 ```
 qsub -e /mpba0/vcolonna/giuliana/fb.err -o /mpba0/vcolonna/giuliana/fb.out -N fb-chrM /mpba0/vcolonna/giuliana/job/kore-freebayes_all.sh
