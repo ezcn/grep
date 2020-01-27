@@ -1,6 +1,6 @@
 import json 
 #filename="/lustre/home/enza/vepJson/AS006/AS006.chr1.vep.json"
-filename="/lustrehome/enza/ezcngit/grep/filtering/cicci"
+filename="/lustrehome/enza/ezcngit/grep/filtering/cicci3"
 
 
 def checkFreq (listFreq, threshold): 
@@ -15,12 +15,19 @@ def checkFreq (listFreq, threshold):
 	return(rare)
 
 vepInfo={}
+variantClass=[]
+
 #~~ filename is the json output of VEP runned locally 
 #~~ filename is parsed by line and by alternate allele  
 with open(filename, 'r') as f:  
 	for line in f:
 		info=json.loads(line) #~~ make a dictionary out of a string 
 		print (json.dumps(info, indent=4 ) ) 
+		#cicci= info['variant_class']; 
+		#if not cicci in variantClass: 
+		#	variantClass.append(cicci) 
+		#	print(variantClass)  
+		#	print (info['input'])	
 		#~~ derive the key chr:pos:/alt from the "input" element and process each alternate allele 
 		locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]
 		for altAl in altAlleles:
@@ -35,6 +42,7 @@ with open(filename, 'r') as f:
 				if 'transcript_consequences' in info:
 					ReportedGeneId=[] ; ReportedGeneSymbol=[]
 					for tc in info['transcript_consequences']:
+						print("@@", tc['consequence_terms']) 
 						if most in  tc['consequence_terms'] :
 							csqAllele=tc['variant_allele']
 							if csqAllele ==altAl : 
@@ -69,13 +77,15 @@ with open(filename, 'r') as f:
 				#~~ check if variant is rare according to threshold given as argument and report True or False in vepInfo[mykey]
 				if 'frequencies' in id_search:
 					frqInfoDic=id_search["frequencies" ]
-					for i in frqInfoDic: 
-						if vepInfo[mykey]['csqAllele'] in frqInfoDic: 
-							to_parse = list(frqInfoDic[vepInfo[mykey]['csqAllele']].values())
-							#print(to_parse)
-							vepInfo[mykey]['rare']= checkFreq (to_parse, 0.01) 		
+					if 'csqAllele' in vepInfo[mykey]: 
+						for i in frqInfoDic: 
+							if vepInfo[mykey]['csqAllele'] in frqInfoDic: 
+								to_parse = list(frqInfoDic[vepInfo[mykey]['csqAllele']].values())
+								#print(to_parse)
+								vepInfo[mykey]['rare']= checkFreq (to_parse, 0.01) 		
 							
  	
 
 #print (json.dumps(info, indent=4 ) ) 
-print (json.dumps(vepInfo, indent=4) ) 
+print (json.dumps(vepInfo, indent=4) )
+ 

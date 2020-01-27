@@ -61,26 +61,6 @@ def main():
     ##### 3. get VEP info 
     dVep = gp.getInfoFromVepLocally (args.j , args.r )	
     
-    """    
-	#print("ho finito dVep")
-        #prnt(dVepValue) 
-        if type(dVepValue) is not str: 
-            dVep[locusID]=dVepValue
-            if "csqAllele" in dVep[locusID]:
-                dVep[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVep[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
-            else:
-                dVep[locusID]["csqCount"] = np.nan
-        
-        else: 
-            listOfErrors.append(locusID)
-
-    #filemyres=open(args.o, 'w')
-    #for vv in dVep: vvstring= vv + ' # ' + str(dVep[vv]) + '\n'; filemyres.write(vvstring)
-    #for vc in dVcf: vcstring= vc + ' # ' + str(dVcf[vc]) + '\n' ; filemyres.write(vcstring)
-    #print("ho preso le info da VEP")
-    fileToWrite=open(args.e, 'w')
-    for i in listOfErrors: fileToWrite.write( i )
-    #print("ho scritto il file di errore")
     """
     ###### 4. create dataframe from dVEP
     '''
