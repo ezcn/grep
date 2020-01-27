@@ -1,5 +1,5 @@
-import json, pprint 
-filename="/lustre/home/enza/vepJson/AS006/AS006.chr1.vep.json"
+import json 
+#filename="/lustre/home/enza/vepJson/AS006/AS006.chr1.vep.json"
 filename="/lustrehome/enza/ezcngit/grep/filtering/cicci"
 
 
@@ -20,7 +20,7 @@ vepInfo={}
 with open(filename, 'r') as f:  
 	for line in f:
 		info=json.loads(line) #~~ make a dictionary out of a string 
-		#print(line_d['input']) 
+		print (json.dumps(info, indent=4 ) ) 
 		#~~ derive the key chr:pos:/alt from the "input" element and process each alternate allele 
 		locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]
 		for altAl in altAlleles:
@@ -38,7 +38,7 @@ with open(filename, 'r') as f:
 						if most in  tc['consequence_terms'] :
 							csqAllele=tc['variant_allele']
 							if csqAllele ==altAl : 
-								print (most, csqAllele, tc["transcript_id"], tc['gene_id'])
+								#print (most, csqAllele, tc["transcript_id"], tc['gene_id'])
 								vepInfo[mykey]['csqAllele']=csqAllele
 								if not tc['gene_id'] in ReportedGeneId: ReportedGeneId.append(tc['gene_id'])
 								if not tc['gene_symbol'] in ReportedGeneSymbol:  ReportedGeneSymbol.append(tc['gene_symbol']) 
@@ -50,14 +50,20 @@ with open(filename, 'r') as f:
 						if most in  rf['consequence_terms']:
 							csqAllele=rf['variant_allele']
 							if csqAllele ==altAl :
-								vepInfo[mykey]['csqAllele']=csqAllel
+								vepInfo[mykey]['csqAllele']=csqAllele
+
+				elif 'intergenic_consequences' in info:
+					for ic in info['intergenic_consequences']:
+						if most in  ic['consequence_terms']:
+							csqAllele=ic['variant_allele']
+							vepInfo[mykey]['csqAllele']=csqAllele
 
 			#~~ retrive info on rsID, starting position, frequencies
 			if "colocated_variants" in info:
 				id_search = info["colocated_variants"][0]
 				if "id" in id_search:
 			    		vepInfo[mykey]["id"] = id_search["id"]
-				adding info for starting position, this is needed for merging with CADD score.
+				#~~ adding info for starting position, this is needed for merging with CADD score.
 				if "start" in id_search: 
 					vepInfo[mykey]["starting_position"] = id_search["start"]   
 				#~~ check if variant is rare according to threshold given as argument and report True or False in vepInfo[mykey]
@@ -71,5 +77,5 @@ with open(filename, 'r') as f:
 							
  	
 
-print (json.dumps(info, indent=4 ) )  
+#print (json.dumps(info, indent=4 ) ) 
 print (json.dumps(vepInfo, indent=4) ) 

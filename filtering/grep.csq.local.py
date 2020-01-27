@@ -1,5 +1,5 @@
 # -*- coding: utf-8
-import re, sys, argparse, gzip, requests, json 
+import re, sys, argparse, gzip, json  #requests 
 sys.path.append('../libraries')
 import greplib as gp
 import pandas as pd
@@ -11,6 +11,7 @@ import numpy as np
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-f", help="path to  input  file ",type=str,required=True)
     parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
     parser.add_argument("-g", help="path to gene file list ",required=True)
     #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
@@ -57,13 +58,11 @@ def main():
     gene_list = pd.read_csv(args.g,sep="\t")
     #print("ho letto la lista dei geni")
 
-"""    ##### 3. get VEP info 
-    listOfErrors=[]
-    dVep={}
-    for locusID in dVcf.keys(): 
-        #print(locusID)
-        dVepValue=gp.getInfoFromVep (locusID)
-        #print("ho finito dVep")
+    ##### 3. get VEP info 
+    dVep = gp.getInfoFromVepLocally (args.j , args.r )	
+    
+    """    
+	#print("ho finito dVep")
         #prnt(dVepValue) 
         if type(dVepValue) is not str: 
             dVep[locusID]=dVepValue
@@ -82,7 +81,7 @@ def main():
     fileToWrite=open(args.e, 'w')
     for i in listOfErrors: fileToWrite.write( i )
     #print("ho scritto il file di errore")
-"""
+    """
     ###### 4. create dataframe from dVEP
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
@@ -94,7 +93,9 @@ def main():
     '''
 
     df = pd.DataFrame(dVep).T
-   #print("ho creato il DataFrame")
+    print (df) 
+
+    #print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
