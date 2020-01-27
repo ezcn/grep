@@ -83,6 +83,7 @@ def main():
 #    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
 #    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
     #optimize code
+    #probabilmente bisogna installare dask sul server se non ci sta, se si fa partire con python3 usando anaconda dovrebbe gia essere incluso.
     import dask.dataframe as dd
     dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
     #creation of the key
