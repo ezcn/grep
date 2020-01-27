@@ -61,7 +61,6 @@ def main():
     ##### 3. get VEP info 
     dVep = gp.getInfoFromVepLocally (args.j , args.r )	
     
-    """
     ###### 4. create dataframe from dVEP
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
