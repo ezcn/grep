@@ -72,16 +72,27 @@ def main():
     '''
 
     df = pd.DataFrame(dVep).T
-    print (df) 
+    #print (df) 
 
     #print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
-    df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID == x].final_score.sum())
-    gene_list.loc[:,"value"] = 1
-    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
-    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
-
+    df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
+#    score addition wCellCycle  wDDD  wEmbryoDev  wEssential  wLethal  wMisc
+#    gene_list.loc[:,"value"] = 1
+#    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
+#    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
+    #optimize code
+    import dask.dataframe as dd
+    dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
+    #creation of the key
+    dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
+    dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
+    dask_df = dask_df.set_index("key")
+    merged = dd.merge(df, dask_df, left_index=True, right_index=True,how="left") 
+#   capire se bisogna lasciare questa parte oppure no
+##################################################
+##################################################
     col_freq = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
     common = set(df.columns).intersection(col_freq) 
 
@@ -99,7 +110,9 @@ def main():
     #drop columns
     df_last = df_last.set_index("variant").drop(common,axis=1)
     df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
-
+##################################################
+##################################################
+##################################################
     #df_for_stats = df_last[['most_severe_consequence', 'csqCount','csqAllele','gene_id', 'score_gene_list', 'wCellCycle', 'wDDD','wEmbryoDev', 'wEssential', 'wLethal', 'wMisc', 'rare', 'soScore']]
 
     #final score
