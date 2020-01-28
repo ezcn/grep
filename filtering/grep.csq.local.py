@@ -101,6 +101,7 @@ def main():
 
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
+    df_last.to_csv(args.o,sep="\t",index=True)
     #drop columns
 #    df_last = df_last.set_index("variant").drop(common,axis=1)
 #    df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
