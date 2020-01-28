@@ -52,16 +52,11 @@ def main():
                 mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                 dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
     #print("ho letto il vcf")
-   
-        
-    ##### 2. load genes list
-    gene_list = pd.read_csv(args.g,sep="\t")
-    #print("ho letto la lista dei geni")
 
-    ##### 3. get VEP info 
+    ##### 2. get VEP info 
     dVep = gp.getInfoFromVepLocally (args.j , args.r )	
     
-    ###### 4. create dataframe from dVEP
+    ####  create dataframe from dVEP
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
     5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
@@ -74,8 +69,8 @@ def main():
     df = pd.DataFrame(dVep).T
     #print (df) 
 
-    #print("ho creato il DataFrame")
-    ####### 5 check for common genes and add it!
+    ####### 3. check for common genes and add it!
+    gene_list = pd.read_csv(args.g,sep="\t")
     common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
 #    score addition wCellCycle  wDDD  wEmbryoDev  wEssential  wLethal  wMisc
@@ -83,12 +78,12 @@ def main():
 #    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
 #    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
 
-    ####### 6 SOscore 
+    ####### 4. SOscore 
     SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
 
 
-    ####### 7 CADD 
+    ####### 5. CADD 
 
  #optimize code
     #probabilmente bisogna installare dask sul server se non ci sta, se si fa partire con python3 usando anaconda dovrebbe gia essere incluso.
@@ -101,7 +96,7 @@ def main():
     merged = dd.merge(df, dask_df, left_index=True, right_index=True,how="left") 
 
 
-    #####  8 Print CSV 
+    #####  6. Print CSV 
     df_last.to_csv(args.o,sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
