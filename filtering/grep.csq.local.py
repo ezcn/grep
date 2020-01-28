@@ -76,7 +76,7 @@ def main():
 
     #print("ho creato il DataFrame")
     ####### 5 check for common genes and add it!
-    common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
+    #common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
 #    score addition wCellCycle  wDDD  wEmbryoDev  wEssential  wLethal  wMisc
 #    gene_list.loc[:,"value"] = 1
@@ -84,42 +84,42 @@ def main():
 #    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
     #optimize code
     #probabilmente bisogna installare dask sul server se non ci sta, se si fa partire con python3 usando anaconda dovrebbe gia essere incluso.
-    import dask.dataframe as dd
-    dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
-    #creation of the key
-    dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
-    dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
-    dask_df = dask_df.set_index("key")
-    merged = dd.merge(df, dask_df, left_index=True, right_index=True,how="left") 
 #   capire se bisogna lasciare questa parte oppure no
 ##################################################
 ##################################################
-    col_freq = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
-    common = set(df.columns).intersection(col_freq) 
+#    col_freq = ['afr', 'amr', 'gnomad_oth', 'gnomad_fin', 'gnomad', 'gnomad_eas', 'sas','gnomad_afr', 'eur', 'eas', 'gnomad_amr', 'gnomad_asj', 'gnomad_sas','gnomad_nfe']
+#    common = set(df.columns).intersection(col_freq) 
 
-    def label_race (row):
-        if (row[common] < args.r).any(): ## TODO: instead of 0.05 use args.r 
-            return 1
-        if row[common].isnull().all():
-            return 0.5
-        return 0
+#    def label_race (row):
+#        if (row[common] < args.r).any(): ## TODO: instead of 0.05 use args.r 
+#            return 1
+#        if row[common].isnull().all():
+#            return 0.5
+#        return 0
 
-    df.loc[:,"rare"] = df.apply(lambda row: label_race(row), axis=1)
+    #df.loc[:,"rare"] = df.apply(lambda row: label_race(row), axis=1)
 
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-    df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
+    df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #drop columns
-    df_last = df_last.set_index("variant").drop(common,axis=1)
-    df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
+#    df_last = df_last.set_index("variant").drop(common,axis=1)
+#    df_last[gene_list.gene_type.unique()] = df_last[gene_list.gene_type.unique()].fillna(0)
 ##################################################
 ##################################################
 ##################################################
     #df_for_stats = df_last[['most_severe_consequence', 'csqCount','csqAllele','gene_id', 'score_gene_list', 'wCellCycle', 'wDDD','wEmbryoDev', 'wEssential', 'wLethal', 'wMisc', 'rare', 'soScore']]
 
     #final score
-    df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
+    #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
+    import dask.dataframe as dd
+    dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
+    #creation of the key
+    dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
+    dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
+    dask_df = dask_df.set_index("key")
+    merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
 
-    df_last.to_csv(args.o,sep="\t",index=True)
+    merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
 
