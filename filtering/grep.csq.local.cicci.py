@@ -1,6 +1,6 @@
 # -*- coding: utf-8
 import re, sys, argparse, gzip, json  #requests 
-sys.path.append('../libraries')
+sys.path.append('/lustrehome/silvia/sissiB/')
 import greplib as gp
 import pandas as pd
 import numpy as np
@@ -79,7 +79,7 @@ def main():
     dSOTermFineRank=gp.VepRankingInfo(args.v)
     SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     #df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
-    df.reset_index().merge(SoScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
+    df=df.reset_index().merge(SoScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
 
     ####### PRINT INTERMEDIATE 
     df.to_csv(args.o,sep="\t",index=True)	
