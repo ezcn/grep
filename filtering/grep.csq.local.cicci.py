@@ -65,12 +65,11 @@ def main():
     '''
 
     df = pd.DataFrame(dVep).T
-    #print (df) 
 
     ####### 3. check for common genes and add it!
     gene_list = pd.read_csv(args.g,sep="\t")
-    common_gene = set(df.gene_id).intersection(set(gene_list.ensID))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
+
 #    score addition wCellCycle  wDDD  wEmbryoDev  wEssential  wLethal  wMisc
 #    gene_list.loc[:,"value"] = 1
 #    pivot_tmp = pd.pivot_table(columns="gene_type",index="ensID",data=gene_list,values="value").fillna(0).reset_index()
@@ -79,9 +78,13 @@ def main():
     ####### 4. SOscore 
     dSOTermFineRank=gp.VepRankingInfo(args.v)
     SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-    df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
+    #df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
+    df.reset_index().merge(SoScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
 
+    ####### PRINT INTERMEDIATE 
+    df.to_csv(args.o,sep="\t",index=True)	
 
+"""
     ####### 5. CADD 
 
  #optimize code
@@ -94,13 +97,10 @@ def main():
     dask_df = dask_df.set_index("key")
     merged = dd.merge(df, dask_df, left_index=True, right_index=True,how="left") 
 
-
     #####  6. Print CSV 
-    df_last.to_csv(args.o,sep="\t",index=True)
+    df.to_csv(args.o,sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
-
-"""
 #   capire se bisogna lasciare questa parte oppure no
 ##################################################
 ##################################################
@@ -132,7 +132,6 @@ def main():
 
     #df_last.to_csv(args.o,sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
-"""
 """
 
 if __name__ == "__main__":
