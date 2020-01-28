@@ -26,8 +26,6 @@ def main():
     #output = open(args.o,'w')
     #print(args)
         
-    ##### 0a. retrieve VEP ranking info   
-    dSOTermFineRank=gp.VepRankingInfo(args.v)
          
     ##### 0b. read weights 
     dWeig={}
@@ -79,6 +77,7 @@ def main():
 #    df = (df.reset_index().merge(pivot_tmp,how="left",left_on="gene_id",right_on="ensID").drop("ensID",axis=1)).rename({"index":"variant"},axis=1)
 
     ####### 4. SOscore 
+    dSOTermFineRank=gp.VepRankingInfo(args.v)
     SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.merge(soScore,left_on="most_severe_consequence",right_on="index").drop("index",axis=1)
 
