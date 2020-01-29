@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8
 import re, sys, argparse, gzip, json  #requests 
 sys.path.append('../libraries')
