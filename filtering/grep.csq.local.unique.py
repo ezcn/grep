@@ -406,8 +406,8 @@ def main():
 		if 'csqAllele' in dVep[kk]:
 			csqAllele=dVep[kk]['csqAllele']; altAllele=dVcf[kk][1]; genotype=dVcf[kk][3]
 			altAlleleCount=2-genotype.count('0') 
-			csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2) 
-			dVep[kk]['csqCount']=csaAllCount
+			csqCount= csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2) 
+			dVep[kk]['csqCount']=csqCount
 			break
 	
 ###### 4. create dataframe from dV
