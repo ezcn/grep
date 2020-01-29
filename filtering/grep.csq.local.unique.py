@@ -366,7 +366,7 @@ def main():
     args = parser.parse_args()
         
     ##### 0a. retrieve VEP ranking info   
-    dSOTermFineRank=gp.VepRankingInfo(args.v)
+    dSOTermFineRank=VepRankingInfo(args.v)
          
     ##### 0b. read weights 
     dWeig={}
@@ -396,7 +396,7 @@ def main():
     #print("ho letto la lista dei geni")
 
     ##### 3. get VEP info 
-    dVep = gp.getInfoFromVepLocally (args.j , args.r )	
+    dVep = getInfoFromVepLocally (args.j , args.r )	
     
     ###### 4. create dataframe from dVEP
     df = pd.DataFrame(dVep).T
