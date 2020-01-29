@@ -418,14 +418,14 @@ def main():
 
     #final score
     #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
-    dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
+    ##dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
     #creation of the key
-    dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
-    dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
-    dask_df = dask_df.set_index("key")
-    merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
+    ##dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
+    ##dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
+    ##dask_df = dask_df.set_index("key")
+    ##merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
 
-    merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
+    ##merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
 
