@@ -404,8 +404,9 @@ def main():
     ##csq allele features : number of allele with conseqces and genotype likelihood 	
 	for kk in dVep.keys():
 		if 'csqAllele' in dVep[kk]:
-			myAltCount = CountCSQ_REF_ALT (dVep[kk]['csqAllele'], dVcf[kk][0], dVcf[kk][1], dVcf[kk][3])[2]
-			csqAllCount= csqAlleleFeatures (dVep[kk]['csqAllele'], dVcf[kk][1], myAltCount, 2)
+			csqAllele=dVep[kk]['csqAllele']; altAllele=dVcf[kk][1]; genotype=dVcf[kk][3]
+			altAlleleCount=2-genotype.count('0') 
+			csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2) 
 			dVep[kk]['csqCount']=csaAllCount
 			break
 	
