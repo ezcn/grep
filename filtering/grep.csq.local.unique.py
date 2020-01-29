@@ -1,6 +1,8 @@
+#!/usr/bin/python3
 import pandas as pd
 import numpy as np
 import re, sys, argparse, gzip, json
+import dask.dataframe as dd
 
 
 ###### Function START ###################################
@@ -416,7 +418,6 @@ def main():
 
     #final score
     #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
-    import dask.dataframe as dd
     dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
     #creation of the key
     dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
