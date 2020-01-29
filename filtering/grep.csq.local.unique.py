@@ -397,9 +397,15 @@ def main():
 
     ##### 3. get VEP info 
     dVep = getInfoFromVepLocally (args.j , args.r )	
-    
-    ###### 4. create dataframe from dVEP
-    df = pd.DataFrame(dVep).T
+    ##csq allele features : number of allele with conseqces and genotype likelihood 	
+    for  kk in dVep.keys(): 
+	if 'csqAllele' in dVep[kk]:  
+		myAltCount= CountCSQ_REF_ALT (dVep[kk]['csqAllele'], dVcf[kk][0], dVcf[kk][1], dVcf[kk][3])[2]
+        	csqAllCount=csqAlleleFeatures (dVep[kk]['csqAllele'], dVcf[kk][1], myAltCount, 2)
+		dVep[kk]['csqCount']=csaAllCount
+	
+###### 4. create dataframe from dV
+								        df = pd.DataFrame(dVep).T
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
     5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
