@@ -401,17 +401,17 @@ def main():
 
     ##### 3. get VEP info 
     dVep = getInfoFromVepLocally (args.j , args.r )	
-    ##csq allele features : number of allele with conseqces and genotype likelihood 	
-	for kk in dVep.keys():
-		if 'csqAllele' in dVep[kk]:
-			csqAllele=dVep[kk]['csqAllele']; altAllele=dVcf[kk][1]; genotype=dVcf[kk][3]
-			altAlleleCount=2-genotype.count('0') 
-			#1 het #2 homo
-			csqCount= csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2)[1]
-			dVep[kk]['csqCount']=csqCount
-	
+    ##csq allele features : number of allele with conseqces and genotype likelihood     
+    for kk in dVep.keys():
+        if 'csqAllele' in dVep[kk]:
+            csqAllele=dVep[kk]['csqAllele']; altAllele=dVcf[kk][1]; genotype=dVcf[kk][3]
+            altAlleleCount=2-genotype.count('0') 
+            #1 het #2 homo
+            csqCount= csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2)[1]
+            dVep[kk]['csqCount']=csqCount
+    
 ###### 4. create dataframe from dV
-	df = pd.DataFrame(dVep).T
+    df = pd.DataFrame(dVep).T
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
     5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
