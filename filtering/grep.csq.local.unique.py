@@ -356,7 +356,7 @@ def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, GTfields):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", help="path to  input  file ",type=str,required=True)
+    parser.add_argument("-f", help="path to  input vcf file ",type=str,required=True)
     parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
     parser.add_argument("-g", help="path to gene file list ",required=True)
     #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
@@ -369,8 +369,6 @@ def main():
     parser.add_argument("-w", help="path to  weights  file ",type=str,required=True)
     args = parser.parse_args()
         
-    ##### 0a. retrieve VEP ranking info   
-    dSOTermFineRank=VepRankingInfo(args.v)
          
     ##### 0b. read weights 
     dWeig={}
@@ -395,13 +393,11 @@ def main():
                 mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                 dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]   
         
-    ##### 2. load genes list
-    gene_list = pd.read_csv(args.g,sep="\t")
-    #print("ho letto la lista dei geni")
 
-    ##### 3. get VEP info 
+    ##### 2. get VEP info from local json file 
     dVep = getInfoFromVepLocally (args.j , args.r )	
-    ##csq allele features : number of allele with conseqces and genotype likelihood     
+
+    #~~csq allele features : number of allele with conseqces and genotype    
     for kk in dVep.keys():
         if 'csqAllele' in dVep[kk]:
             csqAllele=dVep[kk]['csqAllele']; altAllele=dVcf[kk][1]; genotype=dVcf[kk][3]
@@ -410,7 +406,7 @@ def main():
             csqCount= csqAlleleFeatures (csqAllele, altAllele, altAlleleCount, 2)[1]
             dVep[kk]['csqCount']=csqCount
     
-###### 4. create dataframe from dV
+    #~~create dataframe from dV
     df = pd.DataFrame(dVep).T
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
@@ -421,13 +417,18 @@ def main():
     1:1519044:/T          intron_variant   rs147532057         T  ENSG00000197785      ATAD3A        NaN        NaN        NaN ....
     ''' 
 
-    ####### 5 check for common genes and add it!
+    #### 3. info form gene lists 
+    gene_list = pd.read_csv(args.g,sep="\t")
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
-
+    
+    #### 3. SOScore 
+    dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     df_last.to_csv(args.o,sep="\t",index=True)
 
+
+    #### 4. CADDD 
     #final score
     #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
     ##dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
@@ -439,6 +440,11 @@ def main():
 
     ##merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
+
+    #### 5. pLI 
+    ### load pli table 
+    ### add pli to df 
+
 
 
 if __name__ == "__main__":
