@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import re, sys, argparse, gzip, json
 import dask.dataframe as dd
+from ast import literal_eval
 
 
 ###### Function START ###################################
@@ -421,6 +422,7 @@ def main():
 
     #### 3. info form gene lists 
     gene_list = pd.read_csv(args.g,sep="\t")
+    df.loc[:,"gene_id"] = df.gene_id.apply(lambda x: literal_eval(x))
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
     
     #### 3. SOScore 
