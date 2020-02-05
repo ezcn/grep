@@ -455,8 +455,6 @@ def main():
     #### 3. info form gene lists 
     gene_list = pd.read_csv(args.g,sep="\t")
     
-    df.to_csv("test_prova_search_error.tsv",sep="\t")
-
     def convert_string_to_array(x):
         tree = ast.parse(x, mode='eval')
         transformer = Transformer()
@@ -472,7 +470,7 @@ def main():
         df.loc[:,"gene_id"] = df.gene_id.apply(convert_string_to_array)
     except Exception as e:
         pass
-        
+
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
     
     #### 3. SOScore 
