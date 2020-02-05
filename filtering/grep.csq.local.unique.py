@@ -468,7 +468,11 @@ def main():
         # and eval the compiled object
         return eval(clause, dict(Decimal=decimal.Decimal))
     
-    df.loc[:,"gene_id"] = df.gene_id.apply(convert_string_to_array)
+    try:
+        df.loc[:,"gene_id"] = df.gene_id.apply(convert_string_to_array)
+    except Exception as e:
+        pass
+        
     df.loc[:,"score_gene_list"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID.isin(x)].final_score.sum())
     
     #### 3. SOScore 
