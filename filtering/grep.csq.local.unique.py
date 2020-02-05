@@ -40,6 +40,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations, thresholdRareAllele ):
 									if not tc['gene_symbol'] in ReportedGeneSymbol:  ReportedGeneSymbol.append(tc['gene_symbol']) 
 						vepInfo[mykey]['gene_id']=ReportedGeneId
 						vepInfo[mykey]['gene_symbol']=ReportedGeneSymbol
+						vepInfo[mykey]['transcript_id']=tc['transcript_id']
 
                                         #~~ check if the most severe consequence is in a regulatory feature  
 					elif 'regulatory_feature_consequences' in info: 
@@ -361,7 +362,8 @@ def main():
     parser.add_argument("-g", help="path to gene file list ",required=True)
     #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
     parser.add_argument("-r", help="threshold for rare variant definition ", type=float,required=True) 
-    parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)   
+    parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)
+    parser.add_argument("-p", help="path to table of pLI score  ",type=str, required= True)   
     parser.add_argument("-o", help="path to output file  ",type=str, required= True)
     #parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
     parser.add_argument("-e", help="path to error file",type=str,required=True)
@@ -425,7 +427,7 @@ def main():
     dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
-    df_last.to_csv(args.o,sep="\t",index=True)
+    #df_last.to_csv(args.o,sep="\t",index=True)
 
 
     #### 4. CADDD 
@@ -442,7 +444,11 @@ def main():
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
 
     #### 5. pLI 
-    ### load pli table 
+    ### load pli table
+    pLI_score = pd.read_csv(args.p,sep="\t")
+    pliScore=pLI_score[["transcript", "pLI"]]
+    df_last = df.merge(pliScore,left_on="transcript_id",right_on="transcript",how="left").drop("transcript", axis=1)
+    df_last.to_csv(args.o,sep="\t",index=True)
     ### add pli to df 
 
 
