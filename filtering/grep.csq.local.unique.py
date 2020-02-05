@@ -455,6 +455,8 @@ def main():
     #### 3. info form gene lists 
     gene_list = pd.read_csv(args.g,sep="\t")
     
+    df.to_csv("test_prova_search_error.tsv",sep="\t")
+
     def convert_string_to_array(x):
         tree = ast.parse(x, mode='eval')
         transformer = Transformer()
