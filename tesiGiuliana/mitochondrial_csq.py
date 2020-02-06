@@ -2,19 +2,6 @@ import re, sys, argparse, gzip, requests, json
 import pandas as pd
 import numpy as np
 
-dVcf={}
-for line in gzip.open("/lustrehome/giuliana/mity/AS006.mity.vcf.gz", 'r'):
-	decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
-	if not re.match('#', decodedLine):
-		linesplit=decodedLine.rstrip().split()
-		mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
-		tempformattitle=linesplit[8].split(":")
-		tempformatcontent=linesplit[9].split(":")
-		dFormat=dict(zip(tempformattitle, tempformatcontent))
-		for altAl in altAlleles:
-			mykey="chr" + mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-			dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
-
 
 
 
@@ -54,13 +41,7 @@ def getInfoFromVep (Position):
 	return mitidic
 
 
-dVep={}
-for Position in dVcf.keys(): 
-	dVepValue=getInfoFromVep (Position)
-	if dVepValue: 
-		dVep[Position]=dVepValue
 
-df = pd.DataFrame(dVep).T
 
 def VepRankingInfo (vepinfofile): 
     """read external file with info on VEP consequences  """
@@ -82,12 +63,41 @@ def VepRankingInfo (vepinfofile):
     dSOTermFineRank=dict(zip(lSOTerm, map(int, lScores) ))
     #print (dSOTermFineRank)
     return dSOTermFineRank
-    
-dSOTermFineRank=VepRankingInfo("/lustrehome/giuliana/github/grep/filtering/csqimpact.tsv")
-SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-df=df.reset_index().merge(SoScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
 
-df.to_csv("/lustrehome/giuliana/mity/VEP_mt/test_impact",sep="\t",index=True)
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-f", help="path to  input vcf file ",type=str,required=True)
+	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
+	parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)
+	args=parser.parse_args()
+
+	dVcf={}
+	for line in gzip.open(args.f, 'r'):
+		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
+		if not re.match('#', decodedLine):
+			linesplit=decodedLine.rstrip().split()
+			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
+			tempformattitle=linesplit[8].split(":")
+			tempformatcontent=linesplit[9].split(":")
+			dFormat=dict(zip(tempformattitle, tempformatcontent))
+			for altAl in altAlleles:
+				mykey="chr" + mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+				dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]
+
+	dVep={}
+	for Position in dVcf.keys(): 
+		dVepValue=getInfoFromVep (Position)
+		if dVepValue: 
+			dVep[Position]=dVepValue
+
+	df = pd.DataFrame(dVep).T  
+
+	dSOTermFineRank=VepRankingInfo(args.v)
+	SoScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
+	df=df.reset_index().merge(SoScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
+
+	df.to_csv(args.o,sep="\t",index=True)
 
 
-
+if __name__ == "__main__":
+	main()
