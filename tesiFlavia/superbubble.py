@@ -1,5 +1,5 @@
 class Counter:
-    counter = 0
+    counter = 0        #serve per incrementare i valori altrimenti prenderebve solo order(es.16)
 
     def __init__(self, init_value = 0):
         self.counter = init_value
@@ -15,18 +15,18 @@ def topological_sort(edges, source):
     visited = [False] * len(edges)
     order_D_list = [0] * len(edges)
 
-    recursive_topological_sort(edges, source, visited, order_D_list, order)
+    recursive_topological_sort(edges, source, visited, order_D_list, order)     
 
     return order_D_list
 
 def recursive_topological_sort(edges, v, visited, order_D_list, order):
     visited[v] = True
-    for neighbour in edges[v]:
+    for neighbour in edges[v]:                                 #per ogni vicino nel grafo partendo da v, se non visitato richiamare funzione
         if not visited[neighbour]:
             recursive_topological_sort(edges, neighbour, visited, order_D_list, order)
     
-    order_D_list[v] = order.counter
-    order.dec()                         #fin qui 
+    order_D_list[v] = order.counter    
+    order.dec()                        #decremento
 
 
 def entrance(edges, v):
@@ -41,10 +41,68 @@ def entrance(edges, v):
     return sum(child_one_parent_list) > 0   #se c'è almeno un figlio che appartiene ad un solo padre stampalo
                                             #altrimenti darà False
 
+candidates_double_list = []
+
+#insertentrance takes as input a vertex v, inserts it at the end of candidates and labels it as entrance
+def insertentrance(v, candidates_double_list):
+    candidates_double_list.append[(v,'entrance')]      
+
+    return candidates_double_list['entrance']
+
+#insertexit takes as input a vertex v, inserts it at the end of candidates and labels it as exit
+
+def insertexit(v,candidates_double_list):
+    candidates_double_list.append([v, 'exit'])
+
+    return candidates_double_list['exit']
+
+#head return the first candidate of a list
+def head(candidates_double_list):    
+    
+    return candidates_double_list[0]
+
+#return the last candidate of a list
+def tail(candidates_double_list):   
+    
+    return candidates_double_list[-1]
+
+#remove last candidate of a list
+def delete_tail(candidates_double_list):
+    del candidates_double_list[-1]         #si può anche togliere con candidate.list.pop
+
+#return a follow candidate of v
+def next(v,candidates_double_list):
+    for i,(vertex,labels)in enumerate(candidates_double_list):
+        if vertex == v:
+            return candidates_double_list [i +1:]
+            return[] 
 
 
 
 
+
+'''
+topological_sort(edges)
+preventEnt = NULL
+for v in topological_sort order
+    alternativeEntrance[v] = NULL
+    previousEntrance[v] = preventEnt
+    if exit(v):
+        insertexit(v)
+    if entrance(v):
+        insertentrance(v)
+        preventEnt = v
+while candidate is not empty   #lista vuota?
+    if entrance(tail(candidate)):
+        delete_tail(candidate)
+    else reportsuperbubble(head(candidate),tail(candidate))
+
+reportsuperbubble(start,exit)
+if (start == NULL and exit == NULL and
+    order_D_list[start] > order_D_list[exit]):
+    delete_tail(candidate_list)
+    return previousEntrance[exit]
+'''    
 # Python3 program to find minimum edge  
 # between given two vertex of Graph 
 import queue  #importa libreria
@@ -168,16 +226,3 @@ if __name__ == '__main__':
    			else:
    				print(node, 'END')
    			start = not start
-
-'''
-non usato
-visited = [] # Array to keep track of visited nodes.
-def dfs(visited, edges, node):
-    if node not in visited:          #se il nodo non è già visitato printa il nodo e aggiungilo alla lista, per ogni vicino del nodo
-        print(node)
-        visited.append(node)
-        for neighbour in edges[node]:
-            dfs(visited, edges, neighbour)
-
-#dfs(visited, edges, 0)
-'''
