@@ -70,6 +70,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                                 vepInfo[(mykey, tcTranscript)]['gene_symbol']= tc['gene_symbol']
                                                                 vepInfo[(mykey, tcTranscript)]['impact']=tc['impact']
                                                                 vepInfo[(mykey, tcTranscript)]['key']=mykey
+                                                                vepInfo[(mykey, tcTranscript)]['element_id']=tc['transcript_id']
                                 #~~ check if the most severe consequence is in a regulatory feature  
                                 elif 'regulatory_feature_consequences' in info:
                                         for rf  in info['regulatory_feature_consequences']:
@@ -81,6 +82,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                                 vepInfo[(mykey, rfRegulatory)]['csqAllele']=rfAllele
                                                                 vepInfo[(mykey, rfRegulatory)]['impact']=rf['impact']
                                                                 vepInfo[(mykey, rfRegulatory)]['key']=mykey
+                                                                vepInfo[(mykey, rfRegulatory)]['element_id']=rf['regulatory_feature_id']
                                 #~~ check if the most severe consequence is in an intergenic region 
                                 elif 'intergenic_consequences' in info:
                                         for ic in info['intergenic_consequences']:
@@ -90,6 +92,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                         if icAllele ==altAl:    
                                                                 vepInfo[(mykey, 'intergenic') ]['csqAllele']=icAllele
                                                                 vepInfo[(mykey, 'intergenic') ]['key']=mykey
+                                                                vepInfo[(mykey, 'intergenic') ]['element_id']='intergenic'
                                 #~~ retrive info on rsID, starting position, frequencies for the csqAllele found in the previous code  
                                 if "colocated_variants" in info:
                                         infoCV = info["colocated_variants"][0]
@@ -450,10 +453,10 @@ def main():
     
     
     
-    dfTrans.to_csv("cicci.trans.tsv", sep="\t")#, index=True )
-    dfCommon.to_csv("cicci.common.tsv", sep="\t")#, index=True )
+    #dfTrans.to_csv("/lustrehome/silvia/cicci.trans.tsv", sep="\t")#, index=True )
+    #dfCommon.to_csv("/lustrehome/silvia/cicci.common.tsv", sep="\t")#, index=True )
     df=dfTrans.set_index('key').join(dfCommon, how="left"  )
-    df.to_csv("cicci.ttcos.tsv", sep="\t")
+    #df.to_csv("/lustrehome/silvia/cicci.ttcos.tsv", sep="\t")
 	
 	
     '''
@@ -465,9 +468,14 @@ def main():
     1:1519044:/T          intron_variant   rs147532057         T  ENSG00000197785      ATAD3A        NaN        NaN        NaN ....
     ''' 
 
-    #### 3. info form gene lists 
+    #### 3. info form gene lists
+     
     gene_list = pd.read_csv(args.g,sep="\t")
-    
+    genes=gene_list[["ensID", "final_score"]]
+    df_last =df.reset_index().merge(genes,left_on="gene_id",right_on="ensID",how="left").drop("ensID", axis=1)
+    df_last.rename({"final_score":"gene_score"},axis=1,inplace=True)
+ 
+    '''
     def convert_string_to_array(x):
         tree = ast.parse(x, mode='eval')
         transformer = Transformer()
@@ -485,12 +493,12 @@ def main():
         pass
 
     df.loc[:,"score_gene"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID==x])
-    
+    '''
     #### 3. SOScore 
     dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-    df_last = df.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
-    #df_last.to_csv(args.o,sep="\t",index=True)
+    df_final = df_last.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
+    #df_final.to_csv(args.o,sep="\t",index=True)
 
 
     #### 4. CADDD 
@@ -510,8 +518,8 @@ def main():
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
-    df_last = df.merge(pliScore,left_on="transcript_id",right_on="transcript",how="left").drop("transcript", axis=1)
-    df_last.to_csv(args.o,sep="\t",index=True)
+    df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop("transcript", axis=1)
+    df_info.to_csv(args.o,sep="\t",index=True)
     ### add pli to df 
 
 
