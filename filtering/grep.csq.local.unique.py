@@ -502,8 +502,6 @@ def main():
 
 
     #### 4. CADDD 
-    #final score
-    #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
 	index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
 	CADD_col = []
 	for idx in df.final.index:
@@ -521,10 +519,7 @@ def main():
 				cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
 			CADD_col.append(cadd.loc[idx][0])
     df_final.loc[:,"CADD"] = CADD_col
-    ##merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
 
-    ##merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
-    #df_for_stats.to_csv(args.st,sep="\t",index=True)
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
