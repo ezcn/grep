@@ -471,9 +471,10 @@ def main():
     #### 3. info form gene lists
      
     gene_list = pd.read_csv(args.g,sep="\t")
-    genes=gene_list[["ensID", "final_score"]]
-    df_last =df.reset_index().merge(genes,left_on="gene_id",right_on="ensID",how="left").drop("ensID", axis=1)
-    df_last.rename({"final_score":"gene_score"},axis=1,inplace=True)
+    df_last=df.reset_index().merge(gene_list, left_on="gene_id", right_on="ensID", how="left").drop("ensID", axis=1).fillna(0)
+    #genes=gene_list[["ensID", "final_score"]]
+    #df_last =df.reset_index().merge(genes,left_on="gene_id",right_on="ensID",how="left").drop("ensID", axis=1)
+    #df_last.rename({"final_score":"gene_score"},axis=1,inplace=True)
  
     '''
     def convert_string_to_array(x):
@@ -497,10 +498,10 @@ def main():
     #### 3. SOScore 
     dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
-    df_final = df_last.reset_index().merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
+    df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-
+    
     #### 4. CADDD 
     index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
     CADD_col = []
@@ -519,7 +520,7 @@ def main():
                 cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
             CADD_col.append(cadd.loc[idx][0])
     df_final.loc[:,"CADD"] = CADD_col
-
+   
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
