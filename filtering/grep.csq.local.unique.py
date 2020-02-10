@@ -432,7 +432,7 @@ def main():
 
     #~~csq allele features : number of allele with conseqces and genotype    
     for telem in dVepTrans:
-        if 'csqAllele' in dVepTrans[telem]: 	
+        if 'csqAllele' in dVepTrans[telem]:     
             vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=dVcf[vcfkey][1]; genotype=dVcf[vcfkey][3]
             altAlleleCount=2-genotype.count('0')
             csqCount= csqAlleleCount (csqAllele, altAllele, altAlleleCount, 2)
@@ -457,8 +457,8 @@ def main():
     #dfCommon.to_csv("/lustrehome/silvia/cicci.common.tsv", sep="\t")#, index=True )
     df=dfTrans.set_index('key').join(dfCommon, how="left"  )
     #df.to_csv("/lustrehome/silvia/cicci.ttcos.tsv", sep="\t")
-	
-	
+    
+    
     '''
                      most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
     5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
@@ -502,22 +502,22 @@ def main():
 
 
     #### 4. CADDD 
-	index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
-	CADD_col = []
-	for idx in df.final.index:
-		#key_search = 1:10623:/C
-		kks = idx.split(":")
-		key_search_chr = kks[0]
-		key_search_pos = kks[1]
-		file_s = (filenames_new[(filenames_new["chr"] == key_search_chr) & (filenames_new["lows"] <= key_search_pos) & (filenames_new["ups"] >= key_search_pos)])["file_name"]
-		if file_s.empty:
-			CADD_col.append(np.nan)
-		else:
-			callable_list_cadd = file_s.tolist()
-			cadd = pd.DataFrame()
-			for f in callable_list_cadd:
-				cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
-			CADD_col.append(cadd.loc[idx][0])
+    index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
+    CADD_col = []
+    for idx in df.final.index:
+        #key_search = 1:10623:/C
+        kks = idx.split(":")
+        key_search_chr = kks[0]
+        key_search_pos = kks[1]
+        file_s = (filenames_new[(filenames_new["chr"] == key_search_chr) & (filenames_new["lows"] <= key_search_pos) & (filenames_new["ups"] >= key_search_pos)])["file_name"]
+        if file_s.empty:
+            CADD_col.append(np.nan)
+        else:
+            callable_list_cadd = file_s.tolist()
+            cadd = pd.DataFrame()
+            for f in callable_list_cadd:
+                cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
+            CADD_col.append(cadd.loc[idx][0])
     df_final.loc[:,"CADD"] = CADD_col
 
     #### 5. pLI 
