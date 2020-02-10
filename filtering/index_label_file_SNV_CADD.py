@@ -83,7 +83,7 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 print(">>> changing name: END")
 
 
-print(">>> Creating indix...")
+print(">>> Creating index file...")
 #create dataframe info / indice
 filenames_new = pd.Series(glob.glob("range_chr*.tsv"),name="file_name").to_frame()
 ranges = filenames_new.file_name.str.split("_",expand=True)[2].str.split(".",expand=True)[0].str.split("-",expand=True)
@@ -93,6 +93,7 @@ filenames_new.loc[:,"ups"] = (ranges[1]).astype(int)
 lows = filenames_new["lows"].values  # the lower bounds
 ups = filenames_new["ups"].values # the upper bounds
 
+filenames_new.to_csv("index_file.tsv",sep="\t")
 print("QUIT")
 
 #### example 
