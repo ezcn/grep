@@ -8,6 +8,8 @@ import threading
 import glob
 import concurrent.futures as futures
 from concurrent.futures import ProcessPoolExecutor
+import pandas as pd
+import numpy as np
 
 
 def get_chunk_line_count(ranges):
@@ -40,7 +42,6 @@ def get_file_offset_ranges(name, blocksize=65536, m=1):
 
     return ranges
 
-
 def wc_proc_pool_exec(name, blocksize=65536):
     ranges = get_file_offset_ranges(name, blocksize)
 
@@ -71,8 +72,8 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 	dataframe.loc[:,"chr"] = (dataframe.key.str.split(":",expand=True))[0]
 	if dataframe.chr.nunique() == 1:
 		old = dataframe.filename_old[0]
+		dataframe.loc[:,'filename_new'] = "range_chr{chr}_{start}-{end}.tsv".format(chr=dataframe.chr[0],start=dataframe.position[0],end=dataframe.position[1])
 		new = dataframe.filename_new[0]
-		dataframe.loc[:,'filename_new'] = "SNV_key_chr{chr}_{start}-{end}.tsv".format(chr=dataframe.chr[0],start=dataframe.position[0],end=dataframe.position[1])
 		print(">> changing name file: {old} --->> {new}".format(old=old,new=new))
 		os.rename(old,new)
 	else:
@@ -81,4 +82,27 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 		break
 print(">>> changing name: END")
 
+
+print(">>> Creating indix...")
+#create dataframe info / indice
+filenames_new = pd.Series(glob.glob("range_chr*.tsv"),name="file_name").to_frame()
+ranges = filenames_new.file_name.str.split("_",expand=True)[2].str.split(".",expand=True)[0].str.split("-",expand=True)
+filenames_new.loc[:,"chr"] = filenames_new.file_name.str.split("_",expand=True)[1]
+filenames_new.loc[:,"lows"] = (ranges[0]).astype(int)
+filenames_new.loc[:,"ups"] = (ranges[1]).astype(int)
+lows = filenames_new["lows"].values  # the lower bounds
+ups = filenames_new["ups"].values # the upper bounds
+
 print("QUIT")
+
+#### example 
+'''
+chrc = "chr1"
+x = 6773748
+filenames_new[(filenames_new["chr"] == chrc) & (filenames_new["lows"] <= x) & (filenames_new["ups"] >= x)]
+'''
+
+
+
+
+
