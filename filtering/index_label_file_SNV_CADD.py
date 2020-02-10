@@ -92,14 +92,14 @@ filenames_new.loc[:,"ups"] = (ranges[1]).astype(int)
 lows = filenames_new["lows"].values  # the lower bounds
 ups = filenames_new["ups"].values # the upper bounds
 
-filenames_new.to_csv("index_file.tsv",sep="\t")
+filenames_new.to_csv("index_file_CADD.tsv",sep="\t")
 print("QUIT")
 
 #### example 
 '''
 chrc = "chr1"
 x = 6773748
-filenames_new[(filenames_new["chr"] == chrc) & (filenames_new["lows"] <= x) & (filenames_new["ups"] >= x)]
+c = filenames_new[(filenames_new["chr"] == chrc) & (filenames_new["lows"] <= x) & (filenames_new["ups"] >= x)]["file_name"]
 '''
 
 
