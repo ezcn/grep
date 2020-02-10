@@ -27,7 +27,6 @@ def get_chunk_line_count(ranges):
         f.seek(start)
         return sum(bl.count('\n') for bl in blocks(f, left))
 
-
 def get_file_offset_ranges(name, blocksize=65536, m=1):
     fsize = os.stat(name).st_size
     chunksize = (fsize // multiprocessing.cpu_count()) * m
@@ -49,16 +48,18 @@ def wc_proc_pool_exec(name, blocksize=65536):
         results = [executor.submit(get_chunk_line_count, param) for param in ranges]
         return sum([future.result() for future in futures.as_completed(results)])
 
-
-print(wc_proc_pool_exec(sys.argv[1]))
-
+#"equal to wc -l"
+#print(wc_proc_pool_exec(sys.argv[1]))
 
 #create a list of files
 print(">>> create a list of files")
 filenames = (glob.glob("SNV_key_ch*.tsv"))
 #count the lines in each files
 print(">>> count the lines in each files")
-len_of_dfs = [len(open(filename).readlines()) for filename in filenames]
+###### sequencial format
+#len_of_dfs = [len(open(filename).readlines()) for filename in filenames]
+###### parallel format
+len_of_dfs = [wc_proc_pool_exec(filename) for filename in filenames]
 #read only first and last row in each file
 print(">>> read only first and last row in each file")
 list_of_dfs = [pd.read_csv(filename,skiprows=range(2,len_of_dfs[n]-1), header=0,sep="\t") for n,filename in enumerate(filenames)]
@@ -81,29 +82,3 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 print(">>> changing name: END")
 
 print("QUIT")
-
-
-def chunks(l, n):
-    return [l[i:i+int(n)] for i in range(0, len(l), int(n))]
-
-def job_1(job_id,data_slice,return_dict):
-    #are they share somethings?
-    return_dict[job_id] = len(open(filename).readlines())
-
-def dispatch_jobs_1(data, job_number=40):
-    total = len(data)
-    chunk_size = total / job_number
-    slice = chunks(data, chunk_size)
-    jobs = []
-    manager = multiprocessing.Manager()
-    return_dict = manager.dict()
-
-    for job_id, data in enumerate(slice):
-        j = multiprocessing.Process(target=job_number_1, args=(job_id, data, return_dict))
-        jobs.append(j)
-    for j in jobs:
-        j.start()
-    for p in jobs:
-        p.join()
-
-    return return_dict
