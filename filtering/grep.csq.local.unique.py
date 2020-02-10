@@ -520,7 +520,7 @@ def main():
 			for f in callable_list_cadd:
 				cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
 			CADD_col.append(cadd.loc[idx][0])
-    
+    df_final.loc[:,"CADD"] = CADD_col
     ##merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
 
     ##merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
