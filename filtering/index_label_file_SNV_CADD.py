@@ -6,6 +6,9 @@ import sys
 import time
 import threading
 import glob
+import concurrent.futures as futures
+from concurrent.futures import ProcessPoolExecutor
+
 
 def get_chunk_line_count(ranges):
     name, start, stop, blocksize = ranges
@@ -24,6 +27,7 @@ def get_chunk_line_count(ranges):
         f.seek(start)
         return sum(bl.count('\n') for bl in blocks(f, left))
 
+
 def get_file_offset_ranges(name, blocksize=65536, m=1):
     fsize = os.stat(name).st_size
     chunksize = (fsize // multiprocessing.cpu_count()) * m
@@ -37,18 +41,17 @@ def get_file_offset_ranges(name, blocksize=65536, m=1):
 
     return ranges
 
-def wc_mp_pool(name, blocksize=65536):
+
+def wc_proc_pool_exec(name, blocksize=65536):
     ranges = get_file_offset_ranges(name, blocksize)
 
-    pool = multiprocessing.Pool(processes=len(ranges))
-    pool_outputs = pool.map(get_chunk_line_count, ranges)
-    pool.close()
-    pool.join()
-
-    return sum(pool_outputs)
+    with ProcessPoolExecutor(max_workers=len(ranges)) as executor:
+        results = [executor.submit(get_chunk_line_count, param) for param in ranges]
+        return sum([future.result() for future in futures.as_completed(results)])
 
 
-print(wc_mp_pool(sys.argv[1]))
+print(wc_proc_pool_exec(sys.argv[1]))
+
 
 #create a list of files
 print(">>> create a list of files")
