@@ -61,9 +61,11 @@ print(">>> count the lines in each files")
 #len_of_dfs = [len(open(filename).readlines()) for filename in filenames]
 ###### parallel format
 len_of_dfs = [wc_proc_pool_exec(filename) for filename in filenames]
+###### or with wc -l in bash and invert key:value
+from key_value.py import dict_name 
 #read only first and last row in each file
 print(">>> read only first and last row in each file")
-list_of_dfs = [pd.read_csv(filename,skiprows=range(2,len_of_dfs[n]-1), header=0,sep="\t") for n,filename in enumerate(filenames)]
+list_of_dfs = [pd.read_csv(filename,skiprows=range(2,dict_name[filename]-1), header=0,sep="\t") for n,filename in enumerate(filenames)]
 #change name
 print(">>> changing name: START")
 for dataframe, filename in zip(list_of_dfs, filenames):
@@ -92,7 +94,7 @@ filenames_new.loc[:,"ups"] = (ranges[1]).astype(int)
 lows = filenames_new["lows"].values  # the lower bounds
 ups = filenames_new["ups"].values # the upper bounds
 
-filenames_new.to_csv("index_file_CADD.tsv",sep="\t")
+filenames_new.to_csv("index_file_CADD.tsv",sep="\t",index=False)
 print("QUIT")
 
 #### example 
