@@ -504,16 +504,27 @@ def main():
     #### 4. CADDD 
     #final score
     #df_last.loc[:,"gpScore"] = (df_last.csqCount.astype(float) * dWeig[wCAC]) + (df_last.rare.astype(float) * dWeig[wRare]) + (df_last.soScore.astype(float) * dWeig[wRank]) + df_last.score_gene_list.astype(float)
-    ##dask_df = dd.read_csv('/lustre/home/enza/CADD/SNV_ch*.tsv',sep="\t")
-    #creation of the key
-    ##dask_df["key"] = dask_df["#Chrom"].map(str) +":"+ dask_df["Pos"].map(str) +":"+"/"+ dask_df["Alt"]
-    ##dask_df = dask_df.drop(["#Chrom","Pos","Ref","Alt","PHRED"],axis=1)
-    ##dask_df = dask_df.set_index("key")
+	index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
+	CADD_col = []
+	for idx in df.final.index:
+		#key_search = 1:10623:/C
+		kks = idx.split(":")
+		key_search_chr = kks[0]
+		key_search_pos = kks[1]
+		file_s = (filenames_new[(filenames_new["chr"] == key_search_chr) & (filenames_new["lows"] <= key_search_pos) & (filenames_new["ups"] >= key_search_pos)])["file_name"]
+		if file_s.empty:
+			CADD_col.append(np.nan)
+		else:
+			callable_list_cadd = file_s.tolist()
+			cadd = pd.DataFrame()
+			for f in callable_list_cadd:
+				cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
+			CADD_col.append(cadd.loc[idx][0])
+    
     ##merged = dd.merge(df_last, dask_df, left_index=True, right_index=True,how="left") 
 
     ##merged.to_csv(args.o+"*.tsv",sep="\t",index=True)
     #df_for_stats.to_csv(args.st,sep="\t",index=True)
-
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
