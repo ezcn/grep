@@ -510,7 +510,7 @@ def main():
         kks = idx.split(":")
         key_search_chr = kks[0]
         key_search_pos = kks[1]
-        file_s = (filenames_new[(filenames_new["chr"] == key_search_chr) & (filenames_new["lows"] <= key_search_pos) & (filenames_new["ups"] >= key_search_pos)])["file_name"]
+        file_s = (filenames_new[(filenames_new["chr"] == "chr"+key_search_chr) & (filenames_new["lows"] <= key_search_pos) & (filenames_new["ups"] >= key_search_pos)])["file_name"]
         if file_s.empty:
             CADD_col.append(np.nan)
         else:
