@@ -77,8 +77,7 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 		print(">> changing name file: {old} --->> {new}".format(old=old,new=new))
 		os.rename(old,new)
 	else:
-		print("ERROR: dataframe not contain unique chr in...QUIT!")
-		print(dataframe)
+		print("ERROR: dataframe not contain unique chr in {file} QUIT!".format(file=filename))
 		break
 print(">>> changing name: END")
 
