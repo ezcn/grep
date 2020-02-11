@@ -62,7 +62,7 @@ print(">>> count the lines in each files")
 ###### parallel format
 len_of_dfs = [wc_proc_pool_exec(filename) for filename in filenames]
 ###### or with wc -l in bash and invert key:value
-from key_value.py import dict_name 
+from key_value import dict_name 
 #read only first and last row in each file
 print(">>> read only first and last row in each file")
 list_of_dfs = [pd.read_csv(filename,skiprows=range(2,dict_name[filename]-1), header=0,sep="\t") for n,filename in enumerate(filenames)]
