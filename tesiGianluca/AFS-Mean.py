@@ -8,7 +8,10 @@ import random
 import pandas as pd
 #from __future__ import division
 
-########################################################
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm):
 	"""
 	VEPannotatedVCF= vcf annotated using VEP
@@ -73,17 +76,18 @@ def averagesFromFile(VEPannotatedVCF, column2retain , lSOTerm):
 ########################################################
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-f', help='path to  input  file ',type=str,required=True)
-	parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)	
+	parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
+	parser.add_argument('-f', help='path to  vcf file (merged pop1 and pop2 ) ',type=str,required=True)
+	#parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)	
 	parser.add_argument('-o', help='path to output file  ',type=str, required= True)
 	parser.add_argument('-e', help='path to error file',type=str,required=True)
 	parser.add_argument('-m', help='path to metadata file',type=str,required=True)
 	parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
-	parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
+	#parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
 	parser.add_argument('-s', help='seeds number',type=int,required=True)
-	parser.add_argument("-n", help="number of cycles/replicates",type=int,required=True)
-	parser.add_argument("-p1", help="population to analyze",type=str,required=True) #EUROPE
-	parser.add_argument("-p2", help="population to analyze",type=str,required=True) #GREP
+	parser.add_argument("-n", help="number of individuals in pop1 and pop2",type=int,required=True)
+	parser.add_argument("-p1", help="reference population fro standardization",type=str,required=True) #EUROPE
+	parser.add_argument("-p2", help="test population ",type=str,required=True) #GREP
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -92,8 +96,12 @@ def main():
 #############################################################
 
 ##### 0a. retrieve VEP ranking info   
-	lSOTerm=gp.VepSOTermInfo(args.v)
+	#lSOTerm=gp.VepSOTermInfo(args.v)
 			
+
+#########~~~~~~~~~~~~ 1. get VEP info from local json file 
+	dV = gp.getInfoFromVepLocally (args.j )   #yelds two dictionaries 
+	dVepTrans=dV[0]; dVepCommon=dV[1]
 
 ##########~~~~~~~~~~~~~~ Read metadata
 
@@ -108,71 +116,49 @@ def main():
 			dMeta= dict(zip(header, other))
 			Region.append(dMeta['region'])
 			Sample.append(dMeta['sample'])
-
 	dSampleRegion=dict(zip(Sample, Region))
 	#### 
 	pop1 = [key  for (key, value) in dSampleRegion.items() if value == args.p1]
-	pop1sorted = sorted(EUR) ## needed for seed
+	pop1sorted = sorted(pop1) ## needed for seed
 	random.seed(args.s) ## need a sorted list of EUR
 	pop2=[key  for (key, value) in dSampleRegion.items() if value == args.p2]
-	pop2sorted = sorted(GREPtoretain)
+	pop2sorted = sorted(pop2)
 	#sampleToConsider=random.sample(EUR, 6)
 
 ##########~~~~~~~~~~~~~~  Loop of vcf lines 
 
 	#sys.stdout=open(args.o, 'w') 
-	listOfErrors=[]
-	#preHeader=['replicate','pop', 'chr','heterozigosity']
-	#Header=preHeader+lSOTerm
-	#print ("\t".join([i for i in Header]))
-
-	##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
-	dVcf={}
-	for line in gzip.open(args.f, 'r'):
-		decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
-		if not re.match('#', decodedLine):
-			linesplit=decodedLine.rstrip().split()
-			mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
-			tempformattitle=linesplit[8].split(":")
-			tempformatcontent=linesplit[9].split(":")
-			for altAl in altAlleles:
-				mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-				dVcf[mykey]=[myref, myalt, myqual, [gg.split(":")[0] for gg in linesplit[9:]] ] 
-
-	##### 2. get VEP info for dVcf.keys()
-	listOfErrors=[]
-	#dVep={}
-	for locusID in dVcf.keys(): 
-		#print(locusID)
-		dVepSearch=gp.getMostSevereCsqFromVep(locusID)
-		#print("ho finito dVep")
-		#prnt(dVepValue) 
-		if type(dVepSearch) is not str: 
-			dVcf[locusID]=dVepSearch
-			if "csqAllele" in dVcf[locusID]:
-				dVcf[locusID]["csqCount"]= gp.CountCSQ_REF_ALT(dVcf[locusID]["csqAllele"], dVcf[locusID][0], dVcf[locusID][1], [dVcf[locusID][3]]) [0]
-			else:
-				dVcf[locusID]["csqCount"] = np.nan
-		else: 
-			listOfErrors.append(locusID)
-			
-	df = pd.DataFrame(dVep).T
-	print(dVcf) 
-	print(df) 
-"""	cycle=0
+	dPop1Info={}
+	cycle=0
 	while cycle < args.c1:
 		cycle+=1
-		#dInfo={};  dSOT={}; dImpact={}
 		column2retain=[]
 		sampleToConsider=random.sample(pop1sorted, args.n)
-		pop=args.p1
-		myresPop1=[cycle]
-		myresPop1+=pop
-		#vectorOfMeansPop1=averagesFromFile(args.f, column2retain ,  lSOTerm, )
-		#myresPop1+=vectorOfMeansPop1
-		#print ("\t".join(map(str, myresPop1) ))
-		
-		
+		print( sampleToConsider) 		
+		for line in gzip.open(args.f, 'r'):
+			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
+			if re.match ('#CHR', decodedLine): 
+				for ind in sampleToConsider:
+					column2retain.append(decodedLine.split().index(ind))
+				#print( column2retain) 
+			if not re.match('#', decodedLine):
+				linesplit=decodedLine.rstrip().split()
+				mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; altAlleles=myalt.split(",")
+				#genotypesToConsider=[gg.split(":")[0] for gg in linesplit[9:] if linesplit[9:].index(gg)+9   in column2retain]
+				genotypesToConsider=[]
+				for indx in column2retain: genotypesToConsider.append(linesplit[indx].split(":")[0])
+
+				print('######################################')
+				#print(linesplit[9:])
+				print (genotypesToConsider)
+				for altAl in altAlleles:
+					mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+					most=dVepCommon[mykey]['most_severe_consequence']
+					csqAllele=dVepCommon[mykey]['csqAllele']
+					myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
+					print (myfreq) 
+					
+"""		
 	pop=args.p2
 	myresPop2=[0]
 	myresPop2+=pop
