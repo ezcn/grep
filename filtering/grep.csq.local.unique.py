@@ -415,12 +415,11 @@ def main():
     for line in gzip.open(args.f, 'r'):
         decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
         if not re.match('#', decodedLine):
-            linesplit=decodedLine.rstrip().split()
+            linesplit=decodedLine.rstrip().split() 
             mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
             tempformattitle=linesplit[8].split(":")
             tempformatcontent=linesplit[9].split(":")
             dFormat=dict(zip(tempformattitle, tempformatcontent))
-
             for altAl in altAlleles:
                 mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                 dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]   
@@ -443,10 +442,12 @@ def main():
         if 'frequencies' in dVepCommon[celem]: 
             for cAll in dVepCommon[celem]['frequencies']: 
                 listFreq=dVepCommon[celem]['frequencies'][cAll].values()
+                #del dVepCommon[celem]['frequencies']
                 rare=checkFreq (listFreq, args.r )
                 dVepCommon[celem]['rare']=rare
                 dVepCommon[celem]['commonCSQall']=cAll
-    
+    #for delem in dVepCommon:
+       #del dVepCommon[delem]['frequencies'] 
     #~~create dataframe from dV
     dfTrans = pd.DataFrame(dVepTrans).T 
     dfCommon= pd.DataFrame(dVepCommon).T
@@ -501,7 +502,7 @@ def main():
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-    
+    ''' 
     #### 4. CADDD 
     index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
     CADD_col = []
@@ -520,13 +521,13 @@ def main():
                 cadd = cadd.append(pd.read_csv(f,sep="\t",idex_col="key"))
             CADD_col.append(cadd.loc[idx][0])
     df_final.loc[:,"CADD"] = CADD_col
-   
+    '''
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
-    df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop("transcript", axis=1)
-    df_info.to_csv(args.o,sep="\t",index=True)
+    df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop(["transcript","frequencies"] , axis=1)
+    df_info.to_csv(args.o,sep="\t",index=False)
     ### add pli to df 
 
 
