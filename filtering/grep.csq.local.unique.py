@@ -502,7 +502,7 @@ def main():
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-    ''' 
+    '''' 
     #### 4. CADDD 
     index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
 
