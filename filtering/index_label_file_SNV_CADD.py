@@ -74,7 +74,7 @@ for dataframe, filename in zip(list_of_dfs, filenames):
 	dataframe.loc[:,"chr"] = (dataframe.key.str.split(":",expand=True))[0]
 	if dataframe.chr.nunique() == 1:
 		old = dataframe.filename_old[0]
-		dataframe.loc[:,'filename_new'] = "range_chr{chr}_{start}-{end}.tsv".format(chr=dataframe.chr[0],start=dataframe.position[0],end=dataframe.position[1])
+		dataframe.loc[:,'filename_new'] = "range_chr{chr}_{start}_{end}.tsv".format(chr=dataframe.chr[0],start=dataframe.position[0],end=dataframe.position[1])
 		new = dataframe.filename_new[0]
 		print(">> changing name file: {old} --->> {new}".format(old=old,new=new))
 		os.rename(old,new)
