@@ -71,20 +71,6 @@ def indexing(index_file):
             index_dict[chro][(lows,ups)] = file_name
     return index_dict
 
-def get_CADD_file(x):
-    try:
-        return index_dict["chr"+x["chr"]][int(x["position"])]
-    except Exception as e:
-        return np.nan
-
-def get_CADDscore(df):
-    try:
-        f = df["file_index"].replace(".py","")
-        d = __import__(f).d
-        return d[df["index_x"]]
-    except Exception as e:
-        return np.nan
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-input", help="path to  input dir samples",type=str,required=True)
@@ -125,6 +111,20 @@ def main():
         #index_file = pd.read_csv("/lustrehome/enza/ezcngit/index_file_CADD.tsv",sep="\t")
         print(">>>> get CADD file index ")
         #get the name of cadd file to use
+        def get_CADD_file(x):
+            try:
+                return index_dict["chr"+x["chr"]][int(x["position"])]
+            except Exception as e:
+                return np.nan
+
+        def get_CADDscore(df):
+            try:
+                f = df["file_index"].replace(".py","")
+                d = __import__(f).d
+                return d[df["index_x"]]
+            except Exception as e:
+                return np.nan
+
         df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
         print(">>>> get CADD score ")
         #get CADD score FINALLY MUCH FASTER with __pycache__!
@@ -136,6 +136,7 @@ def main():
                 __import__(cache.replace(".py",""))
                 pbar.update(1)
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
+        df_final.drop(["position","file_index"],axis=1,inplace=True)
         df_final.to_csv(f,sep="\t",index=False)
 
 if __name__ == "__main__":
