@@ -129,6 +129,8 @@ def main():
         print(">>>> get CADD score ")
         #get CADD score FINALLY MUCH FASTER with __pycache__!
         to_import = df_final.file_index.dropna().unique()
+        print(to_import)
+ 		print("#####################")
         how_many = len(to_import)
         for n,cache in enumerate(to_import):
             print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
