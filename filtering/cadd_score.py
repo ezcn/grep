@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import os,argparse
+from tqdm import tqdm 
 from glob import iglob  
 import importlib.util
 from bisect import bisect_left
@@ -93,11 +94,11 @@ def main():
     #parser.add_argument("-output", help="path to output file  ",type=str, required= True)
     args = parser.parse_args()
 
-    index_file = args.index     #/data/resources/CADD_index/index_file_CADD.tsv
-    input_sample_dirs = args.input     #/data/research/NGS/results/grep
-    CADD_files = args.cadd     #/home/data/resources/CADD_index
-    #out_file = args.output    #/data/research/NGS/results/grep/
-    chro = args.chr #2
+    index_file = args.index     #"/data/resources/CADD_index/index_file_CADD.tsv"
+    input_sample_dirs = args.input     #"/data/research/NGS/results/grep"
+    CADD_files = args.cadd     #"/home/data/resources/CADD_index"
+    #out_file = args.output    #"/data/research/NGS/results/grep/"
+    chro = args.chr #10
 
     print("Input FILEs : ",input_sample_dirs)
     print("index FILE : ",index_file)
@@ -125,16 +126,15 @@ def main():
         print(">>>> get CADD file index ")
         #get the name of cadd file to use
         df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
-
         print(">>>> get CADD score ")
         #get CADD score FINALLY MUCH FASTER with __pycache__!
         to_import = df_final.file_index.dropna().unique()
-        print(to_import)
-        print("#####################")
-        how_many = len(to_import)
-        for n,cache in enumerate(to_import):
-            print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
-            __import__(cache.replace(".py",""))
+        how_many = list(range(len(to_import)))
+        print(">>>> importing index ")
+        with tqdm(total=len(how_many),ncols=80) as pbar:
+            for cache in to_import:
+                __import__(cache.replace(".py",""))
+                pbar.update(1)
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
         df_final.to_csv(f,sep="\t",index=False)
 
