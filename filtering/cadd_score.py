@@ -136,4 +136,5 @@ def main():
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
         df_final.to_csv(f,sep="\t",index=False)
 
-                                                                                                                     
+if __name__ == "__main__":
+    main()
