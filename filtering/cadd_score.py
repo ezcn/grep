@@ -92,11 +92,11 @@ def main():
     parser.add_argument("-output", help="path to output file  ",type=str, required= True)
     args = parser.parse_args()
        
-       index_file = args.index     #/data/resources/CADD_index/index_file_CADD.tsv
-       input_sample_dirs = args.input     #/data/research/NGS/results/grep
-       CADD_files = args.cadd     #/home/data/resources/CADD_index
-       out_file = args.output    #/data/research/NGS/results/grep/
-       chro = args.chr #2
+    index_file = args.index     #/data/resources/CADD_index/index_file_CADD.tsv
+    input_sample_dirs = args.input     #/data/research/NGS/results/grep
+    CADD_files = args.cadd     #/home/data/resources/CADD_index
+    out_file = args.output    #/data/research/NGS/results/grep/
+    chro = args.chr #2
 
     index_file = pd.read_csv(index_file,sep="\t") 
     index_dict = indexing(index_file)
