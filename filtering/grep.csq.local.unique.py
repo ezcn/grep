@@ -507,67 +507,100 @@ def main():
 
     '''' 
     #### 4. CADDD 
+    import pandas as pd
+    import numpy as np
+    import os 
+    from glob import iglob
+    import importlib.util
     index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
+    from bisect import bisect_left
+    from collections.abc import MutableMapping
+    class RangeBisection(MutableMapping):
+        """Map ranges to values
+
+        Lookups are done in O(logN) time. There are no limits set on the upper or
+        lower bounds of the ranges, but ranges must not overlap.
+
+        """
+        def __init__(self, map=None):
+            self._upper = []
+            self._lower = []
+            self._values = []
+            if map is not None:
+                self.update(map)
+
+        def __len__(self):
+            return len(self._values)
+
+        def __getitem__(self, point_or_range):
+            if isinstance(point_or_range, tuple):
+                low, high = point_or_range
+                i = bisect_left(self._upper, high)
+                point = low
+            else:
+                point = point_or_range
+                i = bisect_left(self._upper, point)
+            if i >= len(self._values) or self._lower[i] > point:
+                raise IndexError(point_or_range)
+            return self._values[i]
+
+        def __setitem__(self, r, value):
+            lower, upper = r
+            i = bisect_left(self._upper, upper)
+            if i < len(self._values) and self._lower[i] < upper:
+                raise IndexError('No overlaps permitted')
+            self._upper.insert(i, upper)
+            self._lower.insert(i, lower)
+            self._values.insert(i, value)
+
+        def __delitem__(self, r):
+            lower, upper = r
+            i = bisect_left(self._upper, upper)
+            if self._upper[i] != upper or self._lower[i] != lower:
+                raise IndexError('Range not in map')
+            del self._upper[i]
+            del self._lower[i]
+            del self._values[i]
+
+        def __iter__(self):
+            yield from zip(self._lower, self._upper)
+
+    def indexing(index_file):
+        index_dict = {}
+        for i,k in index_file.iterrows():
+            chro=k["chr"]
+            file_name=k["file_name"]
+            lows=k["lows"]
+            ups=k["ups"]
+            if chro not in index_dict:
+                index_dict[chro] = RangeBisection({(lows,ups) : file_name})
+            else:
+                index_dict[chro][(lows,ups)] = file_name
+        return index_dict
+    
+    #reset index
+    df_final.reset_index(inplace=True)
+    df_final.drop_duplicates(inplace=True)
+    #get info index
+    info_key = df_final["index_x"].str.split(":",expand=True)
+    df_final.loc[:,"chr"] = info_key[0]
+    df_final.loc[:,"position"] = info_key[1]
+    def get_CADD_file(x):
+        return index_dict["chr"+x["chr"]][x["position"]]
+    df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
 
     def get_CADDscore(df):
-    	
-    	
-        CADD_col = {}
-        open_file_list = []
-        cadd_open = pd.DataFrame()
-        get_list_of_files = []
-        for idx in df.index.unique():
-            #key_search = 1:10623:/C
-            kks = idx.split(":")
-            key_search_chr = kks[0]
-            key_search_pos = kks[1]
-            file_s = (index_file[(index_file["chr"] == "chr"+str(key_search_chr)) & (index_file["lows"] <= int(key_search_pos)) & (index_file["ups"] >= int(key_search_pos))])["file_name"]
-            if file_s.empty:
-                CADD_col[idx] = np.nan
-            else:
-                callable_list_cadd = file_s.tolist()
-                cadd = pd.DataFrame()
-                for f in callable_list_cadd:
-                    if f not in open_file_list:
-                        cadd = cadd.append(pd.read_csv("../../analysis/memorial_exome/"+f,sep="\t",index_col="key"))
-                        cadd_open = cadd_open.append(cadd)
-                    else:
-                        cadd = cadd_open.copy()
-                open_file_list.extend(callable_list_cadd)
-                open_file_list = list(set(open_file_list))
-                try:
-                    CADD_col[idx] = cadd.loc[idx][0]
-                except Exception as e:
-                    CADD_col[idx] = np.nan
-        return CADD_col
+        try:
+            f = df["file_index"].replace(".py","")
+            d = __import__(f).d
+            return d[df["index_x"]]
+        except Exception as e:
+            return np.nan
 
-    def reducer(job_id,data_slice,return_dict):
-        #are they share somethings?
-        gb = data_slice.copy()
-        # print(np.shape(gb))
-        return_dict[job_id] = get_CADDscore(gb)
-
-    def mapper(data, job_number=38):
-        total = len(data)
-        chunk_size = total / job_number
-        slice = chunks(data, chunk_size)
-        jobs = []
-        manager = multiprocessing.Manager()
-        return_dict = manager.dict()
-
-        for i, s in enumerate(slice):
-            j = multiprocessing.Process(target=reducer, args=(i, s, return_dict))
-            jobs.append(j)
-        for j in jobs:
-            j.start()
-        for p in jobs:
-            p.join()
-
-        return return_dict.values()
-
-
-    df.loc[:,"CADD"] = CADD_col
+    df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
+    df_final.to_csv(f,sep="\t",index=False)
     '''
+    
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
