@@ -140,6 +140,8 @@ def main():
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
         df_final.drop(["position","file_index"],axis=1,inplace=True)
         df_final.to_csv(f,sep="\t",index=False)
+        print(">>>> output file: ",f)
+        print()
 
 if __name__ == "__main__":
     main()
