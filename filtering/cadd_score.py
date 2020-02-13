@@ -128,6 +128,6 @@ def main():
 	        print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
 	        __import__(cache.replace(".py",""))
 	    df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
-	    df_final.to_csv(f,sep="\t",index=False)
+	    df_final.to_csv(out_file,sep="\t",index=False)
 
                                                                                                                      
