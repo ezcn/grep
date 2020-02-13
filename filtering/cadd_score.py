@@ -91,43 +91,43 @@ def main():
     parser.add_argument("-chr", help="specify chromosomes, [only numbers] or X or Y",required=True)
     parser.add_argument("-output", help="path to output file  ",type=str, required= True)
     args = parser.parse_args()
-   	
-   	index_file = args.index  #/data/resources/CADD_index/index_file_CADD.tsv
-   	input_sample_dirs = args.input  #/data/research/NGS/results/grep
-   	CADD_files = args.cadd  #/home/data/resources/CADD_index
-   	out_file = args.output #/data/research/NGS/results/grep/
-   	chro = args.chr #2
+       
+       index_file = args.index     #/data/resources/CADD_index/index_file_CADD.tsv
+       input_sample_dirs = args.input     #/data/research/NGS/results/grep
+       CADD_files = args.cadd     #/home/data/resources/CADD_index
+       out_file = args.output    #/data/research/NGS/results/grep/
+       chro = args.chr #2
 
-	index_file = pd.read_csv(index_file,sep="\t") 
-	index_dict = indexing(index_file)
+    index_file = pd.read_csv(index_file,sep="\t") 
+    index_dict = indexing(index_file)
 
-	rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
-	file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
+    rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
+    file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
 
-	os.chdir(CADD_files)
+    os.chdir(CADD_files)
 
-	for f in file_list:
-	    print("processing file >>>  "+f)
-	    df_final = pd.read_csv(f,sep="\t",low_memory=False)
-	    df_final.drop_duplicates(inplace=True)
-	    #get info index
-	    info_key = df_final["index_x"].str.split(":",expand=True)
-	    df_final.loc[:,"chr"] = info_key[0]
-	    df_final.loc[:,"position"] = info_key[1]
-	    #load info index file insert PATH in /lustrehome/enza/ezcngit/
-	    #index_file = pd.read_csv("/lustrehome/enza/ezcngit/index_file_CADD.tsv",sep="\t")
-	    print(">>>> get CADD file index ")
-	    #get the name of cadd file to use
-	    df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
+    for f in file_list:
+        print("processing file >>>  "+f)
+        df_final = pd.read_csv(f,sep="\t",low_memory=False)
+        df_final.drop_duplicates(inplace=True)
+        #get info index
+        info_key = df_final["index_x"].str.split(":",expand=True)
+        df_final.loc[:,"chr"] = info_key[0]
+        df_final.loc[:,"position"] = info_key[1]
+        #load info index file insert PATH in /lustrehome/enza/ezcngit/
+        #index_file = pd.read_csv("/lustrehome/enza/ezcngit/index_file_CADD.tsv",sep="\t")
+        print(">>>> get CADD file index ")
+        #get the name of cadd file to use
+        df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
 
-	    print(">>>> get CADD score ")
-	    #get CADD score FINALLY MUCH FASTER with __pycache__!
-	    to_import = df_final.file_index.dropna().unique()
-	    how_many = len(to_import)
-	    for n,cache in enumerate(to_import):
-	        print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
-	        __import__(cache.replace(".py",""))
-	    df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
-	    df_final.to_csv(out_file,sep="\t",index=False)
+        print(">>>> get CADD score ")
+        #get CADD score FINALLY MUCH FASTER with __pycache__!
+        to_import = df_final.file_index.dropna().unique()
+        how_many = len(to_import)
+        for n,cache in enumerate(to_import):
+            print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
+            __import__(cache.replace(".py",""))
+        df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
+        df_final.to_csv(out_file,sep="\t",index=False)
 
                                                                                                                      
