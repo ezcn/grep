@@ -97,7 +97,9 @@ def main():
     rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
     file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
 
+    print(os.getcwd())
     os.chdir(CADD_files)
+    print(os.getcwd())
 
     for f in file_list:
         print("processing file >>>  "+f)
