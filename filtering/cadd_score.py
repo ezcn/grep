@@ -98,6 +98,7 @@ def main():
     file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
 
     #print(os.getcwd())
+    sys.path.append(CADD_files)
     os.chdir(CADD_files)
 
     for f in file_list:
