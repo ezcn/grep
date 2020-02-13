@@ -89,13 +89,13 @@ def main():
     parser.add_argument("-index", help="path to  index  file ",type=str,required=True)
     parser.add_argument("-cadd", help="path to CADD file list ",required=True)
     parser.add_argument("-chr", help="specify chromosomes, [only numbers] or X or Y",required=True)
-    parser.add_argument("-output", help="path to output file  ",type=str, required= True)
+    #parser.add_argument("-output", help="path to output file  ",type=str, required= True)
     args = parser.parse_args()
        
     index_file = args.index     #/data/resources/CADD_index/index_file_CADD.tsv
     input_sample_dirs = args.input     #/data/research/NGS/results/grep
     CADD_files = args.cadd     #/home/data/resources/CADD_index
-    out_file = args.output    #/data/research/NGS/results/grep/
+    #out_file = args.output    #/data/research/NGS/results/grep/
     chro = args.chr #2
 
     index_file = pd.read_csv(index_file,sep="\t") 
@@ -128,6 +128,6 @@ def main():
             print("Creation cache:",cache,n,"out of",how_many,sep=" ",end='\r')
             __import__(cache.replace(".py",""))
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
-        df_final.to_csv(out_file,sep="\t",index=False)
+        df_final.to_csv(f,sep="\t",index=False)
 
                                                                                                                      
