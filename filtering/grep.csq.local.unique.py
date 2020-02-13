@@ -71,6 +71,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                                 vepInfo[(mykey, tcTranscript)]['impact']=tc['impact']
                                                                 vepInfo[(mykey, tcTranscript)]['key']=mykey
                                                                 vepInfo[(mykey, tcTranscript)]['element_id']=tc['transcript_id']
+                                                                vepInfo[(mykey, tcTranscript)]['type']='genic'
                                 #~~ check if the most severe consequence is in a regulatory feature  
                                 elif 'regulatory_feature_consequences' in info:
                                         for rf  in info['regulatory_feature_consequences']:
@@ -83,6 +84,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                                 vepInfo[(mykey, rfRegulatory)]['impact']=rf['impact']
                                                                 vepInfo[(mykey, rfRegulatory)]['key']=mykey
                                                                 vepInfo[(mykey, rfRegulatory)]['element_id']=rf['regulatory_feature_id']
+                                                                vepInfo[(mykey, rfRegulatory)]['type']='regulatory'
                                 #~~ check if the most severe consequence is in an intergenic region 
                                 elif 'intergenic_consequences' in info:
                                         for ic in info['intergenic_consequences']:
@@ -93,6 +95,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                                 vepInfo[(mykey, 'intergenic') ]['csqAllele']=icAllele
                                                                 vepInfo[(mykey, 'intergenic') ]['key']=mykey
                                                                 vepInfo[(mykey, 'intergenic') ]['element_id']='intergenic'
+                                                                vepInfo[(mykey, 'intergenic') ]['type']='intergenic'
                                 #~~ retrive info on rsID, starting position, frequencies for the csqAllele found in the previous code  
                                 if "colocated_variants" in info:
                                         infoCV = info["colocated_variants"][0]
@@ -504,41 +507,66 @@ def main():
 
     '''' 
     #### 4. CADDD 
-  
-    #This part require the use of indexed file and folder, thus, 
-    #be sure to have all files before use it.
-    
-    import importlib.util 
-    #reset index
-    df_final.reset_index(inplace=True)
+    index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
 
-    #get info index
-    info_key = df_final["index_x"].str.split(":",expand=True)
-    df_final.loc[:,"chr"] = info_key[0]
-    df_final.loc[:,"position"] = info_key[1]
-
-    #load info index file insert PATH in /lustrehome/enza/ezcngit/
-    index_file = pd.read_csv("/lustrehome/enza/ezcngit/index_file_CADD.tsv",sep="\t")
-
-    #get the name of cadd file to use    
-    def get_CADD_file(x):
-        df = index_file[(index_file["chr"] == "chr"+str(x["chr"])) & (index_file["lows"] <= int(x["position"])) & (index_file["ups"] >= int(x["position"]))]
-        return df["file_name"].unique()[0]
-    df_final.loc[:,"file_index"] = df_final.apply(get_CADD_file,axis=1)
-
-    #get CADD score FINALLY MUCH FASTER with __pycache__!
     def get_CADDscore(df):
-        try: #CADD_index in /lustre/home/enza/ folder
-            spec = importlib.util.spec_from_file_location("module.name", "/lustre/home/enza/CADD_index/"+df["file_index"])
-            foo = importlib.util.module_from_spec(spec) 
-            spec.loader.exec_module(foo) 
-            d = foo.d
-            return d[df["index_x"]]
-        except Exception as e:
-            return np.nan
+    	
+    	
+        CADD_col = {}
+        open_file_list = []
+        cadd_open = pd.DataFrame()
+        get_list_of_files = []
+        for idx in df.index.unique():
+            #key_search = 1:10623:/C
+            kks = idx.split(":")
+            key_search_chr = kks[0]
+            key_search_pos = kks[1]
+            file_s = (index_file[(index_file["chr"] == "chr"+str(key_search_chr)) & (index_file["lows"] <= int(key_search_pos)) & (index_file["ups"] >= int(key_search_pos))])["file_name"]
+            if file_s.empty:
+                CADD_col[idx] = np.nan
+            else:
+                callable_list_cadd = file_s.tolist()
+                cadd = pd.DataFrame()
+                for f in callable_list_cadd:
+                    if f not in open_file_list:
+                        cadd = cadd.append(pd.read_csv("../../analysis/memorial_exome/"+f,sep="\t",index_col="key"))
+                        cadd_open = cadd_open.append(cadd)
+                    else:
+                        cadd = cadd_open.copy()
+                open_file_list.extend(callable_list_cadd)
+                open_file_list = list(set(open_file_list))
+                try:
+                    CADD_col[idx] = cadd.loc[idx][0]
+                except Exception as e:
+                    CADD_col[idx] = np.nan
+        return CADD_col
 
-    df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
-    
+    def reducer(job_id,data_slice,return_dict):
+        #are they share somethings?
+        gb = data_slice.copy()
+        # print(np.shape(gb))
+        return_dict[job_id] = get_CADDscore(gb)
+
+    def mapper(data, job_number=38):
+        total = len(data)
+        chunk_size = total / job_number
+        slice = chunks(data, chunk_size)
+        jobs = []
+        manager = multiprocessing.Manager()
+        return_dict = manager.dict()
+
+        for i, s in enumerate(slice):
+            j = multiprocessing.Process(target=reducer, args=(i, s, return_dict))
+            jobs.append(j)
+        for j in jobs:
+            j.start()
+        for p in jobs:
+            p.join()
+
+        return return_dict.values()
+
+
+    df.loc[:,"CADD"] = CADD_col
     '''
     #### 5. pLI 
     ### load pli table
