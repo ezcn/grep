@@ -577,7 +577,7 @@ def main():
             else:
                 index_dict[chro][(lows,ups)] = file_name
         return index_dict
-    
+    index_dict = indexing(index_file)
     #reset index
     df_final.reset_index(inplace=True)
     df_final.drop_duplicates(inplace=True)
@@ -600,7 +600,7 @@ def main():
     df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
     df_final.to_csv(f,sep="\t",index=False)
     '''
-    
+
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
