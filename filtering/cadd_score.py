@@ -86,6 +86,7 @@ def main():
     #out_file = args.output    #"/data/research/NGS/results/grep/"
     chro = args.chr #10
 
+    print("")
     print("Input FILEs : ",input_sample_dirs)
     print("index FILE : ",index_file)
     print("CADD FILEs : ",CADD_files)
