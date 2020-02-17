@@ -78,7 +78,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
 	parser.add_argument('-f', help='path to  vcf file (merged pop1 and pop2 ) ',type=str,required=True)
-	#parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)	
+	parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)	
 	parser.add_argument('-o', help='path to output file  ',type=str, required= True)
 	parser.add_argument('-e', help='path to error file',type=str,required=True)
 	parser.add_argument('-m', help='path to metadata file',type=str,required=True)
@@ -129,9 +129,12 @@ def main():
 
 	#sys.stdout=open(args.o, 'w') 
 	dRepPop1={}
+	for  term in lSOTerm: dRepPop1[term]=[]
 	cycle=0
 	while cycle < args.c1:
 		cycle+=1
+		tempRepPop1={}
+		for  term in lSOTerm: tempRepPop1[term]=[]
 		#~~ select a random sample from pop1 at each cycle 
 		column2retain=[]
 		sampleToConsider=random.sample(pop1sorted, args.n)
@@ -157,10 +160,12 @@ def main():
 				for altAl in altAlleles:
 					mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
 					most=dVepCommon[mykey]['most_severe_consequence']
+					#print (dVepCommon[mykey] )
 					csqAllele=dVepCommon[mykey]['csqAllele']
 					myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
-					
-					print! (myfreq) 
+					tempRepPop1[most].append(myfreq[0] ) 
+					print (dRepPop1) 
+		
 					
 """		
 	pop=args.p2
