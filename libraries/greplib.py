@@ -107,4 +107,16 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
 	return vepInfo, vepInfoCommon
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+def combineMeanSD (listOfReplicates): 
+	"""
+	https://www.statstodo.com/CombineMeansSDs_Pgm.php
+	listOfReplicates=( {'n': 10, 'm': 11.8, 'sd': 2.4},  {'n': 20, 'm': 15.3, 'sd': 3.2},  {'n': 15, 'm': 8.4, 'sd': 4.1})
+	"""
+	tn=sum(rep['n'] for rep in listOfReplicates])
+	tx= sum([rep['m'] * rep['n'] for rep in listOfReplicates ] ) 
+	txx= sum([rep['sd']**2 *(rep['n']-1) + (rep['m'] * rep['n'])**2/rep ['n'] for rep in listOfReplicates]) 
+	combMean=tx/tn
+	combSD=((txx-tx**2/tn) /(tn-1))  **(1/2)
+	return combMean, combSD 

@@ -96,7 +96,7 @@ def main():
 #############################################################
 
 ##### 0a. retrieve VEP ranking info   
-	#lSOTerm=gp.VepSOTermInfo(args.v)
+	lSOTerm=gp.VepSOTermInfo(args.v)
 			
 
 #########~~~~~~~~~~~~ 1. get VEP info from local json file 
@@ -128,7 +128,7 @@ def main():
 ##########~~~~~~~~~~~~~ 3. Loop of vcf lines 
 
 	#sys.stdout=open(args.o, 'w') 
-	dPop1Info={}
+	dRepPop1={}
 	cycle=0
 	while cycle < args.c1:
 		cycle+=1
@@ -159,7 +159,8 @@ def main():
 					most=dVepCommon[mykey]['most_severe_consequence']
 					csqAllele=dVepCommon[mykey]['csqAllele']
 					myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
-					print (myfreq) 
+					
+					print! (myfreq) 
 					
 """		
 	pop=args.p2
