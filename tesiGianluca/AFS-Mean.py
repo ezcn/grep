@@ -103,7 +103,7 @@ def main():
 	dV = gp.getInfoFromVepLocally (args.j )   #yelds two dictionaries 
 	dVepTrans=dV[0]; dVepCommon=dV[1]
 
-##########~~~~~~~~~~~~~~ Read metadata
+##########~~~~~~~~~~~ 2.  Read populations metadata
 
 	Region=[]
 	Sample=[]
@@ -125,16 +125,19 @@ def main():
 	pop2sorted = sorted(pop2)
 	#sampleToConsider=random.sample(EUR, 6)
 
-##########~~~~~~~~~~~~~~  Loop of vcf lines 
+##########~~~~~~~~~~~~~ 3. Loop of vcf lines 
 
 	#sys.stdout=open(args.o, 'w') 
 	dPop1Info={}
 	cycle=0
 	while cycle < args.c1:
 		cycle+=1
+		#~~ select a random sample from pop1 at each cycle 
 		column2retain=[]
 		sampleToConsider=random.sample(pop1sorted, args.n)
-		print( sampleToConsider) 		
+		print( sampleToConsider) 	
+
+		#~~ extract info from random sample from vcf 	
 		for line in gzip.open(args.f, 'r'):
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 			if re.match ('#CHR', decodedLine): 
