@@ -120,3 +120,20 @@ def combineMeanSD (listOfReplicates):
 	combMean=tx/tn
 	combSD=((txx-tx**2/tn) /(tn-1))  **(1/2)
 	return combMean, combSD 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def VepSOTermInfo (vepinfofile): 
+	"""read external file with info on VEP consequences  """
+	lSOTerm=[]  ### list of SOTerm 
+	
+	countlinesCsq= True
+	for csqLine in open(vepinfofile, 'r'):
+		if countlinesCsq:
+			csqTitle=csqLine.rstrip().split('\t')
+			countlinesCsq=False
+		else:
+			myRowList=csqLine.rstrip().split('\t')
+			lSOTerm.append(myRowList[0])
+
+	return  lSOTerm
