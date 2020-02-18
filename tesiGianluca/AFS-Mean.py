@@ -96,7 +96,6 @@ def main():
 	#output = open(args.o,'w')
 	#print(args) 
 
-
 	#############################################################
 
 	#########~~~~~~~~~~~~ 0. retrieve VEP ranking info   
