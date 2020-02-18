@@ -73,38 +73,38 @@ def MakeListOfIDs(populationMetadata, pop1name, pop2name):
 	pop1 = [key  for (key, value) in dSampleRegion.items() if value == pop1name]
 	pop1sorted = sorted(pop1) ## needed for seed
 	pop2=[key  for (key, value) in dSampleRegion.items() if value == pop2name]
-        pop2sorted = sorted(pop2)
+	pop2sorted = sorted(pop2)
 	return pop1sorted, pop2sorted 
 
 
 #######################################################
 def main():
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
-        parser.add_argument('-f', help='path to  vcf file (merged pop1 and pop2 ) ',type=str,required=True)
-        parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)
-        parser.add_argument('-o', help='path to output file  ',type=str, required= True)
-        parser.add_argument('-e', help='path to error file',type=str,required=True)
-        parser.add_argument('-m', help='path to metadata file',type=str,required=True)
-        parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
-        parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
-        parser.add_argument('-s', help='seeds number',type=int,required=True)
-        parser.add_argument("-n", help="number of individuals in pop1 and pop2",type=int,required=True)
-        parser.add_argument("-p1", help="reference population fro standardization",type=str,required=True) #EUROPE
-        parser.add_argument("-p2", help="test population ",type=str,required=True) #GREP
-        args = parser.parse_args()
-        #output = open(args.o,'w')
-        #print(args) 
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
+	parser.add_argument('-f', help='path to  vcf file (merged pop1 and pop2 ) ',type=str,required=True)
+	parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)
+	parser.add_argument('-o', help='path to output file  ',type=str, required= True)
+	parser.add_argument('-e', help='path to error file',type=str,required=True)
+	parser.add_argument('-m', help='path to metadata file',type=str,required=True)
+	parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
+	parser.add_argument('-c2', help='number of random cycle for pop2',type=int,required=False, default=1)
+	parser.add_argument('-s', help='seeds number',type=int,required=True)
+	parser.add_argument("-n", help="number of individuals in pop1 and pop2",type=int,required=True)
+	parser.add_argument("-p1", help="reference population fro standardization",type=str,required=True) #EUROPE
+	parser.add_argument("-p2", help="test population ",type=str,required=True) #GREP
+	args = parser.parse_args()
+	#output = open(args.o,'w')
+	#print(args) 
 
 
 	#############################################################
 
 	#########~~~~~~~~~~~~ 0. retrieve VEP ranking info   
-        lSOTerm=gp.VepSOTermInfo(args.v)
+	lSOTerm=gp.VepSOTermInfo(args.v)
 
 	#########~~~~~~~~~~~~ 1. get VEP info from local json file 
-        dV = gp.getInfoFromVepLocally (args.j )   #yelds two dictionaries 
-        dVepTrans=dV[0]; dVepCommon=dV[1]
+	dV = gp.getInfoFromVepLocally (args.j )   #yelds two dictionaries 
+	dVepTrans=dV[0]; dVepCommon=dV[1]
 
 	##########~~~~~~~~~~~ 2.  Read populations metadata
 	listofpops=MakeListOfIDs(args.m, args.p1, args.p2)
