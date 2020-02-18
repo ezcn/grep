@@ -26,6 +26,8 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		#print( sampleToConsider) 	
 
 		#~~ extract info from random sample from vcf 	
+		csqnotfound=0
+		listnotfound=[]
 		for line in gzip.open(vcfFilegz,  'r'):
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 			if re.match ('#CHR', decodedLine): 
@@ -44,17 +46,24 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 				#print (genotypesToConsider)
 				for altAl in altAlleles:
 					mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+					#print(mykey )
 					most=dVepCommon[mykey]['most_severe_consequence']
-					csqAllele=dVepCommon[mykey]['csqAllele']
-					myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
-					tempRepPop[most].append(float(myfreq[0])  ) 
-					#print (tempRepPop) 
+					if not  dVepCommon[mykey]['csqAllele'] =='':
+						#print (dVepCommon[mykey]) 
+						csqAllele=dVepCommon[mykey]['csqAllele']
+						myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
+						#print(csqAllele, myref, myalt , "." ,genotypesToConsider) 
+						tempRepPop[most].append(float(myfreq[0]) ) 
+						#print (tempRepPop) 
+					else: 
+						csqnotfound+=1
+						listnotfound.append(mykey)
 		for consType  in tempRepPop:
 			templist=tempRepPop[consType] 
 			n, m, sd = len(templist), np.mean(templist), np.std(templist) 
 			dRepPop[consType].append({'n': n, 'm': m, 'sd': sd}) 
 
-	return dRepPop					
+	return dRepPop, csqnotfound, listnotfound, tempRepPop					
 	
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +113,7 @@ def main():
 	#########~~~~~~~~~~~~ 1. get VEP info from local json file 
 	dV = gp.getInfoFromVepLocally (args.j )   #yelds two dictionaries 
 	dVepTrans=dV[0]; dVepCommon=dV[1]
-
+		
 	##########~~~~~~~~~~~ 2.  Read populations metadata
 	listofpops=MakeListOfIDs(args.m, args.p1, args.p2)
 
@@ -113,10 +122,36 @@ def main():
 	dRepPop1=replicatesResults (args.c1, lSOTerm, listofpops[0] , args.n, args.f , dVepCommon) 
 	dRepPop2=replicatesResults (args.c2, lSOTerm, listofpops[1] , args.n, args.f , dVepCommon)
 
-	print ('POP1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-	print(dRepPop1)
-	print ('POP2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-	print(dRepPop2)
+	#print ('POP1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+	#print(dRepPop1[1])
+	#print(dRepPop1[2]['upstream_gene_variant'])
+	#print(dRepPop1[0])
+
+	#print ('POP2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+	#print(dRepPop2[1])
+	#print(dRepPop2[2]['upstream_gene_variant'])
+	#print(dRepPop2[0])
+	#print (dRepPop2[3])
+	xfile=open(args.e, "w")
+	xfile.write(str(dRepPop1[2])  )
+
+	musdHGDP={}
+	for elem in dRepPop1[0]: 
+		musdHGDP[elem]=gp.combineMeanSD( dRepPop1[0][elem])
+	#print (musdHGDP)
+
+	for elem2 in dRepPop2[3]: 
+		zfreq=[(x- musdHGDP[elem2][0])/musdHGDP[elem2][1] for x in  dRepPop2[3][elem2]]
+		muZFreq=np.mean(zfreq)
+		sdZFreq=np.std(zfreq)
+		ci90ZFreq=1.645*(sdZFreq/np.sqrt(len(zfreq)))
+		ci95ZFreq=1.960*(sdZFreq/np.sqrt(len(zfreq)))
+		ci99ZFreq=2.576*(sdZFreq/np.sqrt(len(zfreq))) 
+		#print('####')
+		print (elem2 , muZFreq, sdZFreq, ci90ZFreq, ci95ZFreq, ci99ZFreq) 
+		#print ( zfreq)
+	
+
 
 if __name__ == '__main__':
 	main()

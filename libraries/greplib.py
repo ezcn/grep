@@ -104,10 +104,10 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
 					#~~ retrieve allelle frequencies 
 					if 'frequencies' in infoCV:
 						vepInfoCommon[mykey]["frequencies"]= infoCV["frequencies"]
-					vepInfoCommon[mykey]['csqAllele']=csqCommon
 				else:
 					infoCV={}
 
+				vepInfoCommon[mykey]['csqAllele']=csqCommon
 #print (json.dumps(info, indent=4 ) )  
 #print (json.dumps(vepInfo, indent=4) ) 
 	return vepInfo, vepInfoCommon
