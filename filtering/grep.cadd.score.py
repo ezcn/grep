@@ -97,7 +97,6 @@ def main():
 
     if ".tsv" in input_sample_dirs:
         file_list = [input_sample_dirs]
-        print(file_list)
     else:
         rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
         file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
