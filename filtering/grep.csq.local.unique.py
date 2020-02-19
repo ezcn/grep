@@ -50,12 +50,13 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                 for line in f:
                         info=json.loads(line) #~~ make a dictionary out of a string 
                         #~~ derive the key chr:pos:/alt from the "input" element and process each alternate allele 
-                        locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]
+                        locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]; mygen=locusdata[9].split(':')[0]
                         for altAl in altAlleles:
                                 mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
                                 #print(mykey) 
                                 most=info["most_severe_consequence"]
                                 vepInfoCommon[mykey]={}
+                                vepInfoCommon[mykey]['genotype']=mygen
                                 vepInfoCommon[mykey]['most_severe_consequence']=most 
                                 #~~  check if the most sequence is in a transcript
                                 if 'transcript_consequences' in info:
@@ -93,6 +94,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                         icAllele=ic['variant_allele']
                                                         if icAllele ==altAl:    
                                                                 vepInfo[(mykey, 'intergenic') ]['csqAllele']=icAllele
+                                                                vepInfo[(mykey, 'intergenic') ]['impact']=ic['impact']
                                                                 vepInfo[(mykey, 'intergenic') ]['key']=mykey
                                                                 vepInfo[(mykey, 'intergenic') ]['element_id']='intergenic'
                                                                 vepInfo[(mykey, 'intergenic') ]['type']='intergenic'
@@ -110,6 +112,8 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
                                                 vepInfoCommon[mykey]["frequencies"]= infoCV["frequencies"]
                                 else:
                                         infoCV={}
+                            
+                                               	
 
     #print (json.dumps(info, indent=4 ) )  
     #print (json.dumps(vepInfo, indent=4) ) 
@@ -391,7 +395,7 @@ def AnnotateFreqCSQ_REF_ALT (csqAllele, refAllele, altAlleles, GTfields):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", help="path to  input vcf file ",type=str,required=True)
+    #parser.add_argument("-f", help="path to  input vcf file ",type=str,required=True)
     parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
     parser.add_argument("-g", help="path to gene file list ",required=True)
     #parser.add_argument("-i", help="threshold for SOTerm Impact  ", type=int,required=True)
@@ -402,41 +406,27 @@ def main():
     #parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
     parser.add_argument("-e", help="path to error file",type=str,required=True)
     parser.add_argument("-c", help="consequence allele count ",type=int,required=False, default=0)
-    parser.add_argument("-w", help="path to  weights  file ",type=str,required=True)
+    #parser.add_argument("-w", help="path to  weights  file ",type=str,required=True)
     args = parser.parse_args()
         
          
-    ##### 0b. read weights 
+    ##### read weights
+    ''' 
     dWeig={}
     for wline in open (args.w):
         w=wline.rstrip().split() 
         dWeig[w[1]]=int(w[2])
-    #print (dWeights)
-    
-    ##### 1. parse vcf to produce dVcf[mykey]=[myref, myqual, dFormat["GT"]]; mykey is  1:333333:/T (T is the alternate allele) "
-    
-    dVcf={}
-    for line in gzip.open(args.f, 'r'):
-        decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
-        if not re.match('#', decodedLine):
-            linesplit=decodedLine.rstrip().split() 
-            mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; myqual=float(linesplit[5]); altAlleles=myalt.split(",")
-            tempformattitle=linesplit[8].split(":")
-            tempformatcontent=linesplit[9].split(":")
-            dFormat=dict(zip(tempformattitle, tempformatcontent))
-            for altAl in altAlleles:
-                mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-                dVcf[mykey]=[myref, myalt, myqual, dFormat["GT"]]   
-        
+    #print (dWeights)             
 
-    ##### 2. get VEP info from local json file 
+    '''
+    ##### 1. get VEP info from local json file 
     dV = getInfoFromVepLocally (args.j )   #yelds two dictionaries 
     dVepTrans=dV[0]; dVepCommon=dV[1]
 
-    #~~csq allele features : number of allele with conseqces and genotype    
+     #~~csq allele features : number of allele with conseqces and genotype    
     for telem in dVepTrans:
         if 'csqAllele' in dVepTrans[telem]:     
-            vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=dVcf[vcfkey][1]; genotype=dVcf[vcfkey][3]
+            vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=vcfkey.split('/')[-1]; genotype=dVepCommon[vcfkey]['genotype']
             altAlleleCount=2-genotype.count('0')
             csqCount= csqAlleleCount (csqAllele, altAllele, altAlleleCount, 2)
             dVepTrans[telem]['csqCount']=csqCount  #1 het #2 homo
@@ -451,9 +441,7 @@ def main():
                 dVepCommon[celem]['commonCSQall']=cAll
         else:
                 dVepCommon[celem]['rare']="NOB"
-
-    #for delem in dVepCommon:
-       #del dVepCommon[delem]['frequencies'] 
+ 
     #~~create dataframe from dV
     dfTrans = pd.DataFrame(dVepTrans).T 
     dfCommon= pd.DataFrame(dVepCommon).T
@@ -461,47 +449,16 @@ def main():
     
     
     #dfTrans.to_csv("/lustrehome/silvia/cicci.trans.tsv", sep="\t")#, index=True )
-    dfCommon.to_csv("/lustrehome/silvia/cicci.common.tsv", sep="\t")#, index=True )
+    #dfCommon.to_csv("/lustrehome/silvia/cicci.common.tsv", sep="\t")#, index=True )
     df=dfTrans.set_index('key').join(dfCommon, how="left"  )
     #df.to_csv("/lustrehome/silvia/cicci.ttcos.tsv", sep="\t")
     
     
-    '''
-                     most_severe_consequence            id csqAllele          gene_id gene_symbol gnomad_nfe gnomad_eas gnomad_asj ....
-    5:64548:/A        intergenic_variant           NaN       NaN              NaN         NaN        NaN        NaN        NaN ....
-    1:10623:/C     upstream_gene_variant  rs1207502826         C  ENSG00000223972     DDX11L1        NaN        NaN        NaN ....
-    1:95068:/A            intron_variant   rs867757274         A  ENSG00000238009  AL627309.1        NaN        NaN        NaN ....
-    1:942451:/C         missense_variant     rs6672356         C  ENSG00000187634      SAMD11     0.9999          1          1 ....
-    1:1519044:/T          intron_variant   rs147532057         T  ENSG00000197785      ATAD3A        NaN        NaN        NaN ....
-    ''' 
-
-    #### 3. info form gene lists
+    #### 2. info form gene lists
      
     gene_list = pd.read_csv(args.g,sep="\t")
     df_last=df.reset_index().merge(gene_list, left_on="gene_id", right_on="ensID", how="left").drop("ensID", axis=1).fillna(0)
-    #genes=gene_list[["ensID", "final_score"]]
-    #df_last =df.reset_index().merge(genes,left_on="gene_id",right_on="ensID",how="left").drop("ensID", axis=1)
-    #df_last.rename({"final_score":"gene_score"},axis=1,inplace=True)
  
-    '''
-    def convert_string_to_array(x):
-        tree = ast.parse(x, mode='eval')
-        transformer = Transformer()
-        # raises RuntimeError on invalid code
-        transformer.visit(tree)
-        # compile the ast into a code object
-        clause = compile(tree, '<AST>', 'eval')
-        # make the globals contain only the Decimal class,
-        # and eval the compiled object
-        return eval(clause, dict(Decimal=decimal.Decimal))
-    
-    try:
-        df.loc[:,"gene_id"] = df.gene_id.apply(convert_string_to_array)
-    except Exception as e:
-        pass
-
-    df.loc[:,"score_gene"] = df.gene_id.apply(lambda x: gene_list[gene_list.ensID==x])
-    '''
     #### 3. SOScore 
     dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
@@ -510,11 +467,20 @@ def main():
 
     #### 4. pLI 
     ### load pli table
+    
+    #### 4. CADDD
+    #execp = "~/ezclgit/grep/filtering/" #folder
+    #index_file = "/data/resources/CADD_index/index_file_CADD.tsv" #file
+    #index_CADD = "/data/resources/CADD_index/" #folder
+
+	#os.system("python {execp}cadd_score.py -input {df_final} -index  -cadd  -chr 1")
+
+    #### 5. pLI 
+    ### load pli table and add pli to df
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
-    df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop(["transcript", "frequencies"] , axis=1)
+    df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop(["transcript", "frequencies", "genotype"] , axis=1)
     df_info.to_csv(args.o,sep="\t",index=False)
-    ### add pli to df 
 
 
 if __name__ == "__main__":
