@@ -95,8 +95,12 @@ def main():
     index_file = pd.read_csv(index_file,sep="\t") 
     index_dict = indexing(index_file)
 
-    rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
-    file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
+    if ".tsv" in input_sample_dirs:
+        file_list = [input_sample_dirs]
+        print(file_list)
+    else:
+        rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
+        file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
 
     #print(os.getcwd())
     sys.path.append(CADD_files)
