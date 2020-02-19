@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import pandas as pd
 import numpy as np
-import re, sys, argparse, gzip, json
+import re, sys, argparse, gzip, json, os
 import dask.dataframe as dd
 from ast import literal_eval
 import ast
@@ -508,69 +508,14 @@ def main():
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-    '''' 
-    #### 4. CADDD 
-    index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
+    
+    #### 4. CADDD
+    #execp = "~/ezclgit/grep/filtering/" #folder
+    #index_file = "/data/resources/CADD_index/index_file_CADD.tsv" #file
+    #index_CADD = "/data/resources/CADD_index/" #folder
 
-    def get_CADDscore(df):
-    	
-    	
-        CADD_col = {}
-        open_file_list = []
-        cadd_open = pd.DataFrame()
-        get_list_of_files = []
-        for idx in df.index.unique():
-            #key_search = 1:10623:/C
-            kks = idx.split(":")
-            key_search_chr = kks[0]
-            key_search_pos = kks[1]
-            file_s = (index_file[(index_file["chr"] == "chr"+str(key_search_chr)) & (index_file["lows"] <= int(key_search_pos)) & (index_file["ups"] >= int(key_search_pos))])["file_name"]
-            if file_s.empty:
-                CADD_col[idx] = np.nan
-            else:
-                callable_list_cadd = file_s.tolist()
-                cadd = pd.DataFrame()
-                for f in callable_list_cadd:
-                    if f not in open_file_list:
-                        cadd = cadd.append(pd.read_csv("../../analysis/memorial_exome/"+f,sep="\t",index_col="key"))
-                        cadd_open = cadd_open.append(cadd)
-                    else:
-                        cadd = cadd_open.copy()
-                open_file_list.extend(callable_list_cadd)
-                open_file_list = list(set(open_file_list))
-                try:
-                    CADD_col[idx] = cadd.loc[idx][0]
-                except Exception as e:
-                    CADD_col[idx] = np.nan
-        return CADD_col
+	#os.system("python {execp}cadd_score.py -input {df_final} -index  -cadd  -chr 1")
 
-    def reducer(job_id,data_slice,return_dict):
-        #are they share somethings?
-        gb = data_slice.copy()
-        # print(np.shape(gb))
-        return_dict[job_id] = get_CADDscore(gb)
-
-    def mapper(data, job_number=38):
-        total = len(data)
-        chunk_size = total / job_number
-        slice = chunks(data, chunk_size)
-        jobs = []
-        manager = multiprocessing.Manager()
-        return_dict = manager.dict()
-
-        for i, s in enumerate(slice):
-            j = multiprocessing.Process(target=reducer, args=(i, s, return_dict))
-            jobs.append(j)
-        for j in jobs:
-            j.start()
-        for p in jobs:
-            p.join()
-
-        return return_dict.values()
-
-
-    df.loc[:,"CADD"] = CADD_col
-    '''
     #### 5. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
