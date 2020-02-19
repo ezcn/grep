@@ -40,89 +40,78 @@ class Transformer(ast.NodeTransformer):
             raise RuntimeError("Invalid expression: %s not allowed" % nodetype)
 
         return ast.NodeTransformer.generic_visit(self, node)
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def getInfoFromVepLocally (jsonWithVEPannotations):
-        vepInfo={}; vepInfoCommon={}    
-        #~~ filename is the json output of VEP runned locally 
-        #~~ filename is parsed by line and by alternate allele  
-        with open(jsonWithVEPannotations, 'r') as f:
-                for line in f:
-                        info=json.loads(line) #~~ make a dictionary out of a string 
-                        #~~ derive the key chr:pos:/alt from the "input" element and process each alternate allele 
-                        locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]; mygen=locusdata[9].split(':')[0]
-                        for altAl in altAlleles:
-                                mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-                                #print(mykey) 
-                                most=info["most_severe_consequence"]
-                                vepInfoCommon[mykey]={}
-                                vepInfoCommon[mykey]['genotype']=mygen
-                                vepInfoCommon[mykey]['most_severe_consequence']=most 
-                                #~~  check if the most sequence is in a transcript
-                                if 'transcript_consequences' in info:
-                                        for tc in info['transcript_consequences']:
-                                                if most in  tc['consequence_terms'] :
-                                                        tcTranscript=tc['transcript_id']
-                                                        vepInfo[(mykey, tcTranscript)]={}
-                                                        tcAllele=tc['variant_allele']
-                                                        if tcAllele ==altAl :
-                                                                vepInfo[(mykey, tcTranscript)]['csqAllele']=tcAllele
-                                                                vepInfo[(mykey, tcTranscript)]['gene_id']=tc['gene_id']
-                                                                vepInfo[(mykey, tcTranscript)]['gene_symbol']= tc['gene_symbol']
-                                                                vepInfo[(mykey, tcTranscript)]['impact']=tc['impact']
-                                                                vepInfo[(mykey, tcTranscript)]['key']=mykey
-                                                                vepInfo[(mykey, tcTranscript)]['element_id']=tc['transcript_id']
-                                                                vepInfo[(mykey, tcTranscript)]['type']='genic'
-                                #~~ check if the most severe consequence is in a regulatory feature  
-                                elif 'regulatory_feature_consequences' in info:
-                                        for rf  in info['regulatory_feature_consequences']:
-                                                if most in  rf['consequence_terms']:
-                                                        rfRegulatory=rf['regulatory_feature_id']
-                                                        vepInfo[(mykey, rfRegulatory)]={}
-                                                        rfAllele=rf['variant_allele']
-                                                        if rfAllele ==altAl :
-                                                                vepInfo[(mykey, rfRegulatory)]['csqAllele']=rfAllele
-                                                                vepInfo[(mykey, rfRegulatory)]['impact']=rf['impact']
-                                                                vepInfo[(mykey, rfRegulatory)]['key']=mykey
-                                                                vepInfo[(mykey, rfRegulatory)]['element_id']=rf['regulatory_feature_id']
-                                                                vepInfo[(mykey, rfRegulatory)]['type']='regulatory'
-                                #~~ check if the most severe consequence is in an intergenic region 
-                                elif 'intergenic_consequences' in info:
-                                        for ic in info['intergenic_consequences']:
-                                                if most in  ic['consequence_terms']:
-                                                        vepInfo[(mykey, 'intergenic')]={}
-                                                        icAllele=ic['variant_allele']
-                                                        if icAllele ==altAl:    
-                                                                vepInfo[(mykey, 'intergenic') ]['csqAllele']=icAllele
-                                                                vepInfo[(mykey, 'intergenic') ]['impact']=ic['impact']
-                                                                vepInfo[(mykey, 'intergenic') ]['key']=mykey
-                                                                vepInfo[(mykey, 'intergenic') ]['element_id']='intergenic'
-                                                                vepInfo[(mykey, 'intergenic') ]['type']='intergenic'
-                                #~~ retrive info on rsID, starting position, frequencies for the csqAllele found in the previous code  
-                                if "colocated_variants" in info:
-                                        infoCV = info["colocated_variants"][0]
-                                        #~~ adding info for starting position, this is needed for merging with CADD score.
-                                        vepInfoCommon[mykey]["start"] = infoCV["start"]
+    vepInfo={}; vepInfoCommon={}    
+    #~~ filename is the json output of VEP runned locally 
+    #~~ filename is parsed by line and by alternate allele  
+    with open(jsonWithVEPannotations, 'r') as f:
+        for line in f:
+            info=json.loads(line) #~~ make a dictionary out of a string 
+            #~~ derive the key chr:pos:/alt from the "input" element and process each alternate allele 
+            locusdata=info['input'].split(); altAlleles=locusdata[4].split(","); mychr=locusdata[0]; mypos=locusdata[1]; mygen=locusdata[9].split(':')[0]
+            for altAl in altAlleles:
+                mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
+                #print(mykey) 
+                most=info["most_severe_consequence"]
+                vepInfoCommon[mykey]={}
+                vepInfoCommon[mykey]['genotype']=mygen
+                vepInfoCommon[mykey]['most_severe_consequence']=most 
+                #~~  check if the most sequence is in a transcript
+                if 'transcript_consequences' in info:
+                    for tc in info['transcript_consequences']:
+                        if most in  tc['consequence_terms'] :
+                            tcTranscript=tc['transcript_id']
+                            vepInfo[(mykey, tcTranscript)]={}
+                            tcAllele=tc['variant_allele']
+                            if tcAllele ==altAl :
+                                vepInfo[(mykey, tcTranscript)]['csqAllele']=tcAllele
+                                vepInfo[(mykey, tcTranscript)]['gene_id']=tc['gene_id']
+                                vepInfo[(mykey, tcTranscript)]['gene_symbol']= tc['gene_symbol']
+                                vepInfo[(mykey, tcTranscript)]['impact']=tc['impact']
+                                vepInfo[(mykey, tcTranscript)]['key']=mykey
+                                vepInfo[(mykey, tcTranscript)]['element_id']=tc['transcript_id']
+                                vepInfo[(mykey, tcTranscript)]['type']='genic'
+                #~~ check if the most severe consequence is in a regulatory feature  
+                elif 'regulatory_feature_consequences' in info:
+                    for rf  in info['regulatory_feature_consequences']:
+                        if most in  rf['consequence_terms']:
+                            rfRegulatory=rf['regulatory_feature_id']
+                            vepInfo[(mykey, rfRegulatory)]={}
+                            rfAllele=rf['variant_allele']
+                            if rfAllele ==altAl :
+                                vepInfo[(mykey, rfRegulatory)]['csqAllele']=rfAllele
+                                vepInfo[(mykey, rfRegulatory)]['impact']=rf['impact']
+                                vepInfo[(mykey, rfRegulatory)]['key']=mykey
+                                vepInfo[(mykey, rfRegulatory)]['element_id']=rf['regulatory_feature_id']
+                                vepInfo[(mykey, rfRegulatory)]['type']='regulatory'
+                #~~ check if the most severe consequence is in an intergenic region 
+                elif 'intergenic_consequences' in info:
+                    for ic in info['intergenic_consequences']:
+                        if most in  ic['consequence_terms']:
+                            vepInfo[(mykey, 'intergenic')]={}
+                            icAllele=ic['variant_allele']
+                            if icAllele ==altAl:    
+                                vepInfo[(mykey, 'intergenic') ]['csqAllele']=icAllele
+                                vepInfo[(mykey, 'intergenic') ]['impact']=ic['impact']
+                                vepInfo[(mykey, 'intergenic') ]['key']=mykey
+                                vepInfo[(mykey, 'intergenic') ]['element_id']='intergenic'
+                                vepInfo[(mykey, 'intergenic') ]['type']='intergenic'
+                #~~ retrive info on rsID, starting position, frequencies for the csqAllele found in the previous code  
+                if "colocated_variants" in info:
+                    infoCV = info["colocated_variants"][0]
+                    #~~ adding info for starting position, this is needed for merging with CADD score.
+                    vepInfoCommon[mykey]["start"] = infoCV["start"]
 
-                                        #~~ check if rsid is present 
-                                        if "id" in infoCV: vepInfoCommon[mykey]["id"] = infoCV["id"]
-                                        
-                                        #~~ retrieve allelle frequencies 
-                                        if 'frequencies' in infoCV:
-                                                vepInfoCommon[mykey]["frequencies"]= infoCV["frequencies"]
-                                else:
-                                        infoCV={}
-                            
-                                               	
-
-    #print (json.dumps(info, indent=4 ) )  
-    #print (json.dumps(vepInfo, indent=4) ) 
-        return vepInfo, vepInfoCommon
-
-
-
-
-
+                    #~~ check if rsid is present 
+                    if "id" in infoCV: vepInfoCommon[mykey]["id"] = infoCV["id"]
+                    
+                    #~~ retrieve allelle frequencies 
+                    if 'frequencies' in infoCV:
+                        vepInfoCommon[mykey]["frequencies"]= infoCV["frequencies"]
+                else:
+                    infoCV={}                          
+    return vepInfo, vepInfoCommon
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def VepSOTermInfo (vepinfofile): 
     """read external file with info on VEP consequences  """
@@ -453,9 +442,7 @@ def main():
     df=dfTrans.set_index('key').join(dfCommon, how="left"  )
     #df.to_csv("/lustrehome/silvia/cicci.ttcos.tsv", sep="\t")
     
-    
     #### 2. info form gene lists
-     
     gene_list = pd.read_csv(args.g,sep="\t")
     df_last=df.reset_index().merge(gene_list, left_on="gene_id", right_on="ensID", how="left").drop("ensID", axis=1).fillna(0)
  
@@ -465,70 +452,7 @@ def main():
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-    '''' 
-    #### 4. CADDD 
-    index_file = pd.read_csv("index_file_CADD.tsv",sep="\t")
-
-    def get_CADDscore(df):
-    	
-    	
-        CADD_col = {}
-        open_file_list = []
-        cadd_open = pd.DataFrame()
-        get_list_of_files = []
-        for idx in df.index.unique():
-            #key_search = 1:10623:/C
-            kks = idx.split(":")
-            key_search_chr = kks[0]
-            key_search_pos = kks[1]
-            file_s = (index_file[(index_file["chr"] == "chr"+str(key_search_chr)) & (index_file["lows"] <= int(key_search_pos)) & (index_file["ups"] >= int(key_search_pos))])["file_name"]
-            if file_s.empty:
-                CADD_col[idx] = np.nan
-            else:
-                callable_list_cadd = file_s.tolist()
-                cadd = pd.DataFrame()
-                for f in callable_list_cadd:
-                    if f not in open_file_list:
-                        cadd = cadd.append(pd.read_csv("../../analysis/memorial_exome/"+f,sep="\t",index_col="key"))
-                        cadd_open = cadd_open.append(cadd)
-                    else:
-                        cadd = cadd_open.copy()
-                open_file_list.extend(callable_list_cadd)
-                open_file_list = list(set(open_file_list))
-                try:
-                    CADD_col[idx] = cadd.loc[idx][0]
-                except Exception as e:
-                    CADD_col[idx] = np.nan
-        return CADD_col
-
-    def reducer(job_id,data_slice,return_dict):
-        #are they share somethings?
-        gb = data_slice.copy()
-        # print(np.shape(gb))
-        return_dict[job_id] = get_CADDscore(gb)
-
-    def mapper(data, job_number=38):
-        total = len(data)
-        chunk_size = total / job_number
-        slice = chunks(data, chunk_size)
-        jobs = []
-        manager = multiprocessing.Manager()
-        return_dict = manager.dict()
-
-        for i, s in enumerate(slice):
-            j = multiprocessing.Process(target=reducer, args=(i, s, return_dict))
-            jobs.append(j)
-        for j in jobs:
-            j.start()
-        for p in jobs:
-            p.join()
-
-        return return_dict.values()
-
-
-    df.loc[:,"CADD"] = CADD_col
-    '''
-    #### 5. pLI 
+    #### 4. pLI 
     ### load pli table and add pli to df
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
