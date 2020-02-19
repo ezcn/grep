@@ -508,15 +508,7 @@ def main():
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
     #df_final.to_csv(args.o,sep="\t",index=True)
 
-    
-    #### 4. CADDD
-    #execp = "~/ezclgit/grep/filtering/" #folder
-    #index_file = "/data/resources/CADD_index/index_file_CADD.tsv" #file
-    #index_CADD = "/data/resources/CADD_index/" #folder
-
-	#os.system("python {execp}cadd_score.py -input {df_final} -index  -cadd  -chr 1")
-
-    #### 5. pLI 
+    #### 4. pLI 
     ### load pli table
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
