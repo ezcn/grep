@@ -19,7 +19,7 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		cycle+=1
 		tempRepPop={}
 		for  term in lsotermList: tempRepPop[term]=[]
-		#~~ select a random sample from pop1 at each cycle 
+		#~~ select a random sample from listOfIDs at each cycle 
 		column2retain=[]
 		sampleToConsider=random.sample(listOfIDs,  numberOfIndividuals)
 		#print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
@@ -30,34 +30,30 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		listnotfound=[]
 		for line in gzip.open(vcfFilegz,  'r'):
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
-			if re.match ('#CHR', decodedLine): 
+			if re.match ('#CHR', decodedLine):
+				#print(decodedLine.split() ) 
 				for ind in sampleToConsider:
 					column2retain.append(decodedLine.split().index(ind))
 				#print( column2retain) 
-			if not re.match('#', decodedLine):
-				linesplit=decodedLine.rstrip().split()
-				mychr=linesplit[0]; mypos=linesplit[1]; myref=linesplit[3]; myalt=linesplit[4]; altAlleles=myalt.split(",")
-				#genotypesToConsider=[gg.split(":")[0] for gg in linesplit[9:] if linesplit[9:].index(gg)+9   in column2retain]
-				genotypesToConsider=[]
-				for indx in column2retain: genotypesToConsider.append(linesplit[indx].split(":")[0])
+			else: pass 
+		
+		for mykey in dVepCommon: 
+			#print (dVepCommon[mykey]['genotypes']) 	
+			genotypesToConsider=[]
+			for indx in column2retain: genotypesToConsider.append(dVepCommon[mykey]['genotypes'][indx-9])   #linesplit[indx].split(":")[0])
 
-				#print('######################################')
-				#print(linesplit[9:])
-				#print (genotypesToConsider)
-				for altAl in altAlleles:
-					mykey=mychr.lstrip("chr") + ":" + mypos + ":/" + altAl
-					#print(mykey )
-					most=dVepCommon[mykey]['most_severe_consequence']
-					if not  dVepCommon[mykey]['csqAllele'] =='':
-						#print (dVepCommon[mykey]) 
-						csqAllele=dVepCommon[mykey]['csqAllele']
-						myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, myref, myalt , "." ,genotypesToConsider)
-						#print(csqAllele, myref, myalt , "." ,genotypesToConsider) 
-						tempRepPop[most].append(float(myfreq[0]) ) 
-						#print (tempRepPop) 
-					else: 
-						csqnotfound+=1
-						listnotfound.append(mykey)
+			most=dVepCommon[mykey]['most_severe_consequence']
+			if not  dVepCommon[mykey]['csqAllele'] =='':
+				#print (dVepCommon[mykey]) 
+				csqAllele=dVepCommon[mykey]['csqAllele']
+				myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1], "." ,genotypesToConsider)
+				#print(csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1]  , "." ,genotypesToConsider) 
+				#print(myfreq)
+				tempRepPop[most].append(float(myfreq[0]) ) 
+				#print (tempRepPop) 
+			else: 
+				csqnotfound+=1
+				listnotfound.append(mykey)
 		for consType  in tempRepPop:
 			templist=tempRepPop[consType] 
 			n, m, sd = len(templist), np.mean(templist), np.std(templist) 
