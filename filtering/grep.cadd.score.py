@@ -106,7 +106,7 @@ def main():
     sys.path.append(CADD_files)
     os.chdir(CADD_files)
 
-    for f in file_list:
+    for pos,f in enumerate(file_list):
         print("processing file >>>  "+f)
         df_final = pd.read_csv(f,sep="\t",low_memory=False)
         df_final.drop_duplicates(inplace=True)
@@ -137,11 +137,12 @@ def main():
         #get CADD score FINALLY MUCH FASTER with __pycache__!
         to_import = df_final.file_index.dropna().unique()
         how_many = list(range(len(to_import)))
-        print(">>>> importing index ")
-        with tqdm(total=len(how_many),ncols=80) as pbar:
-            for cache in to_import:
-                __import__(cache.replace(".py",""))
-                pbar.update(1)
+        if pos == 0:
+            print(">>>> importing index ")
+            with tqdm(total=len(how_many),ncols=80) as pbar:
+                for cache in to_import:
+                    __import__(cache.replace(".py",""))
+                    pbar.update(1)
         df_final.loc[:,"CADD"] = df_final.apply(get_CADDscore,axis=1)
         df_final.drop(["position","file_index"],axis=1,inplace=True)
         df_final.to_csv(f,sep="\t",index=False)
