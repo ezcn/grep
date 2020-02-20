@@ -140,7 +140,7 @@ def main():
 	for elem in dRepPop1[0]: 
 		musdHGDP[elem]=gp.combineMeanSD( dRepPop1[0][elem])
 	#print (musdHGDP)
-
+	print('type' , 'n', 'muZFreq', 'sdZFreq', 'ci90ZFreq', 'ci95ZFreq', 'ci99ZFreq')
 	for elem2 in dRepPop2[3]: 
 		zfreq=[(x- musdHGDP[elem2][0])/musdHGDP[elem2][1] for x in  dRepPop2[3][elem2]]
 		muZFreq=np.mean(zfreq)
