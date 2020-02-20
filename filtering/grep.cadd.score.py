@@ -81,22 +81,26 @@ def main():
     args = parser.parse_args()
 
     index_file = args.index     #"/data/resources/CADD_index/index_file_CADD.tsv"
-    input_sample_dirs = args.input     #"/data/research/NGS/results/grep"
+    input_sample = args.input     #"/data/research/NGS/results/grep"
     CADD_files = args.cadd     #"/home/data/resources/CADD_index"
     #out_file = args.output    #"/data/research/NGS/results/grep/"
     chro = args.chr #10
 
     print("")
-    print("Input FILEs : ",input_sample_dirs)
+    print("Input FILEs : ",input_sample)
     print("index FILE : ",index_file)
     print("CADD FILEs : ",CADD_files)
     print("chr selected : chr",chro)
 
     index_file = pd.read_csv(index_file,sep="\t") 
     index_dict = indexing(index_file)
-
-    rootdir_glob = (input_sample_dirs+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
-    file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
+    
+    if os.path.isfile(input_sample):
+        rootdir_glob = (os.path.dirname(input_sample)+"/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
+        file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
+    elif os.path.isdir(input_sample):
+        rootdir_glob = (input_sample+"/**/*chr{chr}.tsv".format(chr=chro)).replace("//","/")
+        file_list = [f for f in iglob(rootdir_glob, recursive=True) if os.path.isfile(f)]
 
     #print(os.getcwd())
     sys.path.append(CADD_files)
