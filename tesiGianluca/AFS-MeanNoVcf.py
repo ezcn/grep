@@ -11,7 +11,7 @@ import numpy as np
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividuals, vcfFilegz , dVepCommon) :    
+def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividuals, vcfFilegz , dVepCommon, variantClass, rareTreshold) :    
 	dRepPop={} # to store number,  mean, and  sd {consequence: ( {'n': 10, 'm': 11.8, 'sd': 2.4},  {'n': 20, 'm': 15.3, 'sd': 3.2})} 
 	for  term in lsotermList: dRepPop[term]=[]
 	cycle=0
@@ -22,8 +22,6 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		#~~ select a random sample from listOfIDs at each cycle 
 		column2retain=[]
 		sampleToConsider=random.sample(listOfIDs,  numberOfIndividuals)
-		#print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-		#print( sampleToConsider) 	
 
 		#~~ extract info from random sample from vcf 	
 		csqnotfound=0
@@ -31,30 +29,34 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		for line in gzip.open(vcfFilegz,  'r'):
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 			if re.match ('#CHR', decodedLine):
-				#print(decodedLine.split() ) 
 				for ind in sampleToConsider:
 					column2retain.append(decodedLine.split().index(ind))
-				#print( column2retain) 
 			else: pass 
 		
 		for mykey in dVepCommon: 
-			#print (dVepCommon[mykey]['genotypes']) 	
-			genotypesToConsider=[]
-			for indx in column2retain: genotypesToConsider.append(dVepCommon[mykey]['genotypes'][indx-9])   #linesplit[indx].split(":")[0])
+			#~~~~~~~~ include the variant  based on variant class 
+			if dVepCommon[mykey]['variant_class']==variantClass:
 
-			most=dVepCommon[mykey]['most_severe_consequence']
-			if not  dVepCommon[mykey]['csqAllele'] =='':
-				#print (dVepCommon[mykey]) 
-				csqAllele=dVepCommon[mykey]['csqAllele']
-				myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1], "." ,genotypesToConsider)
-				#print(csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1]  , "." ,genotypesToConsider) 
-				#print(myfreq)
-				if float(myfreq[0])>0: 
-					tempRepPop[most].append(float(myfreq[0]) ) 
-				#print (tempRepPop) 
-			else: 
-				csqnotfound+=1
-				listnotfound.append(mykey)
+				#~~~~~~~  include the variant based on its frequency in gnomeAD and 1000G	
+				if 'frequencies' in dVepCommon[mykey]: 
+					for cAll in dVepCommon[mykey]['frequencies']: 
+						listFreq=dVepCommon[mykey]['frequencies'][cAll].values()
+						rare=gp.checkFreq (listFreq,  rareTreshold )
+				#else:
+				#	dVepCommon[celem]['rare']="NOB"
+					if rare:  
+						#~~~~~~~~  retain only genotypes of selected individuals 
+						genotypesToConsider=[]
+						for indx in column2retain: genotypesToConsider.append(dVepCommon[mykey]['genotypes'][indx-9])   #linesplit[indx].split(":")[0])
+	
+						most=dVepCommon[mykey]['most_severe_consequence']
+						myfreq=gp.Freq_CSQ_REF_ALT ( mykey.split("/")[-1], dVepCommon[mykey]['ref'], mykey.split("/")[-1], "." ,genotypesToConsider)
+			
+						#~~~~~~~  
+						if float(myfreq[0])>0: tempRepPop[most].append(float(myfreq[0]) ) 
+					else: 
+						listnotfound.append(dVepCommon[mykey]['frequencies'])
+
 		for consType  in tempRepPop:
 			templist=tempRepPop[consType] 
 			n, m, sd = len(templist), np.mean(templist), np.std(templist) 
@@ -98,6 +100,8 @@ def main():
 	parser.add_argument("-n", help="number of individuals in pop1 and pop2",type=int,required=True)
 	parser.add_argument("-p1", help="reference population fro standardization",type=str,required=True) #EUROPE
 	parser.add_argument("-p2", help="test population ",type=str,required=True) #GREP
+	parser.add_argument("-so", help="variant class as SO term. possible values:  SNV , insertion, deletion, indel, substitution , sequence_alteration ",type=str,required=True)
+	parser.add_argument('-r', help='threshold for rare variant ',type=float,required=True)
 	args = parser.parse_args()
 	#output = open(args.o,'w')
 	#print(args) 
@@ -116,8 +120,8 @@ def main():
 
 	##########~~~~~~~~~~~ 3. process Vcfs 
 	random.seed(args.s) # needed for ??? 
-	dRepPop1=replicatesResults (args.c1, lSOTerm, listofpops[0] , args.n, args.f , dVepCommon) 
-	dRepPop2=replicatesResults (args.c2, lSOTerm, listofpops[1] , args.n, args.f , dVepCommon)
+	dRepPop1=replicatesResults (args.c1, lSOTerm, listofpops[0] , args.n, args.f , dVepCommon, args.so, args.r ) 
+	dRepPop2=replicatesResults (args.c2, lSOTerm, listofpops[1] , args.n, args.f , dVepCommon, args.so, args.r )
 
 	#print ('POP1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 	#print(dRepPop1[1])
@@ -145,7 +149,7 @@ def main():
 		ci95ZFreq=1.960*(sdZFreq/np.sqrt(len(zfreq)))
 		ci99ZFreq=2.576*(sdZFreq/np.sqrt(len(zfreq))) 
 		#print('####')
-		print (elem2 , muZFreq, sdZFreq, ci90ZFreq, ci95ZFreq, ci99ZFreq) 
+		print (elem2 , len(zfreq), muZFreq, sdZFreq, ci90ZFreq, ci95ZFreq, ci99ZFreq) 
 		#print ( zfreq)
 	
 

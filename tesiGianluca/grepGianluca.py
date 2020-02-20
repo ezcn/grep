@@ -1,4 +1,16 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def checkFreq (listFreq, threshold): 
+	# check if a variant is rare:  none of the populations in listfreq has frequency greater than threshold
+	rare=True
+	if len(listFreq) >0: 
+		for freq in listFreq:
+			if freq > threshold: 
+				rare=False
+				break
+	else: rare="NOB" #never observed 
+	return(rare)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist):
 	"""csqAllele = type: string, consequence allele  from vep  
@@ -53,6 +65,7 @@ def getInfoFromVepLocally (jsonWithVEPannotations):
 				vepInfoCommon[mykey]['genotypes']=mygen 
 				vepInfoCommon[mykey]['ref']=myref
 				vepInfoCommon[mykey]['alt']=myalt
+				vepInfoCommon[mykey]['variant_class']=info["variant_class"]
 				#~~  check if the most sequence is in a transcript
 				if 'transcript_consequences' in info:
 					for tc in info['transcript_consequences']:
