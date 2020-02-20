@@ -49,7 +49,8 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 				myfreq=gp.Freq_CSQ_REF_ALT (csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1], "." ,genotypesToConsider)
 				#print(csqAllele, dVepCommon[mykey]['ref'], mykey.split("/")[-1]  , "." ,genotypesToConsider) 
 				#print(myfreq)
-				tempRepPop[most].append(float(myfreq[0]) ) 
+				if float(myfreq[0])>0: 
+					tempRepPop[most].append(float(myfreq[0]) ) 
 				#print (tempRepPop) 
 			else: 
 				csqnotfound+=1
