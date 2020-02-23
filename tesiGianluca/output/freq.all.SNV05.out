@@ -1,0 +1,18 @@
+type	display	impact	n	Zmu	Zsd
+splice_acceptor_variant	Splice acceptor variant	HIGH	257.0	-0.07418372579495064	1.0080547680985639
+splice_donor_variant	Splice donor variant	HIGH	484.0	-0.1685022595888089	0.9350626879302101
+stop_gained	Stop gained	HIGH	257.0	-0.061625817351868846	1.0515314138085674
+start_lost	Start lost	HIGH	13.0	nan	nan
+missense_variant	Missense variant	MODERATE	18631.0	-0.090846486951052	0.9549168409749231
+splice_region_variant	Splice region variant	LOW	5554.0	-0.11440291647712911	0.956017046078188
+synonymous_variant	Synonymous variant	LOW	16927.0	-0.1319660563646701	0.9209652580445867
+mature_miRNA_variant	Mature miRNA variant	MODIFIER	40.0	-0.2204920218415179	0.8525263976319158
+5_prime_UTR_variant	5 prime UTR variant	MODIFIER	12903.0	-0.1374227847896929	0.9326986314082157
+3_prime_UTR_variant	3 prime UTR variant	MODIFIER	53661.0	-0.132958079004615	0.930371675307145
+non_coding_transcript_exon_variant	Non coding transcript exon variant	MODIFIER	102479.0	-0.14195575883176603	0.9342473833296324
+intron_variant	Intron variant	MODIFIER	2630848.0	-0.14227212834859257	0.9312268305236454
+upstream_gene_variant	Upstream gene variant	MODIFIER	208595.0	-0.13528426977184244	0.9375131893936071
+downstream_gene_variant	Downstream gene variant	MODIFIER	173893.0	-0.13593778616902613	0.9354609109424458
+TF_binding_site_variant	TF binding site variant	MODIFIER	13038.0	-0.13829449986606684	0.9394054697249287
+regulatory_region_variant	Regulatory region variant	MODIFIER	176518.0	-0.14324839072399181	0.9371960117503989
+intergenic_variant	Intergenic variant	MODIFIER	1370915.0	-0.14062825781436672	0.9338129515661506
