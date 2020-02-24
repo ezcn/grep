@@ -3,6 +3,9 @@ sys.path.append('/home/flavia/Lab/odgi/lib')
 import odgi
 g = odgi.graph()
 g.load("/home/flavia/Lab/vgpop/lil.odgi")
+out_file = open("test.txt","w")
+out_file.write("GfatoVCF.py\n")
+out_file.close()
 
 def process_step(s):
     h = g.get_handle_of_step(s) # gets the handle (both node and orientation) of the step
@@ -197,3 +200,44 @@ for node_id in ordered_node_id_list:        #per ogni distanza nella lista di no
     else:
         #print(get_sequence(node_id), 'sequence') 
         print(node_id, 'Bolla', node_id_to_path_and_pos_dict[node_id],g_dfs.get_sequence(g_dfs.get_handle(node_id)))
+
+
+def print_all_paths_util(graph, u_node_id, d_node_id, visited_node_id_set, path_list):   #per avere tutti i path possibili: alt
+    if u_node_id not in visited_node_id_set:
+        visited_node_id_set.add(u_node_id)
+        path_list.append(graph.get_sequence(graph.get_handle(u_node_id)))
+        #path_list.append(u_node_id)
+        
+        #print(u_node_id)
+        if u_node_id == d_node_id:
+            print('Path:', path_list)
+        else:
+            graph.follow_edges(
+                graph.get_handle(u_node_id),
+                False,
+
+                lambda i_node:
+                    print_all_paths_util(
+                        graph, graph.get_id(i_node), d_node_id, visited_node_id_set, path_list
+                    )
+            )
+
+        path_list.pop() 
+        visited_node_id_set.remove(u_node_id)
+
+
+
+def print_all_paths(graph, start_node_id, end_node_id):
+    visited_node_id_set = set()
+
+    path_list = []
+
+    print_all_paths_util(graph, start_node_id, end_node_id, visited_node_id_set, path_list)
+
+
+print('Bubble 1-15:')
+print('Paths in the tree')
+print_all_paths(g_dfs, 1, 15)
+
+print('\nPaths in the original graph')
+print_all_paths(g, 1, 15)
