@@ -92,7 +92,7 @@ def main():
 	parser.add_argument("-j", help="path to  json  file ",type=str,required=True)
 	parser.add_argument('-f', help='path to  vcf file (merged pop1 and pop2 ) ',type=str,required=True)
 	parser.add_argument('-v', help='path to table of vep consequences  ',type=str, required= True)
-	parser.add_argument('-o', help='path to output file  ',type=str, required= True)
+	#parser.add_argument('-o', help='path to output file  ',type=str, required= True)
 	parser.add_argument('-e', help='path to error file',type=str,required=True)
 	parser.add_argument('-m', help='path to metadata file',type=str,required=True)
 	parser.add_argument('-c1', help='number of random cycle for pop1',type=int,required=False, default=1)
@@ -104,7 +104,7 @@ def main():
 	parser.add_argument("-so", help="variant class as SO term. possible values:  SNV , insertion, deletion, indel, substitution , sequence_alteration ",type=str,required=True)
 	parser.add_argument('-r', help='threshold for rare variant ',type=float,required=True)
 	args = parser.parse_args()
-	sys.stdout = open(args.o,'w')
+	#sys.stdout = open(args.o,'w')
 	#print(args) 
 
 	#############################################################
