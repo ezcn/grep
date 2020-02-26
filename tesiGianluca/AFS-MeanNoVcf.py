@@ -26,13 +26,14 @@ def replicatesResults (numberOfCycles, lsotermList, listOfIDs , numberOfIndividu
 		#~~ extract info from random sample from vcf 	
 		csqnotfound=0
 		listnotfound=[]
-		for line in gzip.open(vcfFilegz,  'r'):
+		myf=gzip.open(vcfFilegz,  'r')
+		for line in myf:
 			decodedLine=line.decode()  ## line.decode() is necessary to read encoded data using gzip in python3
 			if re.match ('#CHR', decodedLine):
 				for ind in sampleToConsider:
 					column2retain.append(decodedLine.split().index(ind))
-			else: pass 
-		
+			else: pass  
+			
 		for mykey in dVepCommon: 
 			#~~~~~~~~ include the variant  based on variant class 
 			if dVepCommon[mykey]['variant_class']==variantClass:
