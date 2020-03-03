@@ -1,0 +1,1611 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nyt/global//global/global}
+  \entry{blomen2015gene}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=BVA}{%
+         family={Blomen},
+         familyi={B\bibinitperiod},
+         given={Vincent\bibnamedelima A},
+         giveni={V\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=MP}{%
+         family={M{\'a}jek},
+         familyi={M\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=JLT}{%
+         family={Jae},
+         familyi={J\bibinitperiod},
+         given={Lucas\bibnamedelima T},
+         giveni={L\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+      {{hash=BJW}{%
+         family={Bigenzahn},
+         familyi={B\bibinitperiod},
+         given={Johannes\bibnamedelima W},
+         giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+      {{hash=NJ}{%
+         family={Nieuwenhuis},
+         familyi={N\bibinitperiod},
+         given={Joppe},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Staring},
+         familyi={S\bibinitperiod},
+         given={Jacqueline},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SR}{%
+         family={Sacco},
+         familyi={S\bibinitperiod},
+         given={Roberto},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=vDFR}{%
+         prefix={van},
+         prefixi={v\bibinitperiod},
+         family={Diemen},
+         familyi={D\bibinitperiod},
+         given={Ferdy\bibnamedelima R},
+         giveni={F\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=ON}{%
+         family={Olk},
+         familyi={O\bibinitperiod},
+         given={Nadine},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Stukalov},
+         familyi={S\bibinitperiod},
+         given={Alexey},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {American Association for the Advancement of Science}%
+    }
+    \strng{namehash}{BVA+1}
+    \strng{fullhash}{BVAMPJLTBJWNJSJSRDFRvONSA+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{number}{6264}
+    \field{pages}{1092\bibrangedash 1096}
+    \field{title}{Gene essentiality and synthetic lethality in haploid human
+  cells}
+    \field{volume}{350}
+    \field{journaltitle}{Science}
+    \field{year}{2015}
+  \endentry
+
+  \entry{colley2019potential}{article}{}
+    \name{author}{6}{}{%
+      {{hash=CE}{%
+         family={Colley},
+         familyi={C\bibinitperiod},
+         given={Emily},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=HS}{%
+         family={Hamilton},
+         familyi={H\bibinitperiod},
+         given={Susan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Smith},
+         familyi={S\bibinitperiod},
+         given={Paul},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=MNV}{%
+         family={Morgan},
+         familyi={M\bibinitperiod},
+         given={Neil\bibnamedelima V},
+         giveni={N\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=CA}{%
+         family={Coomarasamy},
+         familyi={C\bibinitperiod},
+         given={Arri},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=AS}{%
+         family={Allen},
+         familyi={A\bibinitperiod},
+         given={Stephanie},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{CE+1}
+    \strng{fullhash}{CEHSSPMNVCAAS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{number}{4}
+    \field{pages}{452\bibrangedash 472}
+    \field{title}{Potential genetic causes of miscarriage in euploid
+  pregnancies: A systematic review}
+    \field{volume}{25}
+    \field{journaltitle}{Human reproduction update}
+    \field{year}{2019}
+  \endentry
+
+  \entry{1000genome2015global}{article}{}
+    \true{moreauthor}
+    \name{author}{1}{}{%
+      {{hash=CGP}{%
+         family={Consortium},
+         familyi={C\bibinitperiod},
+         given={1000 Genomes\bibnamedelima Project},
+         giveni={\bibinitperiod\bibinitdelim G\bibinitperiod\bibinitdelim
+  P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{CGP+1}
+    \strng{fullhash}{CGP+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{number}{7571}
+    \field{pages}{68\bibrangedash 74}
+    \field{title}{A global reference for human genetic variation}
+    \field{volume}{526}
+    \field{journaltitle}{Nature}
+    \field{year}{2015}
+  \endentry
+
+  \entry{dawes2019gene}{article}{}
+    \name{author}{3}{}{%
+      {{hash=DR}{%
+         family={Dawes},
+         familyi={D\bibinitperiod},
+         given={Ruebena},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Lek},
+         familyi={L\bibinitperiod},
+         given={Monkol},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=CST}{%
+         family={Cooper},
+         familyi={C\bibinitperiod},
+         given={Sandra\bibnamedelima T},
+         giveni={S\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{DRLMCST1}
+    \strng{fullhash}{DRLMCST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{labeldatesource}{year}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 11}
+    \field{title}{Gene discovery informatics toolkit defines candidate genes
+  for unexplained infertility and prenatal or infantile mortality}
+    \field{volume}{4}
+    \field{journaltitle}{NPJ genomic medicine}
+    \field{year}{2019}
+  \endentry
+
+  \entry{garrison2020}{article}{}
+    \name{author}{1}{}{%
+      {{hash=EKCPGN}{%
+         family={Eizenga},
+         familyi={E\bibinitperiod},
+         suffix={Novak},
+         suffixi={N\bibinitperiod},
+         given={Kobayashi Cisar Paten\bibnamedelima Garrison},
+         giveni={K\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim
+  P\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {GitHub}%
+    }
+    \strng{namehash}{ENKCPG1}
+    \strng{fullhash}{ENKCPG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2020}
+    \field{labeldatesource}{year}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{Succint dynamic sequence graphs}
+    \field{journaltitle}{GitHub repository}
+    \field{year}{2020}
+  \endentry
+
+  \entry{firth2011deciphering}{article}{}
+    \name{author}{3}{}{%
+      {{hash=FHV}{%
+         family={Firth},
+         familyi={F\bibinitperiod},
+         given={Helen\bibnamedelima V},
+         giveni={H\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=WCF}{%
+         family={Wright},
+         familyi={W\bibinitperiod},
+         given={Caroline\bibnamedelima F},
+         giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+      {{hash=sD}{%
+         family={study},
+         familyi={s\bibinitperiod},
+         given={DDD},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Wiley Online Library}%
+    }
+    \strng{namehash}{FHVWCFsD1}
+    \strng{fullhash}{FHVWCFsD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{year}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{number}{8}
+    \field{pages}{702\bibrangedash 703}
+    \field{title}{The deciphering developmental disorders (DDD) study}
+    \field{volume}{53}
+    \field{journaltitle}{Developmental Medicine \& Child Neurology}
+    \field{year}{2011}
+  \endentry
+
+  \entry{firth2009decipher}{article}{}
+    \name{author}{10}{}{%
+      {{hash=FHV}{%
+         family={Firth},
+         familyi={F\bibinitperiod},
+         given={Helen\bibnamedelima V},
+         giveni={H\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=RSM}{%
+         family={Richards},
+         familyi={R\bibinitperiod},
+         given={Shola\bibnamedelima M},
+         giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=BAP}{%
+         family={Bevan},
+         familyi={B\bibinitperiod},
+         given={A\bibnamedelima Paul},
+         giveni={A\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=CS}{%
+         family={Clayton},
+         familyi={C\bibinitperiod},
+         given={Stephen},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Corpas},
+         familyi={C\bibinitperiod},
+         given={Manuel},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RD}{%
+         family={Rajan},
+         familyi={R\bibinitperiod},
+         given={Diana},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=VVS}{%
+         family={Van\bibnamedelima Vooren},
+         familyi={V\bibinitperiod\bibinitdelim V\bibinitperiod},
+         given={Steven},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=MY}{%
+         family={Moreau},
+         familyi={M\bibinitperiod},
+         given={Yves},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=PRM}{%
+         family={Pettett},
+         familyi={P\bibinitperiod},
+         given={Roger\bibnamedelima M},
+         giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=CNP}{%
+         family={Carter},
+         familyi={C\bibinitperiod},
+         given={Nigel\bibnamedelima P},
+         giveni={N\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{FHV+1}
+    \strng{fullhash}{FHVRSMBAPCSCMRDVVSMYPRMCNP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{number}{4}
+    \field{pages}{524\bibrangedash 533}
+    \field{title}{DECIPHER: database of chromosomal imbalance and phenotype in
+  humans using ensembl resources}
+    \field{volume}{84}
+    \field{journaltitle}{The American Journal of Human Genetics}
+    \field{year}{2009}
+  \endentry
+
+  \entry{vcflib}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=GE}{%
+         family={Garrison},
+         familyi={G\bibinitperiod},
+         given={Erik},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {GitHub}%
+    }
+    \strng{namehash}{GE1}
+    \strng{fullhash}{GE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2010}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{howpublished}{\url{https://github.com/vcflib/vcflib}}
+    \field{title}{Open Refine}
+    \field{journaltitle}{GitHub repository}
+    \field{year}{2010}
+  \endentry
+
+  \entry{garrison2012haplotype}{article}{}
+    \name{author}{2}{}{%
+      {{hash=GE}{%
+         family={Garrison},
+         familyi={G\bibinitperiod},
+         given={Erik},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=MG}{%
+         family={Marth},
+         familyi={M\bibinitperiod},
+         given={Gabor},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GEMG1}
+    \strng{fullhash}{GEMG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2020}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{Haplotype-based variant detection from short-read sequencing}
+    \field{journaltitle}{arXiv preprint arXiv:1207.3907}
+    \field{year}{2020}
+  \endentry
+
+  \entry{goddijn2000genetic}{article}{}
+    \name{author}{2}{}{%
+      {{hash=GM}{%
+         family={Goddijn},
+         familyi={G\bibinitperiod},
+         given={M},
+         giveni={M},
+      }}%
+      {{hash=LN}{%
+         family={Leschot},
+         familyi={L\bibinitperiod},
+         given={NJ},
+         giveni={N\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {BAILLERE TINDALL}%
+    }
+    \strng{namehash}{GMLN1}
+    \strng{fullhash}{GMLN1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2000}
+    \field{labeldatesource}{year}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{number}{5}
+    \field{pages}{855\bibrangedash 865}
+    \field{title}{Genetic aspects of miscarriage}
+    \field{volume}{14}
+    \field{journaltitle}{BEST PRACTICE AND RESEARCH IN CLINICAL OBSTETRICS AND
+  GYNAECOLOGY}
+    \field{year}{2000}
+  \endentry
+
+  \entry{hart2015high}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=HT}{%
+         family={Hart},
+         familyi={H\bibinitperiod},
+         given={Traver},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Chandrashekhar},
+         familyi={C\bibinitperiod},
+         given={Megha},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=AM}{%
+         family={Aregger},
+         familyi={A\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=SZ}{%
+         family={Steinhart},
+         familyi={S\bibinitperiod},
+         given={Zachary},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=BKR}{%
+         family={Brown},
+         familyi={B\bibinitperiod},
+         given={Kevin\bibnamedelima R},
+         giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=MG}{%
+         family={MacLeod},
+         familyi={M\bibinitperiod},
+         given={Graham},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Mis},
+         familyi={M\bibinitperiod},
+         given={Monika},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=ZM}{%
+         family={Zimmermann},
+         familyi={Z\bibinitperiod},
+         given={Michal},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=FTA}{%
+         family={Fradet-Turcotte},
+         familyi={F\bibinithyphendelim T\bibinitperiod},
+         given={Amelie},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SS}{%
+         family={Sun},
+         familyi={S\bibinitperiod},
+         given={Song},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{HT+1}
+    \strng{fullhash}{HTCMAMSZBKRMGMMZMFTASS+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{number}{6}
+    \field{pages}{1515\bibrangedash 1526}
+    \field{title}{High-resolution CRISPR screens reveal fitness genes and
+  genotype-specific cancer liabilities}
+    \field{volume}{163}
+    \field{journaltitle}{Cell}
+    \field{year}{2015}
+  \endentry
+
+  \entry{howe2020ensembl}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=HKL}{%
+         family={Howe},
+         familyi={H\bibinitperiod},
+         given={Kevin\bibnamedelima L},
+         giveni={K\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+      {{hash=CMB}{%
+         family={Contreras-Moreira},
+         familyi={C\bibinithyphendelim M\bibinitperiod},
+         given={Bruno},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=DSN}{%
+         family={De\bibnamedelima Silva},
+         familyi={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+         given={Nishadi},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=MG}{%
+         family={Maslen},
+         familyi={M\bibinitperiod},
+         given={Gareth},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=AW}{%
+         family={Akanni},
+         familyi={A\bibinitperiod},
+         given={Wasiu},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=AJ}{%
+         family={Allen},
+         familyi={A\bibinitperiod},
+         given={James},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=AJJ}{%
+         family={Alvarez-Jarreta},
+         familyi={A\bibinithyphendelim J\bibinitperiod},
+         given={Jorge},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=BM}{%
+         family={Barba},
+         familyi={B\bibinitperiod},
+         given={Matthieu},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=BDM}{%
+         family={Bolser},
+         familyi={B\bibinitperiod},
+         given={Dan\bibnamedelima M},
+         giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=CL}{%
+         family={Cambell},
+         familyi={C\bibinitperiod},
+         given={Lahcen},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{HKL+1}
+    \strng{fullhash}{HKLCMBDSNMGAWAJAJJBMBDMCL+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2020}
+    \field{labeldatesource}{year}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{number}{D1}
+    \field{pages}{D689\bibrangedash D695}
+    \field{title}{Ensembl Genomes 2020—enabling non-vertebrate genomic
+  research}
+    \field{volume}{48}
+    \field{journaltitle}{Nucleic acids research}
+    \field{year}{2020}
+  \endentry
+
+  \entry{karczewskigenome}{misc}{}
+    \name{author}{2}{}{%
+      {{hash=KK}{%
+         family={Karczewski},
+         familyi={K\bibinitperiod},
+         given={K},
+         giveni={K},
+      }}%
+      {{hash=FL}{%
+         family={Francioli},
+         familyi={F\bibinitperiod},
+         given={L},
+         giveni={L},
+      }}%
+    }
+    \strng{namehash}{KKFL1}
+    \strng{fullhash}{KKFL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{The genome Aggregation Database (gnomAD). MacArthur Lab.
+  2017}
+  \endentry
+
+  \entry{kircher2014general}{article}{}
+    \name{author}{6}{}{%
+      {{hash=KM}{%
+         family={Kircher},
+         familyi={K\bibinitperiod},
+         given={Martin},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=WDM}{%
+         family={Witten},
+         familyi={W\bibinitperiod},
+         given={Daniela\bibnamedelima M},
+         giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=JP}{%
+         family={Jain},
+         familyi={J\bibinitperiod},
+         given={Preti},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=OBJ}{%
+         family={O'Roak},
+         familyi={O\bibinitperiod},
+         given={Brian\bibnamedelima J},
+         giveni={B\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=CGM}{%
+         family={Cooper},
+         familyi={C\bibinitperiod},
+         given={Gregory\bibnamedelima M},
+         giveni={G\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Shendure},
+         familyi={S\bibinitperiod},
+         given={Jay},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{KM+1}
+    \strng{fullhash}{KMWDMJPOBJCGMSJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2014}
+    \field{labeldatesource}{year}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{number}{3}
+    \field{pages}{310}
+    \field{title}{A general framework for estimating the relative pathogenicity
+  of human genetic variants}
+    \field{volume}{46}
+    \field{journaltitle}{Nature genetics}
+    \field{year}{2014}
+  \endentry
+
+  \entry{laisk2019genetic}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=LT}{%
+         family={Laisk},
+         familyi={L\bibinitperiod},
+         given={Triin},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=SALG}{%
+         family={Soares},
+         familyi={S\bibinitperiod},
+         given={Ana Luiza\bibnamedelima G},
+         giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim
+  G\bibinitperiod},
+      }}%
+      {{hash=FT}{%
+         family={Ferreira},
+         familyi={F\bibinitperiod},
+         given={Teresa},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=PJN}{%
+         family={Painter},
+         familyi={P\bibinitperiod},
+         given={Jodie\bibnamedelima N},
+         giveni={J\bibinitperiod\bibinitdelim N\bibinitperiod},
+      }}%
+      {{hash=LS}{%
+         family={Laber},
+         familyi={L\bibinitperiod},
+         given={Samantha},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=BJ}{%
+         family={Bacelis},
+         familyi={B\bibinitperiod},
+         given={Jonas},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=CCY}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Chia-Yen},
+         giveni={C\bibinithyphendelim Y\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Lepamets},
+         familyi={L\bibinitperiod},
+         given={Maarja},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=LK}{%
+         family={Lin},
+         familyi={L\bibinitperiod},
+         given={Kuang},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=LS}{%
+         family={Liu},
+         familyi={L\bibinitperiod},
+         given={Siyang},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Cold Spring Harbor Laboratory}%
+    }
+    \strng{namehash}{LT+1}
+    \strng{fullhash}{LTSALGFTPJNLSBJCCYLMLKLS+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{pages}{575167}
+    \field{title}{The genetic architecture of sporadic and recurrent
+  miscarriage}
+    \field{journaltitle}{bioRxiv}
+    \field{year}{2019}
+  \endentry
+
+  \entry{lek2016analysis}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=LM}{%
+         family={Lek},
+         familyi={L\bibinitperiod},
+         given={Monkol},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=KKJ}{%
+         family={Karczewski},
+         familyi={K\bibinitperiod},
+         given={Konrad\bibnamedelima J},
+         giveni={K\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=MEV}{%
+         family={Minikel},
+         familyi={M\bibinitperiod},
+         given={Eric\bibnamedelima V},
+         giveni={E\bibinitperiod\bibinitdelim V\bibinitperiod},
+      }}%
+      {{hash=SKE}{%
+         family={Samocha},
+         familyi={S\bibinitperiod},
+         given={Kaitlin\bibnamedelima E},
+         giveni={K\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=BE}{%
+         family={Banks},
+         familyi={B\bibinitperiod},
+         given={Eric},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=FT}{%
+         family={Fennell},
+         familyi={F\bibinitperiod},
+         given={Timothy},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=OLAH}{%
+         family={O’Donnell-Luria},
+         familyi={O\bibinithyphendelim L\bibinitperiod},
+         given={Anne\bibnamedelima H},
+         giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=WJS}{%
+         family={Ware},
+         familyi={W\bibinitperiod},
+         given={James\bibnamedelima S},
+         giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=HAJ}{%
+         family={Hill},
+         familyi={H\bibinitperiod},
+         given={Andrew\bibnamedelima J},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=CBB}{%
+         family={Cummings},
+         familyi={C\bibinitperiod},
+         given={Beryl\bibnamedelima B},
+         giveni={B\bibinitperiod\bibinitdelim B\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Nature Publishing Group}%
+    }
+    \strng{namehash}{LM+1}
+    \strng{fullhash}{LMKKJMEVSKEBEFTOLAHWJSHAJCBB+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{number}{7616}
+    \field{pages}{285\bibrangedash 291}
+    \field{title}{Analysis of protein-coding genetic variation in 60,706
+  humans}
+    \field{volume}{536}
+    \field{journaltitle}{Nature}
+    \field{year}{2016}
+  \endentry
+
+  \entry{li2013aligning}{article}{}
+    \name{author}{1}{}{%
+      {{hash=LH}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Heng},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LH1}
+    \strng{fullhash}{LH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{Aligning sequence reads, clone sequences and assembly contigs
+  with BWA-MEM}
+    \field{journaltitle}{arXiv preprint arXiv:1303.3997}
+    \field{year}{2013}
+  \endentry
+
+  \entry{li2009sequence}{article}{}
+    \name{author}{9}{}{%
+      {{hash=LH}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Heng},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=HB}{%
+         family={Handsaker},
+         familyi={H\bibinitperiod},
+         given={Bob},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=WA}{%
+         family={Wysoker},
+         familyi={W\bibinitperiod},
+         given={Alec},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=FT}{%
+         family={Fennell},
+         familyi={F\bibinitperiod},
+         given={Tim},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=RJ}{%
+         family={Ruan},
+         familyi={R\bibinitperiod},
+         given={Jue},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=HN}{%
+         family={Homer},
+         familyi={H\bibinitperiod},
+         given={Nils},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=MG}{%
+         family={Marth},
+         familyi={M\bibinitperiod},
+         given={Gabor},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=AG}{%
+         family={Abecasis},
+         familyi={A\bibinitperiod},
+         given={Goncalo},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=DR}{%
+         family={Durbin},
+         familyi={D\bibinitperiod},
+         given={Richard},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{LH+1}
+    \strng{fullhash}{LHHBWAFTRJHNMGAGDR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{number}{16}
+    \field{pages}{2078\bibrangedash 2079}
+    \field{title}{The sequence alignment/map format and SAMtools}
+    \field{volume}{25}
+    \field{journaltitle}{Bioinformatics}
+    \field{year}{2009}
+  \endentry
+
+  \entry{pereza2017systematic}{article}{}
+    \name{author}{4}{}{%
+      {{hash=PN}{%
+         family={Pereza},
+         familyi={P\bibinitperiod},
+         given={Nina},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=OS}{%
+         family={Ostoji{\'c}},
+         familyi={O\bibinitperiod},
+         given={Sa{\v{s}}a},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KM}{%
+         family={Kapovi{\'c}},
+         familyi={K\bibinitperiod},
+         given={Miljenko},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=PB}{%
+         family={Peterlin},
+         familyi={P\bibinitperiod},
+         given={Borut},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Elsevier}%
+    }
+    \strng{namehash}{PN+1}
+    \strng{fullhash}{PNOSKMPB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{number}{1}
+    \field{pages}{150\bibrangedash 159}
+    \field{title}{Systematic review and meta-analysis of genetic association
+  studies in idiopathic recurrent spontaneous abortion}
+    \field{volume}{107}
+    \field{journaltitle}{Fertility and sterility}
+    \field{year}{2017}
+  \endentry
+
+  \entry{qiao2016whole}{article}{}
+    \name{author}{8}{}{%
+      {{hash=QY}{%
+         family={Qiao},
+         familyi={Q\bibinitperiod},
+         given={Ying},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WJ}{%
+         family={Wen},
+         familyi={W\bibinitperiod},
+         given={Jiadi},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=TF}{%
+         family={Tang},
+         familyi={T\bibinitperiod},
+         given={Flamingo},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=MS}{%
+         family={Martell},
+         familyi={M\bibinitperiod},
+         given={Sally},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SN}{%
+         family={Shomer},
+         familyi={S\bibinitperiod},
+         given={Naomi},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=LPC}{%
+         family={Leung},
+         familyi={L\bibinitperiod},
+         given={Peter\bibnamedelima CK},
+         giveni={P\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+      {{hash=SMD}{%
+         family={Stephenson},
+         familyi={S\bibinitperiod},
+         given={Mary\bibnamedelima D},
+         giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod},
+      }}%
+      {{hash=RSE}{%
+         family={Rajcan-Separovic},
+         familyi={R\bibinithyphendelim S\bibinitperiod},
+         given={Evica},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{QY+1}
+    \strng{fullhash}{QYWJTFMSSNLPCSMDRSE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Q}
+    \field{sortinithash}{Q}
+    \field{number}{5}
+    \field{pages}{364\bibrangedash 372}
+    \field{title}{Whole exome sequencing in recurrent early pregnancy loss}
+    \field{volume}{22}
+    \field{journaltitle}{Mhr: Basic science of reproductive medicine}
+    \field{year}{2016}
+  \endentry
+
+  \entry{quintero2017novel}{article}{}
+    \name{author}{9}{}{%
+      {{hash=QRP}{%
+         family={Quintero-Ronderos},
+         familyi={Q\bibinithyphendelim R\bibinitperiod},
+         given={Paula},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=ME}{%
+         family={Mercier},
+         familyi={M\bibinitperiod},
+         given={Eric},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=FM}{%
+         family={Fukuda},
+         familyi={F\bibinitperiod},
+         given={Michiko},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=GR}{%
+         family={Gonz{\'a}lez},
+         familyi={G\bibinitperiod},
+         given={Ronald},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=SCF}{%
+         family={Su{\'a}rez},
+         familyi={S\bibinitperiod},
+         given={Carlos\bibnamedelima Fernando},
+         giveni={C\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+      {{hash=PMA}{%
+         family={Patarroyo},
+         familyi={P\bibinitperiod},
+         given={Manuel\bibnamedelima Alfonso},
+         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=VD}{%
+         family={Vaiman},
+         familyi={V\bibinitperiod},
+         given={Daniel},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=GJC}{%
+         family={Gris},
+         familyi={G\bibinitperiod},
+         given={Jean-Christophe},
+         giveni={J\bibinithyphendelim C\bibinitperiod},
+      }}%
+      {{hash=LP}{%
+         family={Laissue},
+         familyi={L\bibinitperiod},
+         given={Paul},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Public Library of Science}%
+    }
+    \strng{namehash}{QRP+1}
+    \strng{fullhash}{QRPMEFMGRSCFPMAVDGJCLP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Q}
+    \field{sortinithash}{Q}
+    \field{number}{10}
+    \field{title}{Novel genes and mutations in patients affected by recurrent
+  pregnancy loss}
+    \field{volume}{12}
+    \field{journaltitle}{PloS one}
+    \field{year}{2017}
+  \endentry
+
+  \entry{rentzsch2019cadd}{article}{}
+    \name{author}{5}{}{%
+      {{hash=RP}{%
+         family={Rentzsch},
+         familyi={R\bibinitperiod},
+         given={Philipp},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=WD}{%
+         family={Witten},
+         familyi={W\bibinitperiod},
+         given={Daniela},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=CGM}{%
+         family={Cooper},
+         familyi={C\bibinitperiod},
+         given={Gregory\bibnamedelima M},
+         giveni={G\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Shendure},
+         familyi={S\bibinitperiod},
+         given={Jay},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=KM}{%
+         family={Kircher},
+         familyi={K\bibinitperiod},
+         given={Martin},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{RP+1}
+    \strng{fullhash}{RPWDCGMSJKM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{number}{D1}
+    \field{pages}{D886\bibrangedash D894}
+    \field{title}{CADD: predicting the deleteriousness of variants throughout
+  the human genome}
+    \field{volume}{47}
+    \field{journaltitle}{Nucleic acids research}
+    \field{year}{2019}
+  \endentry
+
+  \entry{rosenbloom2015ucsc}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=RKR}{%
+         family={Rosenbloom},
+         familyi={R\bibinitperiod},
+         given={Kate\bibnamedelima R},
+         giveni={K\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=AJ}{%
+         family={Armstrong},
+         familyi={A\bibinitperiod},
+         given={Joel},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=BGP}{%
+         family={Barber},
+         familyi={B\bibinitperiod},
+         given={Galt\bibnamedelima P},
+         giveni={G\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=CJ}{%
+         family={Casper},
+         familyi={C\bibinitperiod},
+         given={Jonathan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=CH}{%
+         family={Clawson},
+         familyi={C\bibinitperiod},
+         given={Hiram},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=DM}{%
+         family={Diekhans},
+         familyi={D\bibinitperiod},
+         given={Mark},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DTR}{%
+         family={Dreszer},
+         familyi={D\bibinitperiod},
+         given={Timothy\bibnamedelima R},
+         giveni={T\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=FPA}{%
+         family={Fujita},
+         familyi={F\bibinitperiod},
+         given={Pauline\bibnamedelima A},
+         giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=GL}{%
+         family={Guruvadoo},
+         familyi={G\bibinitperiod},
+         given={Luvina},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=HM}{%
+         family={Haeussler},
+         familyi={H\bibinitperiod},
+         given={Maximilian},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{RKR+1}
+    \strng{fullhash}{RKRAJBGPCJCHDMDTRFPAGLHM+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{number}{D1}
+    \field{pages}{D670\bibrangedash D681}
+    \field{title}{The UCSC genome browser database: 2015 update}
+    \field{volume}{43}
+    \field{journaltitle}{Nucleic acids research}
+    \field{year}{2015}
+  \endentry
+
+  \entry{rull2012genetics}{article}{}
+    \name{author}{3}{}{%
+      {{hash=RK}{%
+         family={Rull},
+         familyi={R\bibinitperiod},
+         given={Kristiina},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=NL}{%
+         family={Nagirnaja},
+         familyi={N\bibinitperiod},
+         given={Liina},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Laan},
+         familyi={L\bibinitperiod},
+         given={Maris},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Frontiers}%
+    }
+    \strng{namehash}{RKNLLM1}
+    \strng{fullhash}{RKNLLM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2012}
+    \field{labeldatesource}{year}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{pages}{34}
+    \field{title}{Genetics of recurrent miscarriage: challenges, current
+  knowledge, future directions}
+    \field{volume}{3}
+    \field{journaltitle}{Frontiers in genetics}
+    \field{year}{2012}
+  \endentry
+
+  \entry{tan2015unified}{article}{}
+    \name{author}{3}{}{%
+      {{hash=TA}{%
+         family={Tan},
+         familyi={T\bibinitperiod},
+         given={Adrian},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=AGR}{%
+         family={Abecasis},
+         familyi={A\bibinitperiod},
+         given={Gon{\c{c}}alo\bibnamedelima R},
+         giveni={G\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=KHM}{%
+         family={Kang},
+         familyi={K\bibinitperiod},
+         given={Hyun\bibnamedelima Min},
+         giveni={H\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{TAAGRKHM1}
+    \strng{fullhash}{TAAGRKHM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{number}{13}
+    \field{pages}{2202\bibrangedash 2204}
+    \field{title}{Unified representation of genetic variants}
+    \field{volume}{31}
+    \field{journaltitle}{Bioinformatics}
+    \field{year}{2015}
+  \endentry
+
+  \entry{tarasov2015sambamba}{article}{}
+    \name{author}{5}{}{%
+      {{hash=TA}{%
+         family={Tarasov},
+         familyi={T\bibinitperiod},
+         given={Artem},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=VAJ}{%
+         family={Vilella},
+         familyi={V\bibinitperiod},
+         given={Albert\bibnamedelima J},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=CE}{%
+         family={Cuppen},
+         familyi={C\bibinitperiod},
+         given={Edwin},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=NIJ}{%
+         family={Nijman},
+         familyi={N\bibinitperiod},
+         given={Isaac\bibnamedelima J},
+         giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=PP}{%
+         family={Prins},
+         familyi={P\bibinitperiod},
+         given={Pjotr},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Oxford University Press}%
+    }
+    \strng{namehash}{TA+1}
+    \strng{fullhash}{TAVAJCENIJPP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{number}{12}
+    \field{pages}{2032\bibrangedash 2034}
+    \field{title}{Sambamba: fast processing of NGS alignment formats}
+    \field{volume}{31}
+    \field{journaltitle}{Bioinformatics}
+    \field{year}{2015}
+  \endentry
+
+  \entry{wang2015identification}{article}{}
+    \name{author}{8}{}{%
+      {{hash=WT}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Tim},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=BK}{%
+         family={Birsoy},
+         familyi={B\bibinitperiod},
+         given={K{\i}van{\c{c}}},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=HNW}{%
+         family={Hughes},
+         familyi={H\bibinitperiod},
+         given={Nicholas\bibnamedelima W},
+         giveni={N\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+      {{hash=KKM}{%
+         family={Krupczak},
+         familyi={K\bibinitperiod},
+         given={Kevin\bibnamedelima M},
+         giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=PY}{%
+         family={Post},
+         familyi={P\bibinitperiod},
+         given={Yorick},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WJJ}{%
+         family={Wei},
+         familyi={W\bibinitperiod},
+         given={Jenny\bibnamedelima J},
+         giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=LES}{%
+         family={Lander},
+         familyi={L\bibinitperiod},
+         given={Eric\bibnamedelima S},
+         giveni={E\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=SDM}{%
+         family={Sabatini},
+         familyi={S\bibinitperiod},
+         given={David\bibnamedelima M},
+         giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {American Association for the Advancement of Science}%
+    }
+    \strng{namehash}{WT+1}
+    \strng{fullhash}{WTBKHNWKKMPYWJJLESSDM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2015}
+    \field{labeldatesource}{year}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{number}{6264}
+    \field{pages}{1096\bibrangedash 1101}
+    \field{title}{Identification and characterization of essential genes in the
+  human genome}
+    \field{volume}{350}
+    \field{journaltitle}{Science}
+    \field{year}{2015}
+  \endentry
+
+  \entry{zhang2009genetic}{article}{}
+    \true{moreauthor}
+    \name{author}{10}{}{%
+      {{hash=ZYX}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Y-X},
+         giveni={Y\bibinithyphendelim X\bibinitperiod},
+      }}%
+      {{hash=ZYP}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Y-P},
+         giveni={Y\bibinithyphendelim P\bibinitperiod},
+      }}%
+      {{hash=GY}{%
+         family={Gu},
+         familyi={G\bibinitperiod},
+         given={Y},
+         giveni={Y},
+      }}%
+      {{hash=GFJ}{%
+         family={Guan},
+         familyi={G\bibinitperiod},
+         given={F-J},
+         giveni={F\bibinithyphendelim J\bibinitperiod},
+      }}%
+      {{hash=LSL}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={S-L},
+         giveni={S\bibinithyphendelim L\bibinitperiod},
+      }}%
+      {{hash=XJS}{%
+         family={Xie},
+         familyi={X\bibinitperiod},
+         given={J-S},
+         giveni={J\bibinithyphendelim S\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={Shen},
+         familyi={S\bibinitperiod},
+         given={Y},
+         giveni={Y},
+      }}%
+      {{hash=WBL}{%
+         family={Wu},
+         familyi={W\bibinitperiod},
+         given={B-L},
+         giveni={B\bibinithyphendelim L\bibinitperiod},
+      }}%
+      {{hash=JW}{%
+         family={Ju},
+         familyi={J\bibinitperiod},
+         given={W},
+         giveni={W},
+      }}%
+      {{hash=JE}{%
+         family={Jenkins},
+         familyi={J\bibinitperiod},
+         given={EC},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Wiley Online Library}%
+    }
+    \strng{namehash}{ZYX+1}
+    \strng{fullhash}{ZYXZYPGYGFJLSLXJSSYWBLJWJE+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{sortinit}{Z}
+    \field{sortinithash}{Z}
+    \field{number}{2}
+    \field{pages}{133\bibrangedash 140}
+    \field{title}{Genetic analysis of first-trimester miscarriages with a
+  combination of cytogenetic karyotyping, microsatellite genotyping and
+  arrayCGH}
+    \field{volume}{75}
+    \field{journaltitle}{Clinical genetics}
+    \field{year}{2009}
+  \endentry
+\enddatalist
+\endinput

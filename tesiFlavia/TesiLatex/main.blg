@@ -1,0 +1,360 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: biblatex.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: main-blx.bib
+Database file #2: thesis.bib
+I was expecting a `,' or a `}'---line 7 of file thesis.bib
+ :   
+ :   howpublished= {\url{https://github.com/vgteam/odgi/blob/handlegraph-docs/docs/handlegraph.md}}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "("
+Warning--I didn't find a database entry for "mclaren2016ensembl"
+Biblatex version: 3.11
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2658 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2662 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2668 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2672 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2676 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2682 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2686 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2726 of file biblatex.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+Too many commas in name 1 of "Eizenga, Novak, Kobayashi, Cisar, Paten, Garrison" for entry garrison2020
+while executing---line 2774 of file biblatex.bst
+You've used 29 entries,
+            6304 wiz_defined-function locations,
+            1356 strings with 15242 characters,
+and the built_in function-call counts, 331820 in all, are:
+= -- 28097
+> -- 4133
+< -- 1222
++ -- 9047
+- -- 1638
+* -- 25693
+:= -- 39600
+add.period$ -- 0
+call.type$ -- 29
+change.case$ -- 859
+chr.to.int$ -- 34
+cite$ -- 56
+duplicate$ -- 32516
+empty$ -- 28702
+format.name$ -- 2916
+if$ -- 65728
+int.to.chr$ -- 0
+int.to.str$ -- 81
+missing$ -- 0
+newline$ -- 1589
+num.names$ -- 1756
+pop$ -- 11405
+preamble$ -- 1
+purify$ -- 1194
+quote$ -- 0
+skip$ -- 6231
+stack$ -- 0
+substring$ -- 54293
+swap$ -- 6456
+text.length$ -- 844
+text.prefix$ -- 34
+top$ -- 1
+type$ -- 974
+warning$ -- 0
+while$ -- 5130
+width$ -- 0
+write$ -- 1561
+(There were 145 error messages)
