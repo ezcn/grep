@@ -1,5 +1,5 @@
 
-### 1. Compute the depth at each position [kore-depth](job/kore-depth.sh)
+### 1. Compute the depth at each position [kore-depth](jobs/kore-depth.sh)
 cycle for ID
 ```
 for id in AS006 AS054 AS064 AS074 AS090 AS094 ; do qsub -o /mpba0/vcolonna/silvia/out/$id.depth.out -e /mpba0/vcolonna/silvia/err/$id.depth.err -v id=$id -N $id.depth kore-depth.sh ; done 
