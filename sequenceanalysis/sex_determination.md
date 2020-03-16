@@ -7,7 +7,7 @@ for id in AS006 AS054 AS064 AS074 AS090 AS094 ; do qsub -o /mpba0/vcolonna/silvi
 ```
 ### 2. Awk script [sexDetermination.awk](sexDetermination.awk)
 
-### 3. Run awk script [kore-awkscript](kore-awkscript.sh)
+### 3. Run awk script [kore-awkscript](jobs/kore-awkscript.sh)
 cycle for ID
 ```
 for id in AS006 AS054 AS064 AS074 AS090 AS094 ; do qsub -o /mpba0/vcolonna/silvia/out/$id.awk.out -e /mpba0/vcolonna/silvia/err/$id.awk.err -v id=$id -N $id.awk kore-awkscript.sh ; done 
