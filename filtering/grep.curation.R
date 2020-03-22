@@ -11,7 +11,7 @@ if (length(args)==0) {
 
 code=args[2]
 myd=read.table(args[1], header=T, sep='\t')
-myd$impact= factor(myd$impact,levels=c('HIGH','MODERATE','LOW'))
+myd$impact= factor(myd$impact,levels=c('LOW', 'MODERATE','HIGH'))
 
 #### summary stats 
 sink(paste(code, '.output.txt', sep=''))
@@ -34,9 +34,10 @@ sink()
 #######
 print('~~ number')
 #myd %>% select(sample, index_x, impact ) %>% distinct() %>% group_by (sample, impact) %>% tally() %>% spread(impact, n)
+mycol=c("#FACF5A", "#49BEB7", "#FF5959")
 number=myd %>% select(sample, index_x, impact ) %>% distinct() %>% group_by (sample, impact) %>% tally() 
 #number$impact= factor(number$impact,levels=c('HIGH','MODERATE','LOW'))
-ggplot(number, aes(as.factor(sample), n, fill=impact)) + geom_bar(stat='identity') + ggtitle(paste (code,'- Unique variants per sample', sep=' ')) + theme_bw() + scale_fill_nejm()
+ggplot(number, aes(as.factor(sample), n, fill=impact)) + geom_bar(stat='identity') + ggtitle(paste (code,'- Unique variants per sample', sep=' ')) + theme_bw() + scale_fill_manual(values=mycol)
 ggsave(paste(code, '_number.png', sep=''))
 
 #####################
@@ -45,7 +46,7 @@ csqtype=myd %>% select(sample, index_x, impact, most_severe_consequence) %>% dis
 #number$impact= factor(number$impact,levels=c('HIGH','MODERATE','LOW'))
 nbcolors=length(levels(myd$most_severe_consequence)) 
 mycolors <- colorRampPalette(brewer.pal(8,'Set2'))(nbcolors)
-ggplot(csqtype, aes(as.factor(sample), n, fill=most_severe_consequence)) + geom_bar(stat='identity') + ggtitle(paste(code, '- most_severe_consequence', sep=' ')) + theme_bw()+ facet_wrap (impact ~ ., scales='free')+ scale_fill_manual(values = mycolors) +coord_flip() 
+ggplot(csqtype, aes(as.factor(sample), n, fill=most_severe_consequence)) + geom_bar(stat='identity') + ggtitle(paste(code, '- most_severe_consequence', sep=' ')) + theme_bw()+ facet_wrap (impact ~ ., scales='free')+ scale_fill_manual(values = mycolors) +coord_flip() + xlab('')
 ggsave(paste(code, '_most_severe_consequence.png', sep=''))
 
 
@@ -61,7 +62,7 @@ ggsave(paste (code, '_geneTranscripts.png', sep=''))
 
 ######################
 print('sumgene')
-myd %>% select(sample, gene_id, sumGene)%>% distinct () %>% group_by(sample, sumGene)  %>% tally() %>% ggplot (aes(as.factor(sample), n, fill=as.factor(sumGene))) + geom_bar(stat='identity')+ ggtitle(paste(code,'- Genes in lists', sep=' ')) + theme_minimal() + scale_color_futurama()
+myd %>% select(sample, gene_id, sumGene)%>% distinct () %>% group_by(sample, sumGene)  %>% tally() %>% ggplot (aes(as.factor(sample), n, fill=as.factor(sumGene))) + geom_bar(stat='identity')+ ggtitle(paste(code,'- Genes in lists', sep=' ')) + theme_minimal() + scale_fill_futurama()
 ggsave(paste (code, '_sumGene.png', sep=''))
 
 
@@ -91,7 +92,7 @@ ggsave(paste(code, '_plicadd.png', sep=''))
 
 ### Aggregate analysis 
 print('aggregate')
-mycol=c("#FF5959", "#49BEB7", "#FACF5A")
+mycol=c("#FACF5A", "#49BEB7", "#FF5959")
 myd %>% select (impact, gene_symbol, sample) %>%distinct() %>% group_by( impact, gene_symbol)  %>% tally() %>% filter(n>1) %>% ggplot( aes(reorder(gene_symbol, n), n, fill=impact)) + geom_bar(stat='identity', position='dodge') + xlab('genes') + ylab('number of samples') + scale_fill_manual(values=mycol) + coord_flip() + theme_minimal() + facet_wrap (impact ~ ., scales ='free') + ggtitle(paste(code, '- Genes shared among samples', sep=' ')) 
 ggsave(paste(code, '_aggregate.png', sep='')) 
 
