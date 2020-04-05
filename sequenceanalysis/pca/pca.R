@@ -1,9 +1,8 @@
-
 library(tidyverse)
 
 metadata = read.table("regions.metadata.txt", sep="\t" , header=F)
 
-pcaTable = read.table("pca_chr22.txt", sep="\t" , header=F) #### pca.txt è file output di akt
+pcaTable = read.table("pca_chr22.txt", sep="\t" , header=F) 
 
 myd=merge(pcaTable, metadata ,"V1")
 
