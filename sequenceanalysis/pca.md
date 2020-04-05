@@ -19,6 +19,8 @@ vcfkeepinfo /lustrehome/gianluca/PCA/data/hgdp_wgs.20190516.full.chr22.vcf.gz AC
 vcfkeepgeno /lustrehome/gianluca/PCA/data/keepinfo/hgdp_AC.vcf.gz GT > /lustrehome/gianluca/PCA/data/keepgeno/hgdp_chr22.vcf
 ```
 
+BGZIP is necessary for continue.
+
 ### 2.2 Indexing with BCFTOOLS
 
 ```
