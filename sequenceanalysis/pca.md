@@ -1,8 +1,8 @@
 # PCA
 
-# 1. Obtain reference data
+# 1. Obtain control data
 
-### 1.1 Download reference VCF (HGDP) from sanger institute.
+### 1.1 Download control VCF (HGDP) from sanger institute.
 
 ```
 wget ftp://ngs.sanger.ac.uk/production/hgdp/hgdp_wgs.20190516/hgdp_wgs.20190516.full.chr22.vcf.gz . 
