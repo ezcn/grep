@@ -12,14 +12,14 @@ wget ftp://ngs.sanger.ac.uk/production/hgdp/hgdp_wgs.20190516/hgdp_wgs.20190516.
 
 ### 2.1 There is an incompatibility between our file (GREP) and HGDP one. In our file the VariantCalling is performed with FREEBAYES, while HGDP is analyzed with GATK. We use VCFKEEPINFO & VCFKEEPGENO (from vcflib repo : https://github.com/vcflib/vcflib) to obtain two VCF that is possible to merge.
 
+Keep in mind that following procedure is necessary for HGDP and GREP, for each step is also necessary BGZIP & TABIX .
+
 ```
 vcfkeepinfo /lustrehome/gianluca/PCA/data/hgdp_wgs.20190516.full.chr22.vcf.gz AC > /lustrehome/gianluca/PCA/data/keepinfo/hgdp_AC.vcf
 ```
 ``` 
 vcfkeepgeno /lustrehome/gianluca/PCA/data/keepinfo/hgdp_AC.vcf.gz GT > /lustrehome/gianluca/PCA/data/keepgeno/hgdp_chr22.vcf
 ```
-
-BGZIP is necessary for continue.
 
 ### 2.2 Indexing with BCFTOOLS
 
