@@ -30,4 +30,13 @@ vcfkeepgeno /lustrehome/gianluca/PCA/data/keepinfo/hgdp_AC.vcf.gz GT > /lustreho
 ```
 /bin/singularity exec -B /lustrehome/gianluca /lustre/home/enza/biocontainers/bcftools-1.9.img bcftools merge -0 -o /lustrehome/gianluca/PCA/data/merge/ALL_chr22.vcf.gz -O z /lustrehome/gianluca/PCA/data/keepgeno/hgdp_chr22.vcf.gz /lustrehome/gianluca/PCA/data/keepgeno/grep_chr22.vcf.gz
 ```
+# 3 PCA analisys with AKT (repo : https://github.com/Illumina/akt) 
 
+```
+akt pca -R /lustrehome/gianluca/github/akt/data/wgs.hg38.vcf.gz /lustrehome/gianluca/PCA/data/merge/ALL_chr22.vcf.gz > pca_chr22.txt
+```
+# 4 R processing
+
+```
+Rscript pca.R
+```
