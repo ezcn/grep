@@ -39,7 +39,7 @@ akt pca -R /lustrehome/gianluca/github/akt/data/wgs.hg38.vcf.gz /lustrehome/gian
 ```
 # 4 R processing
 
-### 4.1 Use R script for obtain a pdf file with PCA analisys [pca.R](pca/pca.R)
+### 4.1 Use R [script](pca/pca.R) for obtain a pdf file with PCA analisys 
 
 ```
 Rscript pca.R
