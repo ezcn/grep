@@ -470,10 +470,7 @@ def main():
         mapper = {}
         cadd_out = result.decode().split("\n")[0:-1]
         for x in cadd_out:
-            chrom = x.split("\t")[0]
-            pos = x.split("\t")[1]
-            alt = x.split("\t")[3] 
-            score = x.split("\t")[4]
+            chrom,pos,ref,alt,score,tmp = x.split("\t")
             mapper[chrom+":"+pos+":/"+alt] = score
         return mapper
 
