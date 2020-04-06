@@ -86,15 +86,16 @@ print(">>> changing name: END")
 
 print(">>> Creating index file...")
 #create dataframe info / indice
-filenames_new = pd.Series(glob.glob("range_chr*.tsv"),name="file_name").to_frame()
-ranges = filenames_new.file_name.str.split("_",expand=True)[2].str.split(".",expand=True)[0].str.split("-",expand=True)
+filenames_new = pd.Series(glob.glob("*.json"),name="file_name").to_frame()
+ranges = filenames_new.file_name.str.split("_",expand=True)[[2,3]]
+ranges[3] = ranges[3].str.replace(".json","") #.str.split(".",expand=True)[0].str.split("-",expand=True)
 filenames_new.loc[:,"chr"] = filenames_new.file_name.str.split("_",expand=True)[1]
-filenames_new.loc[:,"lows"] = (ranges[0]).astype(int)
-filenames_new.loc[:,"ups"] = (ranges[1]).astype(int)
+filenames_new.loc[:,"lows"] = (ranges[2]).astype(int)
+filenames_new.loc[:,"ups"] = (ranges[3]).astype(int)
 lows = filenames_new["lows"].values  # the lower bounds
 ups = filenames_new["ups"].values # the upper bounds
 
-filenames_new.to_csv("index_file_CADD.tsv",sep="\t",index=False)
+filenames_new.to_csv("index_file_CADD2.tsv",sep="\t",index=False)
 print("QUIT")
 
 #### example 
@@ -104,7 +105,8 @@ x = 6773748
 c = filenames_new[(filenames_new["chr"] == chrc) & (filenames_new["lows"] <= x) & (filenames_new["ups"] >= x)]["file_name"]
 '''
 
-
+with open('cadd_chr9_10001_43334.json') as f: 
+    df = json.load(f) 
 
 
 

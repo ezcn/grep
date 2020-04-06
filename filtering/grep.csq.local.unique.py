@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import pandas as pd
 import numpy as np
-import re, sys, argparse, gzip, json
+import re, sys, argparse, gzip, json, subprocess
 import dask.dataframe as dd
 from ast import literal_eval
 import ast
@@ -457,6 +457,32 @@ def main():
     pLI_score = pd.read_csv(args.p,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
     df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop(["transcript", "frequencies", "genotype"] , axis=1)
+
+    #### 5. CADD
+    #sort index
+    def tabix_cadd(key):
+        db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
+        (chrom,pos,alternate) = key.split(":")
+        cmd = "tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        result, err = proc.communicate()
+        if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
+        mapper = {}
+        cadd_out = result.decode().split("\n")[0:-1]
+        for x in cadd_out:
+            chrom = x.split("\t")[0]
+            pos = x.split("\t")[1]
+            alt = x.split("\t")[3] 
+            score = x.split("\t")[4]
+            mapper[chrom+":"+pos+":/"+alt] = score
+        return mapper
+
+    mapper = {}
+    for key in df_info.index_x.unique():
+        mapper.update(tabix_cadd(key))
+
+    df_info["CADD"] = df_info.index_x.map(mapper)
+
     df_info.to_csv(args.o,sep="\t",index=False)
 
 
