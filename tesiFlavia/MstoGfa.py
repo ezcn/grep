@@ -43,36 +43,7 @@ with open('/home/flavia/Desktop/MstoGfa/out2pop.ms') as f:
 		else:
 			param_dict['prob'] = float(param_dict['prob'])
 
-		''' # Useless in the ms to gfa conversion
-		replicate_to_pos_locus_to_sample_to_genotype_dict[num_rep] = {}
-
-		num_sample = 0
-		haplo_iterator = iter(replicate_list[num_row:])
-		for num_haplo, haplotype1 in enumerate(haplo_iterator):
-			haplotype2 = next(haplo_iterator)
-			#print(haplotype1, haplotype2)
-			#thisset = set((haplotype1,haplotype2))
-			#print(thisset)
-
-			for pos, locus_haplo1, locus_haplo2 in zip(param_dict['positions'], haplotype1, haplotype2):
-				tmp = int(locus_haplo1) + int(locus_haplo2)
-				if tmp == 0:
-					genotype = '0/0'
-				elif tmp == 1:
-					genotype = '0/1'
-				else:
-					genotype = '1/1'
-
-				if pos not in replicate_to_pos_locus_to_sample_to_genotype_dict[num_rep].keys():
-					replicate_to_pos_locus_to_sample_to_genotype_dict[num_rep][pos] = {}
-				
-				replicate_to_pos_locus_to_sample_to_genotype_dict[num_rep][pos][num_sample] = genotype
-				
-				
-				#print(locus_haplo1, locus_haplo2, 'sample' + str(num_sample))
-				
-				num_sample += 1
-		'''
+		
 
 		steps_to_write = ''
 		paths_to_write = ''
@@ -126,50 +97,4 @@ with open('/home/flavia/Desktop/MstoGfa/out2pop.ms') as f:
 		
 		print(path_gfa + ' written')
 
-'''
 
-from datetime import date
-
-
-for num_rep, pos_locus_to_sample_to_genotype_dict in replicate_to_pos_locus_to_sample_to_genotype_dict.items():
-	sequence = 'S' 
-	
-	
-	with open('mstogfa', 'w') as fw:
-		#fw.write('##fileformat=VCFv4.2\n')
-		#fw.write('##fileDate={}\n'.format(date.today().strftime("%Y%m%d")))
-		#fw.write('##reference=unknown.fa\n')
-		#fw.write('##contig=<ID={},length=1>\n'.format(chr_name))
-		#fw.write('##commandline={}\n'.format(ms_command))
-		#fw.write('##commandline=ms2vcf.py --input-ms xxx.ms\n')
-		fw.write('##H VN:Z:1.0\n')
-		#fw.write('\t'.join(
-			#['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + ['Sample_{}'.format(i + 1) for i in range(num_sample)]
-		#) + '\n')
-		#for pos, sample_to_genotype_dict in pos_locus_to_sample_to_genotype_dict.items():
-			#vcf_row_list = [sequence,locus_haplo1,locus_haplo2, '0']
-			#for n_sample in range(num_sample):
-				#vcf_row_list += [sample_to_genotype_dict[n_sample]]
-
-			#fw.write('\t'.join(vcf_row_list) + '\n')
-
-		for num_rep, pos_locus_to_sample_to_genotype_dict in replicate_to_pos_locus_to_sample_to_genotype_dict.items():
-		chr_name = 'S' + str(num_rep + 1)
-		with open('mstogfa', 'w') as fw:
-			#fw.write('##fileformat=VCFv4.2\n')
-			#fw.write('##fileDate={}\n'.format(date.today().strftime("%Y%m%d")))
-			#fw.write('##reference=unknown.fa\n')
-			#fw.write('##contig=<ID={},length=1>\n'.format(chr_name))
-			#fw.write('##commandline={}\n'.format(ms_command))
-			#fw.write('##commandline=ms2vcf.py --input-ms xxx.ms\n')
-			fw.write('##H VN:Z:1.0\n')
-			fw.write('\t'.join(
-				['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + ['Sample_{}'.format(i + 1) for i in range(num_sample)]
-			) + '\n')
-			for pos, sample_to_genotype_dict in pos_locus_to_sample_to_genotype_dict.items():
-				vcf_row_list = [chr_name, pos, '.', '0', '1', '.', '.', '.', 'GT']
-				for n_sample in range(num_sample):
-					vcf_row_list += [sample_to_genotype_dict[n_sample]]
-
-				fw.write('\t'.join(vcf_row_list) + '\n')
-				'''
