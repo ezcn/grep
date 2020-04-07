@@ -1,4 +1,4 @@
-After [/MsToVcf.md](MstoVcf.md) I convert MStoVcf without p for analysis of population genetics
+After [/SimulationToVcf.md](SimulationToVcf.md) I convert MStoGfa for analysis of population genetics.
 
 #### 1. Simulation sequences (MS) 
 
@@ -25,4 +25,7 @@ I get the GFA but I need the whole sequence rebuilt and the links between the bu
  #### 2. Seq-gene to GFA
 
  [/SeqGenetoGfa.py](SeqgenToGfa.py)
+ 
+ 
+ #### 2. Calculate Allele Frequency
  
