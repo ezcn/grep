@@ -1,6 +1,6 @@
 ref_seq = ''
 
-path_output = ('/home/flavia/Desktop/MstoGfa/seqwa100')
+path_output = ('seqwa.seqgen')
 
 with open(path_output) as f:
     num_ref, len_seq = [int(x) for x in f.readline().strip(' \n').split(' ')] 
