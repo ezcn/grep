@@ -1,4 +1,5 @@
-After [/GFAtoVCFodgi.py](GFAtoVCFodgi.py) with detect bubble now I convert Simulation to VCF without going through the graph for test result of MS.
+After [GFAtoVCFodgi.py](/tesiFlavia/GFAtoVCFodgi.py) with detect bubble now I convert Simulation to VCF without going through the graph for test result of MS.
+
 I simulated two populations that are divided into three different times.
 
 
@@ -16,7 +17,7 @@ I simulated two populations that are divided into three different times.
 
 #### 2. MStoVCF
 
-[/ms2vcf.py](ms2vcf.py)  
+[ms2vcf.py](/tesiFlavia/ms2vcf.py)  
  
 #### 3. Bgzip and Tabix
 
@@ -37,7 +38,7 @@ parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop1.vcf ::
 parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop2.vcf ::: {1..100}  #pop2
 ```
 #### 3. Fst script
-[/CalculateFst.py](CalculateFst.py)  
+[CalculateFst.py](/tesiFlavia/CalculateFst.py)  
 
 CalculateFSt for three different time.
 
