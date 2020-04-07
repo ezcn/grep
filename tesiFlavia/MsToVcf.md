@@ -1,4 +1,4 @@
-After GFAtoVct with detect bubble I convert MStoGfa without going through the graph for test result of MS.
+After [/GFAtoVCFodgi.py] (GFAtoVCFodgi.py) with detect bubble now I convert Simulation to VCF without going through the graph for test result of MS.
 I simulated two populations that are divided into three different times.
 
 #### 1. Simulation sequences (MS) 
@@ -15,11 +15,11 @@ I simulated two populations that are divided into three different times.
 
 #### 2. MStoVCF
 
-[ms2vcf.py] (ms2vcf.py)  
+[/ms2vcf.py] (ms2vcf.py)  
  
-#### 2. Seq-gene to GFA
+#### 3. Bgzip and Tabix
 
-bgzip and for replicate: 
+bgzip and tabix for replicate: 
 
 ```
 for f in ./*.vcf; do bgzip "$f"; done   
@@ -36,9 +36,26 @@ parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop1.vcf ::
 parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop2.vcf ::: {1..100}  #pop2
 ```
 #### 3. Fst script
-[ms2vcf.py] (ms2vcf.py)  
+[/CalculateFst.py] (CalculateFst.py)  
+
+CalculateFSt for three different time.
 
 #### 4. Plot Fst
+```
+w <- as.data.frame(rbind(
+  t1, t2, t3
+))
+w$time <- c("T1", "T2", "T3")
+
+library(ggplot2)
+library(reshape2)
+w.plot <- melt(w) 
+
+p <- ggplot(aes(x=value, colour=time), data=w.plot)
+p + geom_density()
+```
+The longer they separated, the greater the distribution of Fst. Simulations work well.
+
 
 
 
