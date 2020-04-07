@@ -22,28 +22,28 @@ I simulated two populations that are divided into three different times.
  
 #### 3. Bgzip and Tabix
 
-bgzip and tabix for replicate: 
+bgzip and tabix for (ouputs of ms2vcf.py) each replicated: 
 
 ```
 for f in ./*.vcf; do bgzip "$f"; done   
 tabix: for f in ./*.vcf.gz; do tabix -h "$f"; done
 ```
-#### 2. Extract individuals from the populations
+#### 4. Extract individuals from the populations
 ```
 parallel bcftools view -S pop_1.txt  ms_rep{1}.vcf.gz -o ms_rep{1}.bcf.vcf.gz ::: {1..100} #pop1
 parallel bcftools view -S pop_2.txt ms_rep{1}.vcf.gz -o ms_rep{1}.bcf.vcf ::: {1..100}  #pop2 
 ```
-#### 3. Calculate Fst statistics in pop1 and pop2
+#### 5. Calculate Fst statistics in pop1 and pop2
 ```
 parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop1.vcf ::: {1..100}   #pop1
 parallel vcftools --vcf ms_rep{1}.bcf.vcf --freq --out ms_rep{1}.bcf.pop2.vcf ::: {1..100}  #pop2
 ```
-#### 3. Fst script
+#### 6. Fst script
 [CalculateFst.py](/tesiFlavia/CalculateFst.py)  
 
 CalculateFSt for three different time.
 
-#### 4. Plot Fst
+#### 7. Plot Fst
 ```
 w <- as.data.frame(rbind(
   t1, t2, t3
