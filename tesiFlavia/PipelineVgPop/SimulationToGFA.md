@@ -24,10 +24,12 @@ I have Tree with the family history, but the reconstructed sequence is missing.
  
  I get the same result, but -wa write Ancestral Sequences that was not in the tree of ms.
  
- #### 2. Seq-gene to GFA
+ #### 3. Seq-gene to GFA
 
  [SeqGenetoGfa.py](/tesiFlavia/SeqgenToGfa.py)
  
  
- #### 2. Calculate Allele Frequency
+ #### 4. Calculate Allele Frequency
+ 
+ For each step I have the length of the sequence (position) and I count the nucleotides in that pos.
  
