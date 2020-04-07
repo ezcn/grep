@@ -1,4 +1,4 @@
-After [/SimulationToVcf.md](SimulationToVcf.md) I convert MStoGfa for analysis of population genetics.
+After [SimulationToVcf.md](SimulationToVcf.md) I convert MStoGfa for analysis of population genetics.
 
 #### 1. Simulation sequences (MS) 
 
