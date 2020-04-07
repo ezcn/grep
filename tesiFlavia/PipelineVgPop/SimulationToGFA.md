@@ -5,7 +5,7 @@ After [/SimulationToVcf.md](SimulationToVcf.md) I convert MStoGfa for analysis o
 ```
 ./ms 4 1 -t 11.2 -I 2 2 2 -g 1 44.36 -n 2 0.05 -eg 0.03125 1 0.0 -ej 0.03125 2 1 > out2pop.ms
 ```
- [/tesiFlavia/MstoGfa.py](/tesiFlavia/MstoGfa.py)
+ [MstoGfa.py](/tesiFlavia/MstoGfa.py)
 
 I get the GFA but I need the whole sequence rebuilt and the links between the bubbles for use "odgi".
 
