@@ -15,7 +15,7 @@ I get the GFA but I need the whole sequence rebuilt and the links between the bu
 ```
 ./ms 4 1 -T -t 11.2 -I 2 2 2 -g 1 44.36 -n 2 0.05 -eg 0.03125 1 0.0 -ej 0.03125 2 1 > tree.ms 
 ```
-I have Tree with history of tree with the family history, but the reconstructed sequence is missing.
+I have Tree with the family history, but the reconstructed sequence is missing.
  
  ```
  seq-gen -mHKY -l 40 -s .2 -wa -z 783763255346462154 <tree.ms> seqwa.seqgen
