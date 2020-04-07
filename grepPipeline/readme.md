@@ -7,13 +7,12 @@ Output: merged file
 2. run vep produce json 
 
 
-2. annotate vcf:   grep.csq.py
-
- 
+3. annotate vcf:   grep.csq.py
 grep.cadd.py
 grep.fathmm.py 
-grep.filter.py
-grep.curation.py 
+
+4. grep.filter.py
+5. grep.curation.py 
 
 
 

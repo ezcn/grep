@@ -41,6 +41,23 @@ class Transformer(ast.NodeTransformer):
 
         return ast.NodeTransformer.generic_visit(self, node)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #sort index
+def tabix_cadd(key, db ):
+    #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
+    (chrom,pos,alternate) = key.split(":")
+    cmd = "tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    result, err = proc.communicate()
+    if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
+    mapper = {}
+    cadd_out = result.decode().split("\n")[0:-1]
+    for x in cadd_out:
+        chrom,pos,ref,alt,score,tmp = x.split("\t")
+        mapper[chrom+":"+pos+":/"+alt] = score
+    return mapper
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def getInfoFromVepLocally (jsonWithVEPannotations):
     vepInfo={}; vepInfoCommon={}    
     #~~ filename is the json output of VEP runned locally 
