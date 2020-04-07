@@ -26,7 +26,7 @@ I have Tree with the family history, but the reconstructed sequence is missing.
  
  #### 2. Seq-gene to GFA
 
- [/SeqGenetoGfa.py](SeqgenToGfa.py)
+ [SeqGenetoGfa.py](/tesiFlavia/SeqgenToGfa.py)
  
  
  #### 2. Calculate Allele Frequency
