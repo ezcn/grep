@@ -2,46 +2,13 @@
 import pandas as pd
 import numpy as np
 import re, sys, argparse, gzip, json, subprocess
-import dask.dataframe as dd
-from ast import literal_eval
-import ast
-import decimal
+#import dask.dataframe as dd
+#from ast import literal_eval
+#import ast
+#import decimal
 
-###### Function START ###################################
-###################################################
-# using the NodeTransformer, you can also modify the nodes in the tree,
-# however in this example NodeVisitor could do as we are raising exceptions
-# only.
-class Transformer(ast.NodeTransformer):
-    ALLOWED_NAMES = set(['Decimal', 'None', 'False', 'True'])
-    ALLOWED_NODE_TYPES = set([
-        'Expression', # a top node for an expression
-        'Tuple',      # makes a tuple
-        'Call',       # a function call (hint, Decimal())
-        'Name',       # an identifier...
-        'Load',       # loads a value of a variable with given identifier
-        'Str',        # a string literal
-
-        'Num',        # allow numbers too
-        'List',       # and list literals
-        'Dict',       # and dicts...
-    ])
-
-    def visit_Name(self, node):
-        if not node.id in self.ALLOWED_NAMES:
-            raise RuntimeError("Name access to %s is not allowed" % node.id)
-
-        # traverse to child nodes
-        return self.generic_visit(node)
-
-    def generic_visit(self, node):
-        nodetype = type(node).__name__
-        if nodetype not in self.ALLOWED_NODE_TYPES:
-            raise RuntimeError("Invalid expression: %s not allowed" % nodetype)
-
-        return ast.NodeTransformer.generic_visit(self, node)
+###### Functions START ######################## 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #sort index
 def tabix_cadd(key, db ):
     #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
     (chrom,pos,alternate) = key.split(":")
@@ -56,6 +23,20 @@ def tabix_cadd(key, db ):
         mapper[chrom+":"+pos+":/"+alt] = score
     return mapper
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def tabix_fathmm(key, db ):
+    #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
+    (chrom,pos,alternate) = key.split(":")
+    cmd = "tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    result, err = proc.communicate()
+    if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
+    mapper = {}
+    cadd_out = result.decode().split("\n")[0:-1]
+    for x in cadd_out:
+        chrom,pos,ref,alt,score = x.split("\t")
+        mapper[chrom+":"+pos+":/"+alt] = score
+    return mapper
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def getInfoFromVepLocally (jsonWithVEPannotations):
