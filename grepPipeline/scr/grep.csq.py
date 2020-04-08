@@ -167,6 +167,7 @@ def main():
     parser.add_argument("-pli", help="path to table of pLI score  ",type=str, required= True)   
     parser.add_argument('-cadd', help="path to CADD file",type=str, required= True)   
     parser.add_argument('-fathmm', help="path to fathmm file",type=str, required= True)   
+    parser.add_argument('-fathmmcoding', help="path to fathmm coding file",type=str, required= True)   
 
     parser.add_argument("-v", help="path to table of vep consequences  ",type=str, required= True)
 
@@ -237,12 +238,20 @@ def main():
 
     df_info["CADD"] = df_info.index_x.map(mappercadd)
 
-    #### 6. fathmm-xf
+    #### 6. fathmm-xf non-coding 
     mapperfathmm = {}
     for key in df_info.index_x.unique():
         mapperfathmm.update(tabix_fathmm(key, args.fathmm))
 
     df_info["fathmm-xf"] = df_info.index_x.map(mapperfathmm)
+
+    #### 6. fathmm-xf coding 
+    mapperfathmmCoding = {}
+    for key in df_info.index_x.unique():
+        mapperfathmmCoding.update(tabix_fathmm(key, args.fathmmcoding))
+
+    df_info["fathmm-xfCoding"] = df_info.index_x.map(mapperfathmmCoding)
+
 
     #### 7. print output tsv 
     df_info.to_csv(args.o,sep="\t",index=False)
