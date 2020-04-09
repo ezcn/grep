@@ -92,7 +92,7 @@ ggsave(paste(code, '_plicadd.png', sep=''))
 ####### Multiple variants in the same gene
 
 print('multiple variants same gene')
-myd %>% select(index_x,sample, gene_symbol, impact) %>% distinct() %>% group_by( sample, gene_symbol, impact) %>% tally() %>% filter(n>1) %>% write.table(paste(code, '.multiplevariants_pergene.tsv'), sep="\t", quote=F, row.names=F, col.names=T)
+myd %>% select(index_x,sample, gene_symbol, impact) %>% distinct() %>% group_by( sample, gene_symbol, impact) %>% tally() %>% filter(n>1) %>% spread(impact, n) %>% write.table(paste(code, '.multiplevariants_pergene.tsv'), sep="\t", quote=F, row.names=F, col.names=T)
 
 ### Aggregate analysis 
 print('aggregate')
