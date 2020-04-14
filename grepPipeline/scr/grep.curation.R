@@ -19,6 +19,11 @@ totnumberofuniqevariants=myd %>% select(index_x) %>% distinct() %>% tally()
 print(paste(code, 'Tot Number of Uniqe Variants', totnumberofuniqevariants, sep='\t'))
 totalnumberuniqueNOB=myd %>% filter(rare=='NOB') %>% select (index_x) %>% distinct() %>% tally()
 print(paste(code, 'Tot Number of NOB',totalnumberuniqueNOB, sep='\t'))
+
+impdf<-myd %>% select (index_x , impact ) %>% distinct() %>% group_by(impact) %>% tally()
+print(impdf)
+
+
 avsdSites<- myd %>% select(index_x, sample) %>% distinct() %>% group_by(sample) %>% tally() %>% summarize(mean(n), sd(n))
 print(paste(code, 'Average number of sites per sample', avsdSites[1], sep='\t'))
 print(paste(code, 'Sd number of sites per sample', avsdSites[2], sep='\t'))
@@ -37,8 +42,16 @@ print('~~ number')
 mycol=c("#FACF5A", "#49BEB7", "#FF5959")
 number=myd %>% select(sample, index_x, impact ) %>% distinct() %>% group_by (sample, impact) %>% tally() 
 #number$impact= factor(number$impact,levels=c('HIGH','MODERATE','LOW'))
-ggplot(number, aes(as.factor(sample), n, fill=impact)) + geom_bar(stat='identity') + ggtitle(paste (code,'- Unique variants per sample', sep=' ')) + theme_bw() + scale_fill_manual(values=mycol)
+ggplot(number, aes(as.factor(sample), n, fill=impact)) + geom_bar(stat='identity') + ggtitle(paste (code,'- Unique variants per sample', sep=' ')) + theme_bw() + scale_fill_manual(values=mycol)+coord_flip()
 ggsave(paste(code, '_number.png', sep=''))
+
+######################
+print('sumgene')
+myd %>% select(sample, gene_id, sumGene)%>% distinct () %>% group_by(sample, sumGene)  %>% tally() %>% ggplot (aes(as.factor(sample), n, fill=as.factor(sumGene))) + geom_bar(stat='identity')+ ggtitle(paste(code,'- Genes in lists', sep=' ')) + theme_minimal() + scale_fill_futurama() +coord_flip()
+ggsave(paste (code, '_sumGene.png', sep=''))
+
+
+
 
 #####################
 print('most_severe_consequence')
@@ -59,11 +72,6 @@ geneTranscripts=full_join(genes, transcripts, by='sample')
 colnames(geneTranscripts)=c('sample','genes','transcripts')
 geneTranscripts %>% gather ('type','n', c(genes, transcripts)) %>% ggplot(aes(as.factor(sample) , n , color=type) ) + geom_point() + ggtitle(paste (code, '- Genes and transcripts', sep=' ')) + theme_bw() + scale_color_nejm()
 ggsave(paste (code, '_geneTranscripts.png', sep='')) 
-
-######################
-print('sumgene')
-myd %>% select(sample, gene_id, sumGene)%>% distinct () %>% group_by(sample, sumGene)  %>% tally() %>% ggplot (aes(as.factor(sample), n, fill=as.factor(sumGene))) + geom_bar(stat='identity')+ ggtitle(paste(code,'- Genes in lists', sep=' ')) + theme_minimal() + scale_fill_futurama()
-ggsave(paste (code, '_sumGene.png', sep=''))
 
 
 ########################
@@ -95,5 +103,4 @@ print('aggregate')
 mycol=c("#FACF5A", "#49BEB7", "#FF5959")
 myd %>% select (impact, gene_symbol, sample) %>%distinct() %>% group_by( impact, gene_symbol)  %>% tally() %>% filter(n>1) %>% ggplot( aes(reorder(gene_symbol, n), n, fill=impact)) + geom_bar(stat='identity', position='dodge') + xlab('genes') + ylab('number of samples') + scale_fill_manual(values=mycol) + coord_flip() + theme_minimal() + facet_wrap (impact ~ ., scales ='free') + ggtitle(paste(code, '- Genes shared among samples', sep=' ')) 
 ggsave(paste(code, '_aggregate.png', sep='')) 
-
 

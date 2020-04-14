@@ -1,0 +1,14 @@
+[1] "f4\tTot Number of Uniqe Variants\t373"
+[1] "f4\tTot Number of NOB\t38"
+# A tibble: 3 x 2
+  impact       n
+  <fct>    <int>
+1 HIGH         4
+2 LOW        123
+3 MODERATE   246
+[1] "f4\tAverage number of sites per sample\t70.8333333333333"
+[1] "f4\tSd number of sites per sample\t22.9034204141361"
+[1] "f4\tTotal number of Unique Genes\t253"
+[1] "f4\tTotal number of Unique Transcripts\t253"
+[1] "f4\tAverage number of genes per sample\t55.6666666666667"
+[1] "f4\tSd number of genes per sample\t17.3627954738477"
