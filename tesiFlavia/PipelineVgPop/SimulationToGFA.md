@@ -29,7 +29,9 @@ I have Tree with the family history, but the reconstructed sequence is missing.
  [SeqGenetoGfa.py](/tesiFlavia/SeqgenToGfa.py)
  
  
- #### 4. Calculate Allele Frequency
+ #### 4. Calculate Allele Frequency on GFA :)
  
- For each step I have the length of the sequence (position) and I count the nucleotides in that pos.
+Count sequences in a position (ATCG_counts). In this example there are only biallelic alleles (or reference or a different nucleotide), but I check the reference base and calculate for each allele the frequency.
+ 
+ [calculateAlleleFrequency.py](/tesiFlavia/calculateAlleleFrequency.py)
  
