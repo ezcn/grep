@@ -22,7 +22,8 @@ def main():
 			print(decodedLine) 
 		else: 
 			x=decodedLine.split()
-			y=[ args.r  if re.findall(args.m, i )  else i for i in x[9:] ]
+			#y=[ args.r  if re.findall(args.m, i )  else i for i in x[9:] ]
+			y=[ args.r  if i==args.m  else i for i in x[9:] ]
 			print ('\t'.join(map(str, x[0:8]+y )))
 		
 if __name__ == "__main__":
