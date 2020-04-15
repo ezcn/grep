@@ -31,8 +31,10 @@ with open("/home/flavia/Desktop/MstoGfa/seq_gfa","r") as f:
         ATCG_counts_dict = Counter(tmp_seq_in_pos_list)
         print(ATCG_counts_dict)
 
-        # TO_DO: check the reference base and calculate for each allele the frequency. In this example there are only biallelic alleles (or reference or a different nucleotide)
-
+        #check the reference base and calculate for each allele the frequency. 
+	#In this example there are only biallelic alleles (or reference or a different nucleotide)
+	for nucleotide, count in ATCG_counts_dict.items():
+            print(nucleotide, count / num_haplotypes)
 
 
 	
