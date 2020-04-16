@@ -53,10 +53,11 @@ def main():
             genesPerSample=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
 
         else: 
-            tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+            tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
+            #print(tmpv)
             variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', lsuffix='_variantsPerGene', rsuffix='_tmpv')
 
-            tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
+            tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
             genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', lsuffix='_genesPerSample', rsuffix='_tmpg')
         
     variantsPerGene.to_csv('ciccivar', sep='\t')    
