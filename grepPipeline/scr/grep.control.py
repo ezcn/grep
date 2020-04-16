@@ -34,7 +34,7 @@ def main():
 
         #choose a random sample     
         sampleToConsider=random.sample(listID, args.n)
-        #print (sampleToConsider)
+        print (sampleToConsider)
     
         # build myd data frame with data from  sample choosen
         fileToConsider=selectFiles(args.f, sampleToConsider)
