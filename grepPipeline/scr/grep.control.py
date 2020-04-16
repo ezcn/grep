@@ -32,13 +32,29 @@ def main():
     
     fileToConsider=selectFiles(args.f, sampleToConsider)
     myd=mergeThat(fileToConsider)
-    myd.to_csv("cicci", sep="\t", index=True)
+    #myd.to_csv("cicci", sep="\t", index=True)
+    cycle=0
+    while cycle < args.i:
+        cycle+=1
 
-    # si deve im plementare:  myd %>% select (impact, gene_symbol, sample) %>%distinct() %>% group_by( impact, gene_symbol)  %>% tally() 
-    # ho scritto quest a riga sotto per fare select  e non funziona, si deve studiare pandas 
-    myd.loc[['impact', 'gene_symbol', 'sample']].to_csv("cicci1", sep="\t")
+        ####### 1. remove genes with too many variants 
+        #number of variants/impact per gene  TO DO: plot for stats 
+        #myd[['index_x' , 'impact', 'gene_symbol']].drop_duplicates().groupby(['gene_symbol', 'impact']).count()
+    
+        #number of variants per gene 
+        #count number of variants per gene, make adictionary at the first cycle, update dictionary at other cycles 
+        if cycle==1: 
+            variantsPerGene=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()#.to_dict()
+        else
+            tmp=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+            variantsPerGene.merge(tmp, 'outer')
 
-    # una volta fatto per una volta mettiamo ciclo che fa per args.i volte, ma questo lo vediamo dopo 
+
+
+    #genes per sample 
+    #myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol','sample', 'impact']).count()
+
+  # una volta fatto per una volta mettiamo ciclo che fa per args.i volte, ma questo lo vediamo dopo 
 
 if __name__ == "__main__": 
     main() 

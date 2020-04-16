@@ -137,3 +137,7 @@ mycol=c("#FACF5A", "#49BEB7", "#FF5959")
 myd %>% select (impact, gene_symbol, sample) %>%distinct() %>% group_by( impact, gene_symbol)  %>% tally() %>% filter(n>1) %>% ggplot( aes(reorder(gene_symbol, n), n, fill=impact)) + geom_bar(stat='identity', position='dodge') + xlab('genes') + ylab('number of samples') + scale_fill_manual(values=mycol) + coord_flip() + theme_minimal() + facet_wrap (impact ~ ., scales ='free') + ggtitle(paste(code, '- Genes shared among samples', sep=' ')) 
 ggsave(paste(code, '_aggregate.png', sep='')) 
 
+
+myd %>% select (index_x, impact, gene_symbol, sample) %>%distinct() %>% group_by( impact, gene_symbol)  %>% tally() %>% filter(n>1) %>% ggplot( aes(reorder(gene_symbol, n), n, fill=impact)) + geom_bar(stat='identity', position='dodge') + xlab('genes') + ylab('number of samples') + scale_fill_manual(values=mycol) + coord_flip() + theme_minimal() + facet_wrap (impact ~ ., scales ='free') + ggtitle(paste(code, '- Genes shared among samples', sep=' ')) 
+ggsave(paste(code, '_aggregateindex_X.png', sep='')) 
+
