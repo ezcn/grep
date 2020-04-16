@@ -2,7 +2,7 @@
 import pandas as pd
 import glob, argparse, re , random 
 
-
+""" python3 scr/grep.control.py -f 'testdata/hgdp/*' -l testdata/hgdp/id.list  -n 4  -i 2  """
 def selectFiles(mydir, listID):
     """ choose files if ID in list id is in the filename""" 
     fileList=[]
@@ -13,7 +13,7 @@ def selectFiles(mydir, listID):
 def mergeThat(fileList):
     df = pd.DataFrame()
     for f in fileList:
-        tmp = pd.read_table(f, index_col='index_x')
+        tmp = pd.read_table(f) 
         df = df.append(tmp)
     return df
 
@@ -27,34 +27,40 @@ def main():
     args = parser.parse_args()
 
     listID = [line.rstrip('\n') for line in open(args.l)]
-    sampleToConsider=random.sample(listID, args.n)
-    #print (sampleToConsider)
     
-    fileToConsider=selectFiles(args.f, sampleToConsider)
-    myd=mergeThat(fileToConsider)
-    #myd.to_csv("cicci", sep="\t", index=True)
     cycle=0
-    while cycle < args.i:
+    while cycle < args.i: 
         cycle+=1
+
+        #choose a random sample     
+        sampleToConsider=random.sample(listID, args.n)
+        #print (sampleToConsider)
+    
+        # build myd data frame with data from  sample choosen
+        fileToConsider=selectFiles(args.f, sampleToConsider)
+        myd=mergeThat(fileToConsider)
+        #myd.to_csv("cicci", sep="\t", index=True)
 
         ####### 1. remove genes with too many variants 
         #number of variants/impact per gene  TO DO: plot for stats 
         #myd[['index_x' , 'impact', 'gene_symbol']].drop_duplicates().groupby(['gene_symbol', 'impact']).count()
     
-        #number of variants per gene 
-        #count number of variants per gene, make adictionary at the first cycle, update dictionary at other cycles 
+        #count number of variants per gene and genes per sample , make a data frame at the first cycle, update data frame  at other cycles 
         if cycle==1: 
+            #number of variant per gene 
             variantsPerGene=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()#.to_dict()
-        else
-            tmp=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
-            variantsPerGene.merge(tmp, 'outer')
+            #genes per sample 
+            genesPerSample=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
 
+        else: 
+            tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+            variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', lsuffix='_variantsPerGene', rsuffix='_tmpv')
 
-
-    #genes per sample 
-    #myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol','sample', 'impact']).count()
-
-  # una volta fatto per una volta mettiamo ciclo che fa per args.i volte, ma questo lo vediamo dopo 
+            tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
+            genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', lsuffix='_genesPerSample', rsuffix='_tmpg')
+        
+    variantsPerGene.to_csv('ciccivar', sep='\t')    
+    genesPerSample.to_csv('ciccigene', sep='\t')
 
 if __name__ == "__main__": 
     main() 
