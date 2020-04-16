@@ -20,6 +20,10 @@ I have Tree with the family history, but the reconstructed sequence is missing.
  ```
  seq-gen -mHKY -l 40 -s .2 -wa -z 783763255346462154 <tree.ms> seqwa.seqgen
 ```
+
+```
+ seq-gen -mHKY -l 40 -s .2 -z 783763255346462154 <tree.ms> seq.seqgen
+```
  I use -z for set no random seed to try even without wa. 
  
  I get the same result, but -wa write Ancestral Sequences that was not in the tree of ms.
@@ -31,7 +35,10 @@ I have Tree with the family history, but the reconstructed sequence is missing.
  
  #### 4. Calculate Allele Frequency on GFA :)
  
-Count sequences in a position (ATCG_counts). In this example there are only biallelic alleles (or reference or a different nucleotide), but I check the reference base and calculate for each allele the frequency.
+In this example there are only biallelic alleles (or reference or a different nucleotide). 
+For calculate AF I count ATGC in a position and I check the reference base and calculate for each allele the frequency (count/num_haplotype).
  
  [calculateAlleleFrequency.py](/tesiFlavia/calculateAlleleFrequency.py)
+ 
+ #### 5. Calculate Fst
  
