@@ -53,14 +53,14 @@ def main():
             genesPerSample=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
 
         else: 
-            tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
-            variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', lsuffix='_variantsPerGene', rsuffix='_tmpv')
-
-            tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count()
-            genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', lsuffix='_genesPerSample', rsuffix='_tmpg')
+            tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
+            totalvariantsPerGene=variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', lsuffix='_variantsPerGene', rsuffix='_tmpv')
+            
+            tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
+            totalgenesPerSample=genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', lsuffix='_genesPerSample', rsuffix='_tmpg')
         
-    variantsPerGene.to_csv('ciccivar', sep='\t')    
-    genesPerSample.to_csv('ciccigene', sep='\t')
+    totalvariantsPerGene.to_csv('ciccivar', sep='\t')    
+    totalgenesPerSample.to_csv('ciccigene', sep='\t')
 
 if __name__ == "__main__": 
     main() 
