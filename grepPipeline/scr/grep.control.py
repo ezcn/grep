@@ -3,6 +3,8 @@ import pandas as pd
 import glob, argparse, re , random 
 
 """ python3 scr/grep.control.py -f 'testdata/hgdp/*' -l testdata/hgdp/id.list  -n 4  -i 2  """
+
+
 def selectFiles(mydir, listID):
     """ choose files if ID in list id is in the filename""" 
     fileList=[]
@@ -54,13 +56,13 @@ def main():
 
         else: 
             tmpv=myd[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
-            totalvariantsPerGene=variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', lsuffix='_variantsPerGene', rsuffix='_tmpv')
+            variantsPerGene=variantsPerGene.join(tmpv.set_index('gene_symbol'), on='gene_symbol', how='outer',  lsuffix='_variantsPerGene', rsuffix='_tmpv')
             
             tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()
-            totalgenesPerSample=genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', lsuffix='_genesPerSample', rsuffix='_tmpg')
+            genesPerSample=genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg')
         
-    totalvariantsPerGene.to_csv('ciccivar', sep='\t')    
-    totalgenesPerSample.to_csv('ciccigene', sep='\t')
+    variantsPerGene.to_csv('ciccivar', sep='\t')    
+    genesPerSample.to_csv('ciccigene', sep='\t')
 
 if __name__ == "__main__": 
     main() 
