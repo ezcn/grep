@@ -27,14 +27,20 @@ with open("/home/flavia/Desktop/MstoGfa/seq_gfa","r") as f:
                 seq_current_step = step_node_id[step_id_list[pos]]
                 tmp_seq_in_pos_list.append(seq_current_step)
                 
-        print('Pos', pos, '- sequences in this pos', tmp_seq_in_pos_list)
+        #print('Pos', pos, '- sequences in this pos', tmp_seq_in_pos_list)
         ATCG_counts_dict = Counter(tmp_seq_in_pos_list)
-        print(ATCG_counts_dict)
+        #print(ATCG_counts_dict)
 
         #check the reference base and calculate for each allele the frequency. 
 	#In this example there are only biallelic alleles (or reference or a different nucleotide)
-	for nucleotide, count in ATCG_counts_dict.items():
-            print(nucleotide, count / num_haplotypes)
+	
+	#for nucleotide, count in ATCG_counts_dict.items():
+            #print(nucleotide, count / num_haplotypes)
+	
+	
+        for nucleotide, count in ATCG_counts_dict.items():
+        	if count/num_haplotypes != 1:                        #print only AF !=1
+        		print(pos,nucleotide,count/num_haplotypes)
 
 
 	
