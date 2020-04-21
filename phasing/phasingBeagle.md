@@ -88,7 +88,7 @@ bcftools merge -Oz -0 -o /lustre/home/enza/referenceBeagle/1000GP_grep_$(chr).vc
 - Remove grep samples from merged vcf and leave 1000genomes individuals
 
 ```
-view -S /lustre/home/enza/referenceBeagle/1000GP_sample_IDs.txt -o /lustre/home/enza/referenceBeagle/newref_$(chr).vcf /lustre/home/enza/referenceBeagle/1000GP_grep_$(chr).vcf.gz
+bcftools view -S /lustre/home/enza/referenceBeagle/1000GP_sample_IDs.txt -o /lustre/home/enza/referenceBeagle/newref_$(chr).vcf /lustre/home/enza/referenceBeagle/1000GP_grep_$(chr).vcf.gz
 
 ```
 - Replace missing genotypes with 0|0
