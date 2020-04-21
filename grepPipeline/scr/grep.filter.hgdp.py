@@ -1,8 +1,57 @@
 #!/usr/bin/python3
 import pandas as pd
-import glob, argparse
+import glob, argparse,  subprocess
 
 
+
+def takeInfoFromVcf(vcf, key , sampleToConsider):
+    #TO DO: check concordance ref alt and overlapping multiple positions 
+    (chrom,pos,alternate) = key.split(":")
+    cmd = "tabix -h  %s %s:%d-%d | tail -2" % (vcf, chrom, int(pos), int(pos))
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    result, err = proc.communicate()
+    if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
+    vcfout =[x.rstrip().split('\t') for  x in result.decode().split('\n')]
+    column2retain=[vcfout[0].index(ind) for ind in sampleToConsider]
+    genotypesToConsider=[vcfout[1][indx].split(":")[0] for indx in column2retain] 
+    refAllele=vcfout[0][3];  altAlleles=vcfout[0][4]
+    return genotypesToConsider, refAllele,  altAlleles
+ 
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist):
+    """csqAllele = type: string, consequence allele  from vep  
+    refAllele = type: string, reference allele from variant calling
+    altAlleles = type: string, comma-separated list of alternate allele from variant calling
+    nbAploidSamples : calculated 
+    GTfields = type: list, list of genotypes ["0/0", "0/1", ".", "./."]
+    hetGenotypes = type: int, heterozygosity in samples"""
+    myres=False
+    listAlt=altAlleles.split(",")   
+    listAll=[refAllele]+ listAlt
+    stringOfGenotypes=""; nbHaploidSamples=0
+    for item in (genotypeslist):    
+        if item != missing_data_format: 
+            stringOfGenotypes+=item; nbHaploidSamples+=2
+    CountAlleles=[]
+    for i in range(len(listAll)):  # 0 for REF, 1 for ALT1, 2 for ALT2 ...
+        CountAlleles.append(stringOfGenotypes.count(str(i)))
+    dAllele=dict(zip(listAll,CountAlleles))
+    if nbHaploidSamples!=0:
+        freqREF="{0:4.2f}".format(dAllele[refAllele]/nbHaploidSamples)
+        freqAlt=[]
+        for i in listAlt: 
+            freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
+            freqAlt.append(freqAltTemp)
+        #~~~ CSQ 
+        if csqAllele in dAllele:
+            csqAllCount=dAllele[csqAllele]
+            freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
+        else: freqCsq='NA'
+        myres= [freqCsq, freqREF, freqAlt]
+    return myres
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def selectFiles(mydir, listID):
     """ choose files if ID in list id is in the filename""" 
     fileList=[]
@@ -10,13 +59,10 @@ def selectFiles(mydir, listID):
         fileList += [f for f in glob.glob(mydir) if re.search(ind, f) ]
     return fileList
 
-def mergeThat(fileList):
-    df = pd.DataFrame()
-    for f in fileList:
-        tmp = pd.read_table(f) 
-        df = df.append(tmp)
-    return df
+#def mergeThat(fileList):
+    
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def mergeThis(mydir, ID_sample):
 	df = pd.DataFrame()
 	fileList=glob.glob(mydir)
@@ -30,73 +76,100 @@ def mergeThis(mydir, ID_sample):
 	#df.to_csv("cicci", sep="\t", index=True)
 	return df
 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, threshold_cadd): 
+    df_filtered = df[ (df['type']== genometype) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (df.pLI >= threshold_pli) & ( df.sumGene >= threshold_sumgene) & (df.CADD >= df.CADD.quantile(threshold_cadd))] #& (df.csqCount >= args.count)]
+    return df_filtered
+
+#FUNCTIONS END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
 def main():
         parser = argparse.ArgumentParser()
         #HGDP arguments
-        parser.add_argument("-rf", help="path to  input dir of reference files  ",type=str,required=True)
-        parser.add_argument("-l", help="list of id ",type=str,required=True)
+        parser.add_argument("-rcsq", help="path to reference csq  ",type=str,required=True)
+        parser.add_argument("-rvcf", help="path to reference vcf  ",type=str,required=True)
+        parser.add_argument("-l", help="list of reference id ",type=str,required=True)
         parser.add_argument("-n", help="number of individual to sample ",type=int,required=True)
         parser.add_argument("-i", help="number of iterations ",type=int,required=True) 
         parser.add_argument("-gt", help="threshold for excluding genes ",type=float,required=True) 
 
         #GREP arguments
-        parser.add_argument("-f", help="path to  input dir  ",type=str,required=True)
+        parser.add_argument("-ccsq", help="path to control csq ",type=str,required=True)
         #parser.add_argument("-so", help="threshold for SOTerm Impact  ", type=float,required=True)
         parser.add_argument("-r", help="threshold for rare variant definition ", type=str,required=True)
         parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
         parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
         parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
-        parser.add_argument("-count", help=" treshold for csq allele count  ",type=float , required= True)
-        parser.add_argument("-sample", help="id of the sample  ",type=str, required= True)
+        #parser.add_argument("-count", help=" treshold for csq allele count  ",type=float , required= True)
+        #parser.add_argument("-sl", help="path to sample list  ",type=str, required= True)
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
         #parser.add_argument("-e", help="path to error file",type=str,required=True)
         args = parser.parse_args()
         #sys.stdout=open(args.o, 'w')   
 
         #~~~  HGDP 
-        listID = [line.rstrip('\n') for line in open(args.l)]
-    
+        #Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscard in a list and exclude these genes from results 
+        control = pd.read_table(args.rcsq) 
+        control_filtered=filter(tmp, 'genic', args.r, args.pli, args.g, args.cadd)
+        
+        listHGDP = [line.rstrip('\n') for line in open(args.l)]
         cycle=0
         while cycle < args.i: 
                 cycle+=1
 
                 #choose a random sample     
-                sampleToConsider=random.sample(listID, args.n)
+                sampleToConsider=random.sample(listHGDP, args.n)
                 #print (sampleToConsider)
-    
-                # build myd data frame with data from  sample choosen
-                fileToConsider=selectFiles(args.rf, sampleToConsider)
-                myd = mergeThat(fileToConsider)
-                #myd.to_csv("cicci", sep="\t", index=True)
- 
+
+                ####################################################
+                #integrate with allele freqency in sample to consider
+                mapperAF = {}
+                for key in control_filtered.index_x.unique():
+                    (chrom,pos,alternate) = key.split(":")
+                    genotypesToConsider, refAllele,  altAlleles = makegenotypelist(args.rvcf, key , sampleToConsider)
+                    mapperAF.update(Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist))    
+                df_info["AF"] = control_filtered.index_x.map(mapperAF)
+
                 #count each gene only once per sample -> gene symbol, in how many samples it is found 
-                tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count().transform(lambda x: x /float(args.n) )
-                if cycle==1:  genesPerSample=tmpg 
+                #subset by samples in sampleToConsider, subset by loci with AF>0
+                tmpg=control_filtered.filter('AF'>0)[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count().transform(lambda x: x /float(args.n) )
+                if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
                 else: genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
 
         #variantsPerGene.to_csv('ciccivar', sep='\t', index=False)    
         genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
         genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
-
         #genesPerSample.to_csv('ciccigene', sep='\t', index=False)
         #genesToDiscard['gene_symbol'].to_csv('ciccigenediscard', sep='\t', index=False)
 
 
-        #~~~  GREP 
-        #df_allSamples=pd.DataFrame()
-        #for ID_sample in samples_grep:
-        df= mergeThis(args.f, args.sample)
-	
-        ##~~~  filter in genic regions
-        #df_genic=df.loc[df['type'] =='genic'] 
-        df_filtered_g = df[ (df['type']== 'genic') & (df.impact!="MODIFIER") & (df.rare != args.r) & (df.pLI >= args.pli) & ( df.sumGene >= args.g) & (df.CADD >= df.CADD.quantile(args.cadd)) & (df.csqCount >= args.count)]
-        #df_allSamples = df_filtered_g.append(df_filtered_g,sort=True)
+        ###~~~  GREP 
+        listGREP = [line.rstrip('\n') for line in open(args.sl)]
+        
+        for gid in  listGREP: 
+
+            df= mergeThis(args.f, gid)
+    	
+            ##~~~  filter in genic regions
+            #~1. filter according to criteria 
+            df_filtered_g = df[ (df['type']== 'genic') & (df.impact!="MODIFIER") & (df.rare != args.r) & (df.pLI >= args.pli) & ( df.sumGene >= args.g) & (df.CADD >= df.CADD.quantile(args.cadd)) & (df.csqCount >= args.count)]
+
+        #~2. check genes with too many variants 
+        variantsPerGene=df_filtered_g[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+
+#####################################################################
+        ################### TO ADD, EXCLUDE GENESTODISCARD 
+#####################################################################
+
         df_filtered_g.to_csv(args.o, sep="\t",index=True)
 
-                ##~~~  filter in regulatory regions
-                #df_regulatory=df.loc[df['type'] =='regulatory'] 
+        ##~~~  filter in regulatory regions
+        #df_regulatory=df.loc[df['type'] =='regulatory'] 
 
-                ##~~~   filter in intergenic 
+        ##~~~   filter in intergenic 
 
 
 

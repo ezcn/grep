@@ -1,17 +1,30 @@
 
-1. merge gene lists: merge_allGenes.py  
 
+
+
+
+1. format data base files 
+- merge gene lists: merge_allGenes.py  
 Input gene list: tab-delimited two column file with ENSGENEID, category. Genes in more than one category can be repeated 
 Output: merged file 
+- cadd 
+- fathmm 
 
-2. run vep produce json 
+
+2. per chromosome, per merged vcf file run vep produce json 
+all.sample.chrx.vcf -> all.sample.chrx.vep.json
+all.control.chrx.vcf -> all.sample.chrx.vep.json 
+
+3. per chromosome annotate sites with grep.csq.hgdp.py 
+annotate samples 
+python3 scr/grep.csq.hgdp.py  -j testdata/all.sample.chrx.vep.json -g testdata/all_geneList.tsv  -pli testdata/pLIscore.tsv  -cadd testdata/CADD.chr22.tsv.gz  -fathmm testdata/fathmmxf.chr22.tsv.gz  -v testdata/csqimpact.tsv  -c 1 -r 0.05 -o test.csq.out -e test.csq.err -fathmmcoding testdata/fathmmxf.chr22.tsv.gz
+
+annotate controls 
+python3 scr/grep.csq.hgdp.py  -j testdata/all.control.chrx.vep.json -g testdata/all_geneList.tsv  -pli testdata/pLIscore.tsv  -cadd testdata/CADD.chr22.tsv.gz  -fathmm testdata/fathmmxf.chr22.tsv.gz  -v testdata/csqimpact.tsv  -c 1 -r 0.05 -o test.csq.out -e test.csq.err -fathmmcoding testdata/fathmmxf.chr22.tsv.gz
+
+4. per chromosome, per individual filter with grep.filter.py
 
 
-3. annotate vcf:   grep.csq.py
-
-python3 scr/grep.csq.py  -j testdata/AS006.chr22.vep.json -g testdata/all_geneList.tsv  -pli testdata/pLIscore.tsv  -cadd testdata/CADD.chr22.tsv.gz  -fathmm testdata/fathmmxf.chr22.tsv.gz  -v testdata/csqimpact.tsv  -c 1 -r 0.05 -o test.csq.out -e test.csq.err -fathmmcoding testdata/fathmmxf.chr22.tsv.gz
-
-4. grep.filter.py
 5. grep.curation.py 
 
 
