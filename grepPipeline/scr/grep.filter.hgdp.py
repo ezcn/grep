@@ -89,39 +89,42 @@ def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, thr
 def main():
         parser = argparse.ArgumentParser()
         #HGDP arguments
-        parser.add_argument("-rcsq", help="path to reference csq  ",type=str,required=True)
+        parser.add_argument("-ccsq", help="path to control csq  ",type=str,required=True)
         parser.add_argument("-rvcf", help="path to reference vcf  ",type=str,required=True)
-        parser.add_argument("-l", help="list of reference id ",type=str,required=True)
+        parser.add_argument("-cl", help="list of reference id ",type=str,required=True)
         parser.add_argument("-n", help="number of individual to sample ",type=int,required=True)
         parser.add_argument("-i", help="number of iterations ",type=int,required=True) 
         parser.add_argument("-gt", help="threshold for excluding genes ",type=float,required=True) 
 
         #GREP arguments
-        parser.add_argument("-ccsq", help="path to control csq ",type=str,required=True)
-        #parser.add_argument("-so", help="threshold for SOTerm Impact  ", type=float,required=True)
+        parser.add_argument("-scsq", help="path to control csq  ",type=str,required=True)
+        parser.add_argument("-svcf", help="path to reference vcf  ",type=str,required=True)
+        parser.add_argument("-sl", help="list of reference id ",type=str,required=True)
+
+        #FILTERING arguments    
         parser.add_argument("-r", help="threshold for rare variant definition ", type=str,required=True)
         parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
         parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
         parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
         #parser.add_argument("-count", help=" treshold for csq allele count  ",type=float , required= True)
-        #parser.add_argument("-sl", help="path to sample list  ",type=str, required= True)
+
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
-        #parser.add_argument("-e", help="path to error file",type=str,required=True)
+        parser.add_argument("-e", help="path to error file",type=str,required=True)
         args = parser.parse_args()
         #sys.stdout=open(args.o, 'w')   
 
         #~~~  HGDP 
         #Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscard in a list and exclude these genes from results 
         control = pd.read_table(args.rcsq) 
-        control_filtered=filter(tmp, 'genic', args.r, args.pli, args.g, args.cadd)
+        control_filtered=filter(control, 'genic', args.r, args.pli, args.g, args.cadd)
         
-        listHGDP = [line.rstrip('\n') for line in open(args.l)]
+        listControl = [line.rstrip('\n') for line in open(args.cl)]
         cycle=0
         while cycle < args.i: 
                 cycle+=1
 
                 #choose a random sample     
-                sampleToConsider=random.sample(listHGDP, args.n)
+                sampleToConsider=random.sample(listControl, args.n)
                 #print (sampleToConsider)
 
                 ####################################################
@@ -145,10 +148,21 @@ def main():
         #genesPerSample.to_csv('ciccigene', sep='\t', index=False)
         #genesToDiscard['gene_symbol'].to_csv('ciccigenediscard', sep='\t', index=False)
 
-
+"""
         ###~~~  GREP 
-        listGREP = [line.rstrip('\n') for line in open(args.sl)]
-        
+        sample = pd.read_table(args.scsq) 
+        sample_filtered=filter(sample, 'genic', args.r, args.pli, args.g, args.cadd)
+
+        listSamples = [line.rstrip('\n') for line in open(args.sl)]
+        mapperAFsamples = {}
+        for key in sample_filtered.index_x.unique():
+            (chrom,pos,alternate) = key.split(":")
+            genotypesToConsider, refAllele,  altAlleles = makegenotypelist(args.rvcf, key , listSamples)
+            mapperAFsamples.update(Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist))    
+        df_info["AF"] = control_filtered.index_x.map(mapperAF)
+
+
+
         for gid in  listGREP: 
 
             df= mergeThis(args.f, gid)
@@ -170,7 +184,7 @@ def main():
         #df_regulatory=df.loc[df['type'] =='regulatory'] 
 
         ##~~~   filter in intergenic 
-
+"""
 
 
 if __name__ == "__main__":
