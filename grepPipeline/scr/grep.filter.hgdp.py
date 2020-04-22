@@ -90,7 +90,7 @@ def main():
         parser = argparse.ArgumentParser()
         #HGDP arguments
         parser.add_argument("-ccsq", help="path to control csq  ",type=str,required=True)
-        parser.add_argument("-rvcf", help="path to reference vcf  ",type=str,required=True)
+        parser.add_argument("-cvcf", help="path to reference vcf  ",type=str,required=True)
         parser.add_argument("-cl", help="list of reference id ",type=str,required=True)
         parser.add_argument("-n", help="number of individual to sample ",type=int,required=True)
         parser.add_argument("-i", help="number of iterations ",type=int,required=True) 
@@ -115,7 +115,7 @@ def main():
 
         #~~~  HGDP 
         #Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscard in a list and exclude these genes from results 
-        control = pd.read_table(args.rcsq) 
+        control = pd.read_table(args.ccsq) 
         control_filtered=filter(control, 'genic', args.r, args.pli, args.g, args.cadd)
         
         listControl = [line.rstrip('\n') for line in open(args.cl)]
@@ -132,7 +132,7 @@ def main():
                 mapperAF = {}
                 for key in control_filtered.index_x.unique():
                     (chrom,pos,alternate) = key.split(":")
-                    genotypesToConsider, refAllele,  altAlleles = makegenotypelist(args.rvcf, key , sampleToConsider)
+                    genotypesToConsider, refAllele,  altAlleles = makegenotypelist(args.cvcf, key , sampleToConsider)
                     mapperAF.update(Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist))    
                 df_info["AF"] = control_filtered.index_x.map(mapperAF)
 
