@@ -83,9 +83,18 @@ with open(path_output) as f:
 
                 
 for step_id, seq in step_id_to_seq_dict.items():
-    print('\t'.join(['S', str(step_id), seq]))
+    #print('\t'.join(['S', str(step_id), seq]))
+    steps_to_write += 'S\t'+ str(step_id) + '\t' + seq + '\n'
+    
 
 for path, node_list in path_nodes_dict.items():
-    print('\t'.join(['P', path, '+,'.join(node_list) + '+']))
+    paths_to_write += ('\t'.join(['P', path,'+,'.join(node_list) + '+', '\n']))
 
-print(links_to_write)
+    #for step_id in paths_to_write:
+        #print(len(seq))
+    
+
+    path_gfa = 'seq_gfa' 
+with open(path_gfa, 'w') as fw:
+    fw.write(steps_to_write + paths_to_write + links_to_write)
+    print(path_gfa + ' written')
