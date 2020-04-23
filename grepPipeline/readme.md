@@ -26,7 +26,7 @@ annotate controls
 python3 scr/grep.csq.hgdp.py  -j testdata/all.control.chrx.vep.json -g testdata/all_geneList.tsv  -pli testdata/pLIscore.tsv  -cadd testdata/CADD.chr22.tsv.gz  -fathmm testdata/fathmmxf.chr22.tsv.gz  -v testdata/csqimpact.tsv  -c 1 -r 0.05 -o test.all.control.chrx.csq.out -e test.all.control.chrx.csq.err -fathmmcoding testdata/fathmmxf.chr22.tsv.gz
 
 4. per chromosome, per individual filter with grep.filter.py
-
+python3 scr/grep.filter.hgdp.py -ccsq testdata/con/test.control.chr22.csq -cvcf  testdata/con/test.control.vcf.gz  -cl testdata/con/test.control.id  -n 4 -i 5  -gt .5  -scsq ff -svcf ff -sl ff -r False  -pli 0 -g 0 -cadd 0  -o cicci.out -e cicci.err
 
 5. grep.curation.py 
 

@@ -50,7 +50,7 @@ def main():
         else: 
             genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
 
-   # variantsPerGene.to_csv('ciccivar', sep='\t', index=False)    
+     
     genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
     genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.g)]
 
@@ -75,6 +75,7 @@ def main():
             
             tmpg=myd[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol'], as_index=False).count()#/float(args.n)
             genesPerSample=genesPerSample.join(tmpg.set_index('gene_symbol'), on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
+# variantsPerGene.to_csv('ciccivar', sep='\t', index=False)  
 """     
 
     
