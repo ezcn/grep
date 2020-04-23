@@ -3,26 +3,35 @@ import pandas as pd
 import glob, argparse,  subprocess, random 
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def takeInfoFromVcf(vcf, key , samplesToConsider):
-    #TO DO: check concordance ref alt and overlapping multiple positions 
-    (chrom,pos,alternate) = key.split(":")
-    cmd = "tabix -h  %s %s:%d-%d | tail -2 | grep -v '##' " % (vcf, chrom, int(pos), int(pos))
+    (chrom,pos,tmpalternate) = key.split(":")
+    alternate=tmpalternate.lstrip('/')
+
+    cmd_head = "tabix -H %s %s:%d-%d | tail -1 " % (vcf, chrom, int(pos), int(pos))
+    proc_head = subprocess.Popen(cmd_head, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    result_head, err = proc_head.communicate()
+    if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
+    vcfhead=result_head.decode().rstrip().split('\t')
+
+    cmd = "tabix  %s %s:%d-%d " % (vcf, chrom, int(pos), int(pos))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
     vcfout =[x.rstrip().split('\t') for  x in result.decode().rstrip().split('\n')]
-    column2retain=[vcfout[0].index(ind) for ind in samplesToConsider]  
-    if vcfout[1]: 
-        #dtmp=dict(zip(vcfout[0], vcfout[1]))
-        #genotypesToConsider=[dtmp[i].split(':')[0] for i in samplesToConsider]
-        genotypesToConsider=[vcfout[1][indx].split(":")[0] for indx in column2retain] 
-        refAllele=vcfout[1][3];  altAlleles=vcfout[1][4]
-    else: 
-        genotypesToConsider=[]; refAllele='';  altAlleles=''
-    return genotypesToConsider, refAllele,  altAlleles
- 
- #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   
+    column2retain=[vcfhead.index(ind) for ind in samplesToConsider]
+    genotypesToConsider=[locus[indx].split(":")[0] for indx in column2retain for locus in vcfout if locus[4]==alternate]
+    #reference=[locus[3] for locus in vcfout if locus[4]==alternate.lstrip('/')][0]
+    reference=''
+    for locus in vcfout: 
+        if alternate  in locus[4].split(','): reference=locus[3]
+    #reference=[locus[3] for locus in vcfout if alternate.lstrip('/')  in locus[4].split(',')][0]
+    #dtmp=dict(zip(vcfout[0], vcfout[1]))
+    #genotypesToConsider=[dtmp[i].split(':')[0] for i in samplesToConsider]
+    return  genotypesToConsider , reference, alternate #vcfhead, vcfout #dtmp,
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist):
     """csqAllele = type: string, consequence allele  from vep  
@@ -53,7 +62,7 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
             csqAllCount=dAllele[csqAllele]
             freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
         else: freqCsq='NA'
-        myres= [freqCsq, freqREF, freqAlt]
+        myres= [freqCsq, csqAllCount]
     return myres
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,8 +98,6 @@ def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, thr
 
 #FUNCTIONS END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-
 def main():
         parser = argparse.ArgumentParser()
         #HGDP arguments
@@ -111,6 +118,7 @@ def main():
         parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
         parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
         parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
+        parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
         #parser.add_argument("-count", help=" treshold for csq allele count  ",type=float , required= True)
 
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
@@ -118,49 +126,70 @@ def main():
         args = parser.parse_args()
         #sys.stdout=open(args.o, 'w')   
 
-        #~~~  HGDP 
-        #Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscard in a list and exclude these genes from results 
+        #~~~  HGDP: Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscard in a list and exclude these genes from results 
+        ##~~ read and filter annotated info on variable loci in controls  
         control = pd.read_table(args.ccsq) 
         control.loc[:,"sumGene"] = control["EmbryoDev"]+ control["DDD"]+ control["Lethal"]+ control["Essential"]+ control["Misc"]
         #control.to_csv('control')
-
         control_filtered=filter(control, 'genic', args.r, args.pli, args.g, args.cadd)
         #control_filtered.to_csv('control_filtered_pre')
 
+       
+        ##~~ repeat args.i times on args.n samples from controls  
         listControl = [line.rstrip('\n') for line in open(args.cl)]
-        
-        ##~~ repeat args.i times:  
         cycle=0
         while cycle < args.i: 
                 cycle+=1
 
-                ##~~ choose a random sample     
+                ##~~ choose a random sample form controls of size args.n  
                 randomSample=random.sample(listControl, args.n)
-                #print (randomSample)
+                #`print (randomSample)
 
-
-                ##~~ integrate with allele freqency in sample to consider
+                ##~~ integrate with allele freqency calculated in sample to consider
                 mapperAF = {}
+                #print(control_filtered.index_x.unique())
                 for key in control_filtered.index_x.unique():
-                    (chrom,pos,alternate) = key.split(":")
-                    genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(args.cvcf, key , randomSample)
-                    #alternateAF= Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)[0]     
-                    #mapperAF[key] = alternateAF             
-                control_filtered["AF"] = control_filtered.index_x.map(mapperAF)
-                    
-                control_filtered.to_csv('control_filtered')
-                #count each gene only once per sample -> gene symbol, in how many samples it is found 
-                #subset by samples in sampleToConsider, subset by loci with AF>0
-                tmpg=control_filtered.filter('AF'>0)[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count().transform(lambda x: x /float(args.n) )
-                if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
-                else: genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
+                    (chrom,pos,tmpalternate) = key.split(":")
+                    alternate=tmpalternate.lstrip('/')
+                    #print (takeInfoFromVcf(args.cvcf, key, randomSample))
+                    genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(args.cvcf, key, randomSample)
+                    alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
+                    if alternateAF: mapperAF[key] = alternateAF[0]  
 
-        #variantsPerGene.to_csv('ciccivar', sep='\t', index=False)    
-        genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
-        genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
+                control_filtered["AF"] = control_filtered.index_x.map(mapperAF)
+                #control_filtered.to_csv('control_filtered')
+                
+                ##~~ integrate with samples ID and csqAlele count 
+                mapperAC = {}; mapperSS={}
+                control_filtered_all=pd.DataFrame()
+                for key in control_filtered.index_x.unique():
+                    (chrom,pos,tmpalternate) = key.split(":")
+                    alternate=tmpalternate.lstrip('/')
+                    #print (takeInfoFromVcf(args.cvcf, key, randomSample))
+                    tmpdf=control_filtered
+                    for ss in randomSample:
+                        genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(args.cvcf, key, [ss])
+                        alternateAC = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
+                        if alternateAC: 
+                            if alternateAC[1] >= args.ac: 
+                                mapperAC[ss] = alternateAC[1]   
+                                mapperSS[key] = ss
+                        tmpdf['sample'] = tmpdf.index_x.map(mapperSS)
+                        tmpdf['AC'] = tmpdf.sample.map(mapperAC)
+                        control_filtered_all=pd.concat([control_filtered_all, tmpdf]) 
+
+                control_filtered_all.to_csv('control_filtered_all')                
+                ##~~ subset for loci with AF>0 in sampleToConsider 
+                ##~~ count each gene only once per sample -> gene symbol, in how many samples it is found 
+                #tmpg=control_filtered[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count().transform(lambda x: x /float(args.n) )
+                #if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
+                #else: genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
+
+        ##~~ make GrandMean over args.i and discard genes that on average shows up in args.gt individuals over args.i iterations 
+        #genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
+        #genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
         #genesPerSample.to_csv('ciccigene', sep='\t', index=False)
         #genesToDiscard['gene_symbol'].to_csv('ciccigenediscard', sep='\t', index=False)
-
 """
         ###~~~  GREP 
         sample = pd.read_table(args.scsq) 
