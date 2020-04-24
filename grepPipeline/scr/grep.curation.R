@@ -62,13 +62,6 @@ ggsave('variantspergenedensity.png')
 
 
 
-
-####### 2. remove genes that show up in HGDP  
-
-
-
-
-
 ####### 3. Results 
 #######
 print('~~ number')

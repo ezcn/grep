@@ -2,7 +2,15 @@
 import pandas as pd
 import glob, argparse,  subprocess, random 
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def makeMapperAF (keylist, vcf, listOfSampleID): 
+    mapperAF={}
+    for key in keylist:
+        alternate=key.split(":")[2].lstrip('/')
+        genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(vcf, key, listOfSampleID)
+        alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
+        if alternateAF: mapperAF[key] = alternateAF[0]  
+    return mapperAF
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def takeInfoFromVcf(vcf, key , samplesToConsider):
@@ -38,8 +46,7 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
     refAllele = type: string, reference allele from variant calling
     altAlleles = type: string, comma-separated list of alternate allele from variant calling
     nbAploidSamples : calculated 
-    GTfields = type: list, list of genotypes ["0/0", "0/1", ".", "./."]
-    hetGenotypes = type: int, heterozygosity in samples"""
+    GTfields = type: list, list of genotypes ["0/0", "0/1", ".", "./."]"""
     myres=False
     listAlt=altAlleles.split(",")   
     listAll=[refAllele]+ listAlt
@@ -52,7 +59,7 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
         CountAlleles.append(stringOfGenotypes.count(str(i)))
     dAllele=dict(zip(listAll,CountAlleles))
     if nbHaploidSamples!=0:
-        freqREF="{0:4.2f}".format(dAllele[refAllele]/nbHaploidSamples)
+       # freqREF="{0:4.2f}".format(dAllele[refAllele]/nbHaploidSamples)
         freqAlt=[]
         for i in listAlt: 
             freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
@@ -64,32 +71,6 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
         else: freqCsq='NA'
         myres= [freqCsq, csqAllCount]
     return myres
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def selectFiles(mydir, listID):
-    """ choose files if ID in list id is in the filename""" 
-    fileList=[]
-    for ind in listID: 
-        fileList += [f for f in glob.glob(mydir) if re.search(ind, f) ]
-    return fileList
-
-#def mergeThat(fileList):
-    
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def mergeThis(mydir, ID_sample):
-	df = pd.DataFrame()
-	fileList=glob.glob(mydir)
-	for f in fileList:
-		tmp = pd.read_csv(f,sep="\t", index_col='index_x')
-		tmp = tmp[["csqAllele", "impact","element_id", "type", "csqCount", "gene_id", "gene_symbol","most_severe_consequence", "start", "id", "rare", "commonCSQall", "EmbryoDev", "DDD", "Lethal", "Essential", "Misc", "soScore", "pLI", "chr", "CADD"]]
-		df = df.append(tmp)
-	df.loc[:,"sample"] = ID_sample
-	df.loc[:,"sumGene"] = df["EmbryoDev"]+ df["DDD"]+ df["Lethal"]+ df["Essential"]+ df["Misc"]
-	df = df[["sample","csqAllele", "impact","element_id", "type", "csqCount", "gene_id", "gene_symbol","most_severe_consequence", "start", "id", "rare", "commonCSQall", "EmbryoDev", "DDD", "Lethal", "Essential", "Misc", "soScore", "pLI", "chr", "CADD","sumGene"]]
-	#df.to_csv("cicci", sep="\t", index=True)
-	return df
-
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, threshold_cadd): 
@@ -146,87 +127,109 @@ def main():
                 #`print (randomSample)
 
                 ##~~ integrate with allele freqency calculated in sample to consider
-                mapperAF = {}
-                #print(control_filtered.index_x.unique())
-                for key in control_filtered.index_x.unique():
-                    (chrom,pos,tmpalternate) = key.split(":")
-                    alternate=tmpalternate.lstrip('/')
-                    #print (takeInfoFromVcf(args.cvcf, key, randomSample))
-                    genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(args.cvcf, key, randomSample)
-                    alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
-                    if alternateAF: mapperAF[key] = alternateAF[0]  
-
-                control_filtered["AF"] = control_filtered.index_x.map(mapperAF)
+                keylist=control_filtered.index_x.unique()
+                mapperAF=makeMapperAF (keylist, args.cvcf, randomSample)
+                control_filtered["af"] = control_filtered.index_x.map(mapperAF)
                 #control_filtered.to_csv('control_filtered')
                 
                 ##~~ integrate with samples ID and csqAlele count 
                 mapperAC = {}; mapperSS={}
-                control_filtered_all=pd.DataFrame()
-                for key in control_filtered.index_x.unique():
-                    (chrom,pos,tmpalternate) = key.split(":")
-                    alternate=tmpalternate.lstrip('/')
-                    #print (takeInfoFromVcf(args.cvcf, key, randomSample))
+                control_filtered_allsamples=pd.DataFrame()    
+
+                for ss in randomSample:  
                     tmpdf=control_filtered
-                    for ss in randomSample:
+                    for key in tmpdf.index_x.unique():
+                        alternate=key.split(':')[2].lstrip('/')                 
+                        ###~~ csq allele counts for sample ss at locus key 
                         genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(args.cvcf, key, [ss])
                         alternateAC = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
                         if alternateAC: 
                             if alternateAC[1] >= args.ac: 
-                                mapperAC[ss] = alternateAC[1]   
+                                mapperAC[key] = alternateAC[1]   
                                 mapperSS[key] = ss
+                        tmpdf['ac']= tmpdf.index_x.map(mapperAC)
                         tmpdf['sample'] = tmpdf.index_x.map(mapperSS)
-                        tmpdf['AC'] = tmpdf.sample.map(mapperAC)
-                        control_filtered_all=pd.concat([control_filtered_all, tmpdf]) 
+                        ####### tmpdf remove rows with no AC 
+                        df = tmpdf[tmpdf['ac'].notna()]
+                        df = tmpdf[tmpdf['sample'].notna()]
+                        #, tmpdf['sample'].notna()]
+                        control_filtered_allsamples=pd.concat([control_filtered_allsamples, df]) 
 
-                control_filtered_all.to_csv('control_filtered_all')                
+                #control_filtered_allsamples.to_csv('control_filtered_allsamples', index=False)                
                 ##~~ subset for loci with AF>0 in sampleToConsider 
                 ##~~ count each gene only once per sample -> gene symbol, in how many samples it is found 
-                #tmpg=control_filtered[[ 'gene_symbol', 'sample']].drop_duplicates().groupby(['gene_symbol']).count().transform(lambda x: x /float(args.n) )
-                #if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
-                #else: genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
+                tmpg=control_filtered_allsamples[[ 'gene_symbol', 'sample']].drop_duplicates().groupby('gene_symbol').count().transform(lambda x: x /float(args.n) )
+                #tmpg.to_csv('tmpg%s' % (cycle) , sep='\t') #, index=False)
 
+                if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
+                else: genesPerSample=genesPerSample.join(tmpg, on='gene_symbol', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)    
         ##~~ make GrandMean over args.i and discard genes that on average shows up in args.gt individuals over args.i iterations 
-        #genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
-        #genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
-        #genesPerSample.to_csv('ciccigene', sep='\t', index=False)
-        #genesToDiscard['gene_symbol'].to_csv('ciccigenediscard', sep='\t', index=False)
-"""
-        ###~~~  GREP 
+        genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
+        genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
+        ##~~ print to make graphs in R 
+        genesPerSample.to_csv('control.genesPerSample.tsv', sep='\t') 
+        #genesToDiscard.to_csv('ciccigenediscard', sep='\t') 
+
+
+        ###~~~  GREP
         sample = pd.read_table(args.scsq) 
+        sample.loc[:,"sumGene"] = sample["EmbryoDev"]+ sample["DDD"]+ sample["Lethal"]+ sample["Essential"]+ sample["Misc"]
+        #sample.to_csv('sample')
+
+        ###~~~ GENIC REGIONS 
         sample_filtered=filter(sample, 'genic', args.r, args.pli, args.g, args.cadd)
+        #sample_filtered.to_csv('sample_filtered_pre')
+
 
         listSamples = [line.rstrip('\n') for line in open(args.sl)]
-        mapperAFsamples = {}
-        for key in sample_filtered.index_x.unique():
-            (chrom,pos,alternate) = key.split(":")
-            genotypesToConsider, refAllele,  altAlleles = makegenotypelist(args.rvcf, key , listSamples)
-            mapperAFsamples.update(Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist))    
-        df_info["AF"] = control_filtered.index_x.map(mapperAF)
+
+        ##~~ integrate with allele freqency calculated in sample to consider
+        skeylist=sample_filtered.index_x.unique()
+        smapperAF=makeMapperAF (skeylist, args.svcf, listSamples)
+        sample_filtered["af"] = sample_filtered.index_x.map(mapperAF)
+        #sample_filtered.to_csv('sample_filtered')
+
+        ##~~ integrate with samples ID and csqAlele count 
+        smapperAC = {}; smapperSS={}
+        sample_filtered_allsamples=pd.DataFrame()    
+
+        for ll in listSamples:   
+            stmpdf=sample_filtered
+            for skey in stmpdf.index_x.unique():
+                        salternate=skey.split(':')[2].lstrip('/')                 
+                        ###~~ csq allele counts for sample ll at locus skey 
+                        sgenotypesToConsider, srefAllele,  saltAlleles = takeInfoFromVcf(args.svcf, skey, [ll])
+                        salternateAC = Freq_CSQ_REF_ALT (salternate, srefAllele, saltAlleles, '.', sgenotypesToConsider)     
+                        if salternateAC: 
+                            if salternateAC[1] >= args.ac: 
+                                smapperAC[key] = salternateAC[1]   
+                                smapperSS[key] = ll
+                        stmpdf['ac']= stmpdf.index_x.map(smapperAC)
+                        stmpdf['sample'] = stmpdf.index_x.map(smapperSS)
+                        ####### tmpdf remove rows with no AC 
+                        sdf = stmpdf[stmpdf['ac'].notna()]
+                        sdf = stmpdf[stmpdf['sample'].notna()]
+                        #, tmpdf['sample'].notna()]
+                        sample_filtered_allsamples=pd.concat([sample_filtered_allsamples, sdf]) 
+
+        sample_filtered_allsamples.to_csv('sample_filtered_allsamples', index=False)             
+
+        ##~~ remove genes that shows up in the control args.gt of times over args.i iterations  
+        sample_filtered_allsamples.drop(sample_filtered_allsamples[sample_filtered_allsamples.gene_symbol.isin(genesToDiscard.gene_symbol) ].index, inplace=True
+            )
+        
+        ####  TO DO ##########################################
+        ##~~ remove genes with too many variants 
+        #variantsPerGene=sample_filtered_allsamples[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+        ####  rimuovere varianti in variantsPerGene Possiamo farlo solo dopo che c'e un file di prova csq decente  
 
 
-
-        for gid in  listGREP: 
-
-            df= mergeThis(args.f, gid)
-    	
-            ##~~~  filter in genic regions
-            #~1. filter according to criteria 
-            df_filtered_g = df[ (df['type']== 'genic') & (df.impact!="MODIFIER") & (df.rare != args.r) & (df.pLI >= args.pli) & ( df.sumGene >= args.g) & (df.CADD >= df.CADD.quantile(args.cadd)) & (df.csqCount >= args.count)]
-
-        #~2. check genes with too many variants 
-        variantsPerGene=df_filtered_g[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
-
-#####################################################################
-        ################### TO ADD, EXCLUDE GENESTODISCARD 
-#####################################################################
-
-        df_filtered_g.to_csv(args.o, sep="\t",index=True)
+        ##~~~ print very final dataframe 
+        #df_filtered_g.to_csv(args.o, sep="\t",index=True)
 
         ##~~~  filter in regulatory regions
-        #df_regulatory=df.loc[df['type'] =='regulatory'] 
-
         ##~~~   filter in intergenic 
-"""
+
 
 
 if __name__ == "__main__":
