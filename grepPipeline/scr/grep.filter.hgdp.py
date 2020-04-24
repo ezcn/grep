@@ -166,8 +166,9 @@ def main():
         ##~~ make GrandMean over args.i and discard genes that on average shows up in args.gt individuals over args.i iterations 
         genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
         genesToDiscard=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
-        #genesPerSample.to_csv('ciccigene', sep='\t') 
-        genesToDiscard.to_csv('ciccigenediscard', sep='\t') 
+        ##~~ print to make graphs in R 
+        genesPerSample.to_csv('control.genesPerSample.tsv', sep='\t') 
+        #genesToDiscard.to_csv('ciccigenediscard', sep='\t') 
 
 
         ###~~~  GREP
