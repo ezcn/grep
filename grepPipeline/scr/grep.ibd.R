@@ -2,7 +2,7 @@ library(ggplot2)
 library(ggsci) 
 library(tidyr)
 library(dplyr)
-
+library(ggrepel)
 
 idlist=read.table('ID_category.tsv', header=F, col.names=c('id', 'category'), sep='\t')
 
@@ -16,17 +16,22 @@ hbd %>% mutate(lenbp= end-start )%>%  group_by(id1, category) %>% summarize (tot
 ggsave('overview.png')
 
 
-hbd$lenMb =(hbd$end-hbd$start)/10000000
-hbd$rohtype =ifelse(hbd$lenMb<=0.5, 'ROH <= 0.5Mb', ifelse(hbd$lenMb>5, '>5 Mb', '0.5Mb > ROH =< 5Mb') ) 
+
+hbd$lenMb =(hbd$end-hbd$start)/1000000
+hbd$rohtype =ifelse(hbd$lenMb<=0.5, 'Short (<= 0.5Mb)', ifelse(hbd$lenMb>5, 'Long (>5 Mb)', 'Intermediate (0.5Mb > ROH =< 5Mb)') ) 
  
 
-hbd %>% filter (category=='PREIMPLANTATION DEVELOPMENT ARREST')   ggtitle('PREIMPLANTATION DEVELOPMENT ARREST')
-ggsave('ROHlen.png')
 
+##~~~  sum vs number of roh
+sumNb= hbd %>% filter(category=='PREIMPLANTATION DEVELOPMENT ARREST') %>%  group_by(id1, rohtype ) %>% summarize ( sumROHs = sum(lenMb) , nbROHs= length(lenMb)) 
+sumNb$rohtype <- factor(sumNb$rohtype, levels=c('Short (<= 0.5Mb)', 'Intermediate (0.5Mb > ROH =< 5Mb)', 'Long (>5 Mb)'))
+ggplot(sumNb, aes(sumROHs , nbROHs , color = rohtype)  ) +geom_point() + theme_bw() +geom_text_repel(aes(label=id1), nudge_x = 0.25, nudge_y = 0.25) +xlab('Sum of ROHs (Mb)') + ylab('Number of ROHs') + scale_color_aaas()+ theme(legend.position="none")  + facet_wrap(rohtype ~ . , scales='free')
+ggsave('sumvsnumber.png')
 
-temphom1=merge(temphom, idlist, by.x='id1', by.y='id')
+# FROH genomic inbreedding coefficient PMID:18760389  doi: 10.1016/j.ajhg.2008.08.007
+#FROHis the fraction of each genome in ROH >1.5 Mb. doi.org/10.1038/s41467-019-12283
 
-hbd=merge(temphom1, idlist, by.x='id2', by.y='id')
+########################
 
 #identity by descent 
 

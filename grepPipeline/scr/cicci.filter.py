@@ -5,13 +5,11 @@ import glob, argparse,  subprocess, random
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def makeMapperAF (keylist, vcf, listOfSampleID): 
     mapperAF={}
-    for key in keylist: 
+    for key in keylist:
         alternate=key.split(":")[2].lstrip('/')
         genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(vcf, key, listOfSampleID)
-        #print(genotypesToConsider, refAllele,  altAlleles) 
-        if genotypesToConsider: 
-            alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
-            if alternateAF: mapperAF[key] = alternateAF[0]  
+        alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
+        if alternateAF: mapperAF[key] = alternateAF[0]  
     return mapperAF
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -19,26 +17,28 @@ def takeInfoFromVcf(vcf, key , samplesToConsider):
     (chrom,pos,tmpalternate) = key.split(":")
     alternate=tmpalternate.lstrip('/')
 
-    cmd_head = "/lustrehome/enza/bin/htslib-1.9/tabix -H %s %s:%d-%d | tail -1 " % (vcf, chrom, int(pos), int(pos))
+    cmd_head = "tabix -H %s %s:%d-%d | tail -1 " % (vcf, chrom, int(pos), int(pos))
     proc_head = subprocess.Popen(cmd_head, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result_head, err = proc_head.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
     vcfhead=result_head.decode().rstrip().split('\t')
 
-    cmd = "/lustrehome/enza/bin/htslib-1.9/tabix  %s %s:%d-%d " % (vcf, chrom, int(pos), int(pos))
+    cmd = "tabix  %s %s:%d-%d " % (vcf, chrom, int(pos), int(pos))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
-    if result: 
-        vcfout =[x.rstrip().split('\t') for  x in result.decode().rstrip().split('\n')]
-        column2retain=[vcfhead.index(ind) for ind in samplesToConsider]
-        genotypesToConsider=[locus[indx].split(":")[0] for indx in column2retain for locus in vcfout if locus[4]==alternate]
-        reference=''
-        for locus in vcfout: 
-            if alternate  in locus[4].split(','): reference=locus[3]
-        return  genotypesToConsider , reference, alternate #vcfhead, vcfout #dtmp,
-    else: 
-        return False, False, False  
+    vcfout =[x.rstrip().split('\t') for  x in result.decode().rstrip().split('\n')]
+   
+    column2retain=[vcfhead.index(ind) for ind in samplesToConsider]
+    genotypesToConsider=[locus[indx].split(":")[0] for indx in column2retain for locus in vcfout if locus[4]==alternate]
+    #reference=[locus[3] for locus in vcfout if locus[4]==alternate.lstrip('/')][0]
+    reference=''
+    for locus in vcfout: 
+        if alternate  in locus[4].split(','): reference=locus[3]
+    #reference=[locus[3] for locus in vcfout if alternate.lstrip('/')  in locus[4].split(',')][0]
+    #dtmp=dict(zip(vcfout[0], vcfout[1]))
+    #genotypesToConsider=[dtmp[i].split(':')[0] for i in samplesToConsider]
+    return  genotypesToConsider , reference, alternate #vcfhead, vcfout #dtmp,
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist):
@@ -48,35 +48,33 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
     nbAploidSamples : calculated 
     GTfields = type: list, list of genotypes ["0/0", "0/1", ".", "./."]"""
     myres=False
-    if altAlleles:
-        listAlt=altAlleles.split(",")   
-        listAll=[refAllele]+ listAlt
-        stringOfGenotypes=""; nbHaploidSamples=0
-        for item in (genotypeslist):    
-            if item != missing_data_format: 
-                stringOfGenotypes+=item; nbHaploidSamples+=2
-        CountAlleles=[]
-        for i in range(len(listAll)):  # 0 for REF, 1 for ALT1, 2 for ALT2 ...
-            CountAlleles.append(stringOfGenotypes.count(str(i)))
-        dAllele=dict(zip(listAll,CountAlleles))
-        if nbHaploidSamples!=0:
+    listAlt=altAlleles.split(",")   
+    listAll=[refAllele]+ listAlt
+    stringOfGenotypes=""; nbHaploidSamples=0
+    for item in (genotypeslist):    
+        if item != missing_data_format: 
+            stringOfGenotypes+=item; nbHaploidSamples+=2
+    CountAlleles=[]
+    for i in range(len(listAll)):  # 0 for REF, 1 for ALT1, 2 for ALT2 ...
+        CountAlleles.append(stringOfGenotypes.count(str(i)))
+    dAllele=dict(zip(listAll,CountAlleles))
+    if nbHaploidSamples!=0:
        # freqREF="{0:4.2f}".format(dAllele[refAllele]/nbHaploidSamples)
-            freqAlt=[]
-            for i in listAlt: 
-                freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
-                freqAlt.append(freqAltTemp)
+        freqAlt=[]
+        for i in listAlt: 
+            freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
+            freqAlt.append(freqAltTemp)
         #~~~ CSQ 
-            if csqAllele in dAllele:
-                csqAllCount=dAllele[csqAllele]
-                freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
-            else: freqCsq='NA'
-            myres= [freqCsq, csqAllCount]
+        if csqAllele in dAllele:
+            csqAllCount=dAllele[csqAllele]
+            freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
+        else: freqCsq='NA'
+        myres= [freqCsq, csqAllCount]
     return myres
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, threshold_cadd): 
-    #df_filtered = df[ (df['type']== genometype) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (df.pLI >= threshold_pli) & ( df.sumGene >= threshold_sumgene) & (df.CADD >= df.CADD.quantile(threshold_cadd))] 
-    df_filtered1 = df[ (df['type']== 'genic') & (df.impact!="MODIFIER") & (df.rare != False) & (((df.pLI >= 0.9) &  (df.CADD >= 3)) | (df.sumGene >=2)) ]
+    df_filtered = df[ (df['type']== genometype) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (df.pLI >= threshold_pli) & ( df.sumGene >= threshold_sumgene) & (df.CADD >= df.CADD.quantile(threshold_cadd))] #& (df.csqCount >= args.count)]
     return df_filtered
 
 #FUNCTIONS END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,13 +100,13 @@ def main():
         parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
         parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
         parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
-        parser.add_argument("-maxv", help=" maximum variants per gene ",type=int , required= True)
+        #parser.add_argument("-count", help=" treshold for csq allele count  ",type=float , required= True)
 
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
         parser.add_argument("-e", help="path to error file",type=str,required=True)
         args = parser.parse_args()
         #sys.stdout=open(args.o, 'w')   
-    
+
         #~~~  HGDP: Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscardControl in a list and exclude these genes from results 
         ##~~ read and filter annotated info on variable loci in controls  
         control = pd.read_table(args.ccsq) 
@@ -117,6 +115,7 @@ def main():
         control_filtered=filter(control, 'genic', args.r, args.pli, args.g, args.cadd)
         #control_filtered.to_csv('control_filtered_pre')
 
+       
         ##~~ repeat args.i times on args.n samples from controls  
         listControl = [line.rstrip('\n') for line in open(args.cl)]
         cycle=0
@@ -125,12 +124,11 @@ def main():
 
                 ##~~ choose a random sample form controls of size args.n  
                 randomSample=random.sample(listControl, args.n)
-                #print (randomSample)
+                #`print (randomSample)
 
                 ##~~ integrate with allele freqency calculated in sample to consider
                 keylist=control_filtered.index_x.unique()
-                #print(keylist)
-                mapperAF=makeMapperAF(keylist, args.cvcf, randomSample)
+                mapperAF=makeMapperAF (keylist, args.cvcf, randomSample)
                 control_filtered["af"] = control_filtered.index_x.map(mapperAF)
                 #control_filtered.to_csv('control_filtered')
                 
@@ -170,12 +168,12 @@ def main():
         genesToDiscardControl=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
         ##~~ print to make graphs in R 
         genesPerSample.to_csv('control.genesPerSample.tsv', sep='\t') 
-        genesToDiscardControl.to_csv('contorl.genesToDiscardControl.tsv', sep='\t') 
-    
+        #genesToDiscardControl.to_csv('ciccigenediscard', sep='\t') 
+
 
         ###~~~  GREP
         sample = pd.read_table(args.scsq) 
-        sample.loc[:,"sumGene"] = sample["EmbryoDev"]+ sample["Lethal"]+ sample["Essential"]#+ sample["Misc"] + sample["DDD"]
+        sample.loc[:,"sumGene"] = sample["EmbryoDev"]+ sample["DDD"]+ sample["Lethal"]+ sample["Essential"]+ sample["Misc"]
         #sample.to_csv('sample')
 
         ###~~~ GENIC REGIONS 
@@ -186,16 +184,16 @@ def main():
         listSamples = [line.rstrip('\n') for line in open(args.sl)]
 
         ##~~ integrate with allele freqency calculated in sample to consider
-        #skeylist=sample_filtered.index_x.unique()
-        #smapperAF=makeMapperAF (skeylist, args.svcf, listSamples)
-        #sample_filtered["af"] = sample_filtered.index_x.map(mapperAF)
+        skeylist=sample_filtered.index_x.unique()
+        smapperAF=makeMapperAF (skeylist, args.svcf, listSamples)
+        sample_filtered["af"] = sample_filtered.index_x.map(mapperAF)
         #sample_filtered.to_csv('sample_filtered')
 
         ##~~ integrate with samples ID and csqAlele count 
         smapperAC = {}; smapperSS={}
         ssall=pd.DataFrame()    
 
-        for ll in listSamples:  
+        for ll in listSamples:   
             stmpdf=sample_filtered
             for skey in stmpdf.index_x.unique():
                         salternate=skey.split(':')[2].lstrip('/')                 
@@ -204,8 +202,8 @@ def main():
                         salternateAC = Freq_CSQ_REF_ALT (salternate, srefAllele, saltAlleles, '.', sgenotypesToConsider)     
                         if salternateAC: 
                             if salternateAC[1] >= args.ac: 
-                                smapperAC[skey] = salternateAC[1]   
-                                smapperSS[skey] = ll
+                                smapperAC[key] = salternateAC[1]   
+                                smapperSS[key] = ll
                         stmpdf['ac']= stmpdf.index_x.map(smapperAC)
                         stmpdf['sample'] = stmpdf.index_x.map(smapperSS)
                         ####### tmpdf remove rows with no AC 
@@ -214,19 +212,19 @@ def main():
                         #, tmpdf['sample'].notna()]
                         ssall=pd.concat([ssall, sdf]) 
 
-        #ssall.to_csv('/lustre/home/enza/poicancella/ssall', index=False)             
+        ssall.to_csv('ssall', index=False)             
 
         ##~~ remove genes that shows up in the control args.gt of times over args.i iterations  
-        f1=ssall[~ssall.gene_symbol.isin(genesToDiscardControl['gene_symbol'])]
-        
-        
-        ##~~ remove genes with more than args.maxv variants 
-        variantsPerGene=ssall[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count() 
-        genesToDiscardVariants=variantsPerGene[variantsPerGene['index_x']>= args.maxv]
-        f2=f1[~f1.gene_symbol.isin(genesToDiscardVariants.index)]
+        ff=ssall[~ssall.gene_symbol.isin(genesToDiscardControl['gene_symbol'])]
+
+        ####  TO DO ##########################################
+        ##~~ remove genes with too many variants 
+        variantsPerGene=ssall[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count()
+        ####  rimuovere varianti in variantsPerGene Possiamo farlo solo dopo che c'e un file di prova csq decente  
+
 
         ##~~~ print very final dataframe 
-        f2.to_csv(args.o, sep="\t",index=True)
+        #df_filtered_g.to_csv(args.o, sep="\t",index=True)
 
         ##~~~  filter in regulatory regions
         ##~~~   filter in intergenic 
