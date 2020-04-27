@@ -8,8 +8,9 @@ def makeMapperAF (keylist, vcf, listOfSampleID):
     for key in keylist:
         alternate=key.split(":")[2].lstrip('/')
         genotypesToConsider, refAllele,  altAlleles = takeInfoFromVcf(vcf, key, listOfSampleID)
-        alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
-        if alternateAF: mapperAF[key] = alternateAF[0]  
+        if genotypesToConsider:
+            alternateAF = Freq_CSQ_REF_ALT (alternate, refAllele, altAlleles, '.', genotypesToConsider)     
+            if alternateAF: mapperAF[key] = alternateAF[0]  
     return mapperAF
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -27,18 +28,21 @@ def takeInfoFromVcf(vcf, key , samplesToConsider):
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
-    vcfout =[x.rstrip().split('\t') for  x in result.decode().rstrip().split('\n')]
+    if result:
+        vcfout =[x.rstrip().split('\t') for  x in result.decode().rstrip().split('\n')]
    
-    column2retain=[vcfhead.index(ind) for ind in samplesToConsider]
-    genotypesToConsider=[locus[indx].split(":")[0] for indx in column2retain for locus in vcfout if locus[4]==alternate]
+        column2retain=[vcfhead.index(ind) for ind in samplesToConsider]
+        genotypesToConsider=[locus[indx].split(":")[0] for indx in column2retain for locus in vcfout if locus[4]==alternate]
     #reference=[locus[3] for locus in vcfout if locus[4]==alternate.lstrip('/')][0]
-    reference=''
-    for locus in vcfout: 
-        if alternate  in locus[4].split(','): reference=locus[3]
+        reference=''
+        for locus in vcfout: 
+            if alternate  in locus[4].split(','): reference=locus[3]
     #reference=[locus[3] for locus in vcfout if alternate.lstrip('/')  in locus[4].split(',')][0]
     #dtmp=dict(zip(vcfout[0], vcfout[1]))
     #genotypesToConsider=[dtmp[i].split(':')[0] for i in samplesToConsider]
-    return  genotypesToConsider , reference, alternate #vcfhead, vcfout #dtmp,
+        return  genotypesToConsider , reference, alternate #vcfhead, vcfout #dtmp,
+    else:
+        return False, False, False
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, genotypeslist):
@@ -48,28 +52,29 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
     nbAploidSamples : calculated 
     GTfields = type: list, list of genotypes ["0/0", "0/1", ".", "./."]"""
     myres=False
-    listAlt=altAlleles.split(",")   
-    listAll=[refAllele]+ listAlt
-    stringOfGenotypes=""; nbHaploidSamples=0
-    for item in (genotypeslist):    
-        if item != missing_data_format: 
-            stringOfGenotypes+=item; nbHaploidSamples+=2
-    CountAlleles=[]
-    for i in range(len(listAll)):  # 0 for REF, 1 for ALT1, 2 for ALT2 ...
-        CountAlleles.append(stringOfGenotypes.count(str(i)))
-    dAllele=dict(zip(listAll,CountAlleles))
-    if nbHaploidSamples!=0:
+    if altAlleles:
+        listAlt=altAlleles.split(",")   
+        listAll=[refAllele]+ listAlt
+        stringOfGenotypes=""; nbHaploidSamples=0
+        for item in (genotypeslist):    
+            if item != missing_data_format: 
+                stringOfGenotypes+=item; nbHaploidSamples+=2
+        CountAlleles=[]
+        for i in range(len(listAll)):  # 0 for REF, 1 for ALT1, 2 for ALT2 ...
+            CountAlleles.append(stringOfGenotypes.count(str(i)))
+        dAllele=dict(zip(listAll,CountAlleles))
+        if nbHaploidSamples!=0:
        # freqREF="{0:4.2f}".format(dAllele[refAllele]/nbHaploidSamples)
-        freqAlt=[]
-        for i in listAlt: 
-            freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
-            freqAlt.append(freqAltTemp)
+            freqAlt=[]
+            for i in listAlt: 
+                freqAltTemp="{0:4.2f}".format(dAllele[i]/nbHaploidSamples)
+                freqAlt.append(freqAltTemp)
         #~~~ CSQ 
-        if csqAllele in dAllele:
-            csqAllCount=dAllele[csqAllele]
-            freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
-        else: freqCsq='NA'
-        myres= [freqCsq, csqAllCount]
+            if csqAllele in dAllele:
+                csqAllCount=dAllele[csqAllele]
+                freqCsq="{0:4.2f}".format(csqAllCount/nbHaploidSamples) 
+            else: freqCsq='NA'
+            myres= [freqCsq, csqAllCount]
     return myres
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
