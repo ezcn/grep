@@ -192,8 +192,8 @@ def main():
         if 'csqAllele' in dVepTrans[telem]:     
             vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=vcfkey.split('/')[-1]; genotype=dVepCommon[vcfkey]['genotype']
             #altAlleleCount=2-genotype.count('0')
-            csqCount= csqAlleleCount (csqAllele, altAllele, altAlleleCount, 2)
-            dVepTrans[telem]['csqCount']=csqCount  #1 het #2 homo
+            #csqCount= csqAlleleCount (csqAllele, altAllele, altAlleleCount, 2)
+            #dVepTrans[telem]['csqCount']=csqCount  #1 het #2 homo
 
     #~~check if variant is rare 
     for celem in dVepCommon:
