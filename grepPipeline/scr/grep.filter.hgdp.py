@@ -74,9 +74,9 @@ def Freq_CSQ_REF_ALT (csqAllele, refAllele, altAlleles, missing_data_format, gen
     return myres
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def filter (df, genometype, thresold_rare, threshold_pli, threshold_sumgene, threshold_cadd): 
-    #df_filtered = df[ (df['type']== genometype) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (df.pLI >= threshold_pli) & ( df.sumGene >= threshold_sumgene) & (df.CADD >= df.CADD.quantile(threshold_cadd))] 
-    df_filtered1 = df[ (df['type']== 'genic') & (df.impact!="MODIFIER") & (df.rare != False) & (((df.pLI >= 0.9) &  (df.CADD >= 3)) | (df.sumGene >=2)) ]
+def filter (df, genometype, thresold_rare, threshold_pli, threshold_cadd, threshold_sumgene): 
+    #df_filtered = df[ (df['type']== genometype) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (df.pLI >= threshold_pli) & ( df.sumGene >= threshold_sumgene) & (df.CADD >= df.CADD.quantile(threshold_cadd))]
+    df_filtered = df[ (df['type']== genometype ) & (df.impact!="MODIFIER") & (df.rare != thresold_rare) & (((df.pLI >= threshold_pli) &  (df.CADD >= df.CADD.quantile(threshold_cadd))) | (df.sumGene >=threshold_sumgene)) ]
     return df_filtered
 
 #FUNCTIONS END ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,9 +112,9 @@ def main():
         #~~~  HGDP: Random sampling args.i times of args.n individual to figure out genes that show up on average args.gt% times over args.i  iterations. Annotate genesToDiscardControl in a list and exclude these genes from results 
         ##~~ read and filter annotated info on variable loci in controls  
         control = pd.read_table(args.ccsq) 
-        control.loc[:,"sumGene"] = control["EmbryoDev"]+ control["DDD"]+ control["Lethal"]+ control["Essential"]+ control["Misc"]
+        control.loc[:,"sumGene"] = control["EmbryoDev"]+ control["Lethal"]+ control["Essential"]#+ control["Misc"]+ control["DDD"]
         #control.to_csv('control')
-        control_filtered=filter(control, 'genic', args.r, args.pli, args.g, args.cadd)
+        control_filtered=filter(control, 'genic', args.r, args.pli, args.cadd, args.g)
         #control_filtered.to_csv('control_filtered_pre')
 
         ##~~ repeat args.i times on args.n samples from controls  
@@ -179,7 +179,7 @@ def main():
         #sample.to_csv('sample')
 
         ###~~~ GENIC REGIONS 
-        sample_filtered=filter(sample, 'genic', args.r, args.pli, args.g, args.cadd)
+        sample_filtered=filter(sample, 'genic', args.r, args.pli, args.cadd, args.g)
         #sample_filtered.to_csv('sample_filtered_pre')
 
 
