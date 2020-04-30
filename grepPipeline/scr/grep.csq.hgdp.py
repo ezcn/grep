@@ -9,7 +9,7 @@ import re, sys, argparse, gzip, json, subprocess
 def tabix_cadd(key, db ):
     #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
     (chrom,pos,alternate) = key.split(":")
-    cmd = "tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
+    cmd = "/lustrehome/enza/bin/htslib-1.9/tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
@@ -24,7 +24,7 @@ def tabix_cadd(key, db ):
 def tabix_fathmm(key, db ):
     #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
     (chrom,pos,alternate) = key.split(":")
-    cmd = "tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
+    cmd = "/lustrehome/enza/bin/htslib-1.9/tabix %s %s:%d-%d" % (db, chrom, int(pos), int(pos))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
@@ -188,9 +188,9 @@ def main():
 
     #~~ at each  locus estimate  the number of allele with consequences 
     # TODO: single step, apply function in pandas    
-    for telem in dVepTrans:
-        if 'csqAllele' in dVepTrans[telem]:     
-            vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=vcfkey.split('/')[-1]; genotype=dVepCommon[vcfkey]['genotype']
+    #for telem in dVepTrans:
+        #if 'csqAllele' in dVepTrans[telem]:     
+            #vcfkey=telem[0]; csqAllele=dVepTrans[telem]['csqAllele']; altAllele=vcfkey.split('/')[-1]; genotype=dVepCommon[vcfkey]['genotype']
             #altAlleleCount=2-genotype.count('0')
             #csqCount= csqAlleleCount (csqAllele, altAllele, altAlleleCount, 2)
             #dVepTrans[telem]['csqCount']=csqCount  #1 het #2 homo
