@@ -6,6 +6,7 @@ import re, sys, argparse, gzip, json, subprocess
 
 ###### Functions START ######################## 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'''
 def tabix_cadd(key, db ):
     #db = "/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz"
     (chrom,pos,alternate) = key.split(":")
@@ -34,7 +35,7 @@ def tabix_fathmm(key, db ):
         chrom,pos,ref,alt,score = x.split("\t")
         mapper[chrom+":"+pos+":/"+alt] = score
     return mapper
-
+'''
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def getInfoFromVepLocally (jsonWithVEPannotations):
     vepInfo={}; vepInfoCommon={}    
@@ -178,7 +179,7 @@ def main():
     
     parser.add_argument("-o", help="path to output file  ",type=str, required= True)
     #parser.add_argument("-st", help="path to stats file  ",type=str, required= True)
-    parser.add_argument("-e", help="path to error file",type=str,required=True)
+    #parser.add_argument("-e", help="path to error file",type=str,required=True)
 
     args = parser.parse_args()
         
@@ -223,38 +224,45 @@ def main():
     dSOTermFineRank=VepRankingInfo(args.v)
     soScore = pd.Series(dSOTermFineRank,name="soScore").to_frame().reset_index()
     df_final = df_last.merge(soScore,left_on="most_severe_consequence",right_on="index").set_index("index_x").drop("index_y",axis=1)
-    #df_final.to_csv(args.o,sep="\t",index=True)
 
     #### 4. pLI 
     ### load pli table and add pli to df
+    print('sto facendo pli')
     pLI_score = pd.read_csv(args.pli,sep="\t")
     pliScore=pLI_score[["transcript", "pLI"]]
     df_info = df_final.reset_index().merge(pliScore,left_on="element_id",right_on="transcript",how="left").drop(["transcript", "frequencies", "genotype"] , axis=1)
 
     #### 5. CADD
-    mappercadd = {}
-    for key in df_info.index_x.unique():
-        mappercadd.update(tabix_cadd(key, args.cadd))
+    #mappercadd = {}
+    #for key in df_info.index_x.unique():
+        #mappercadd.update(tabix_cadd(key, args.cadd))
 
-    df_info["CADD"] = df_info.index_x.map(mappercadd)
+    #df_info["CADD"] = df_info.index_x.map(mappercadd)
+    cadd_score=pd.read_csv(args.cadd,sep="\t")
+    df_cadd=df_info.reset_index(drop=True).merge(cadd_score, on='index_x', how='left')
 
     #### 6. fathmm-xf non-coding 
-    mapperfathmm = {}
-    for key in df_info.index_x.unique():
-        mapperfathmm.update(tabix_fathmm(key, args.fathmm))
+    #mapperfathmm = {}
+    #for key in df_info2.index_x.unique():
+        #mapperfathmm.update(tabix_fathmm(key, args.fathmm))
+        #df_info2["fathmm-xf"] = df_info2.index_x.map(mapperfathmm)
+    fathmmNC=pd.read_csv(args.fathmm, sep='\t', header=None)
+    fathmmNC.columns = ['index_x', 'fathmmNonCod']
+    df_fmNC=df_cadd.reset_index(drop=True).merge(fathmmNC, on='index_x', how='left')
+    df_fmNC.to_csv("/lustre/home/enza/poicancella/addedFathmNC.tsv", sep="\t", index=False)
 
-    df_info["fathmm-xf"] = df_info.index_x.map(mapperfathmm)
-
-    #### 6. fathmm-xf coding 
-    mapperfathmmCoding = {}
-    for key in df_info.index_x.unique():
-        mapperfathmmCoding.update(tabix_fathmm(key, args.fathmmcoding))
-
-    df_info["fathmm-xfCoding"] = df_info.index_x.map(mapperfathmmCoding)
+    #### 6. fathmm-xf coding
+    #mapperfathmmCoding = {}
+    #for key in df_info2.index_x.unique():
+        #mapperfathmmCoding.update(tabix_fathmm(key, args.fathmmcoding))
+        #df_info2["fathmm-xfCoding"] = df_info2.index_x.map(mapperfathmmCoding)
+    fathmmCod=pd.read_csv(args.fathmmcoding, sep='\t', header=None)
+    fathmmCod.columns = ['index_x', 'fathmmCoding']
+    df_final=df_fmNC.reset_index(drop=True).merge(fathmmCod, on='index_x', how='left')
 
 
     #### 7. print output tsv 
-    df_info.to_csv(args.o,sep="\t",index=False)
+    df_final.to_csv(args.o,sep="\t",index=False)
   
 
 if __name__ == "__main__":
