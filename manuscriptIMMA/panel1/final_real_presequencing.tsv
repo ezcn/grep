@@ -1,0 +1,49 @@
+grepID	type	shippedToNapoli	qf_sex	qf_outcome	qf_type	array_outcome	array_quality	qf_arraycgh_outcome	shallow_sequencing	Result	quality	final_outcome	total_out
+AS074	MiscarriageRecurrent	20180508	female	ok	normal	8_trisomy	good	8_trisomy		Sequence	Smear	8_trisomy	discarded_after_CGH
+AS006	MiscarriageRecurrent	20180306	female	ok	normal	normal	good	normal_karyotype		Sequence	Quantity,_Smear	normal_karyotype	euploid
+AS054	MiscarriageRecurrent	20180508	male	ok	normal	normal	good	normal_karyotype		Sequence	Quantity,Smear	normal_karyotype	euploid
+AS090	MiscarriageFirst	20180306	male	ok	normal	normal	good	normal_karyotype		Sequence	Quantity,_Smear	normal_karyotype	euploid
+AS094	MiscarriageRecurrent	20180508	female	ok	normal	normal	good	normal_karyotype		Sequence	Smear2	normal_karyotype	euploid
+AS064	MiscarriageRecurrent	20180508	female	ok	normal	unclear	good	unclear		Sequence	Quantity	unclear	unclear
+AS065	MiscarriageRecurrent	20180508	male	ok	normal	unclear	good	unclear		Fail	Quantity	unclear	unclear
+AS080	MiscarriageRecurrent	20180306	male	ok	normal	unclear	low	unclear		Fail	Quantity	unclear	unclear
+AS069	MiscarriageRecurrent	20180306	female	ok	normal	normal	good	normal_karyotype		ToBeSequenced	Quantity	normal_karyotype	euploid
+AS087	MiscarriageRecurrent	20180306	male	ok	normal	normal	good	normal_karyotype		Fail	Quantity,_Smear	normal_karyotype	euploid
+AS023	MiscarriageRecurrent	20190408	female	ok	normal	normal	good	normal_karyotype		NA	NA	normal_karyotype	euploid
+AS068	MiscarriageFirst	20180508	female	ok	normal	notAvailable	notAvailable	notAvailable		NA	NA	notAvailable	notAvailable
+AS015	MiscarriageRecurrent	20180508	female	ok	normal	unclear	low	unclear	normal_karyotype	ToBeSequenced	NA	normal_karyotype	euploid
+AS025	MiscarriageRecurrent	20190408	male	ok	normal	normale	verylow	unclear	normal_karyotype	NA	NA	normal_karyotype	euploid
+AS030	MiscarriageRecurrent	20180508	male	ok	normal	unclear	verylow	unclear	normal_karyotype	ToBeSequenced	NA	normal_karyotype	euploid
+AS036	MiscarriageRecurrent	20180508	female	ok	normal	unclear	verylow	unclear	normal_karyotype	ToBeSequenced	NA	normal_karyotype	euploid
+AS078	MiscarriageRecurrent	20180508	female	ok	normal	unclear	low	unclear	normal_karyotype	ToBeSequenced	NA	normal_karyotype	euploid
+AS093	MiscarriageRecurrent	20180508	female	ok	normal	unclear	low	unclear	normal_karyotype	ToBeSequenced	NA	normal_karyotype	euploid
+AS091	MiscarriageFirst	20180306	male	alterations	triploid	notnecessary	notnecessary	triploid		NA	NA	triploid	discarded_after_qfPCR
+AS086	MiscarriageFirst	20180306	female	ok	normal	12_trisomy	good	12_trisomy		NA	NA	12_trisomy	discarded_after_CGH
+AS050	MiscarriageRecurrent	20190408	male	alterations	13_trisomy	notnecessary	notnecessary	13_trisomy		NA	NA	13_trisomy	discarded_after_qfPCR
+AS076	MiscarriageRecurrent	20180508	female	alterations	13_trisomy	notnecessary	notnecessary	13_trisomy		NA	NA	13_trisomy	discarded_after_qfPCR
+AS044	MiscarriageRecurrent	20190408	female	alterations	15_trisomy	notnecessary	notnecessary	15_trisomy		NA	NA	15_trisomy	discarded_after_qfPCR
+AS053	MiscarriageRecurrent	20180508	female	alterations	16_trisomy	notnecessary	notnecessary	16_trisomy		NA	NA	16_trisomy	discarded_after_qfPCR
+AS061	MiscarriageRecurrent	20180508	female	alterations	16_trisomy	notnecessary	notnecessary	16_trisomy		NA	NA	16_trisomy	discarded_after_qfPCR
+AS100	MiscarriageRecurrent	20190408	female	alterations	16_trisomy	notnecessary	notnecessary	16_trisomy		NA	NA	16_trisomy	discarded_after_qfPCR
+AS115	MiscarriageRecurrent	20190408	male	alterations	16_trisomy	notnecessary	notnecessary	16_trisomy		NA	NA	16_trisomy	discarded_after_qfPCR
+AS073	MiscarriageRecurrent	20180508	male	alterations	18_trisomy	notnecessary	notnecessary	18_trisomy		NA	NA	18_trisomy	discarded_after_qfPCR
+AS099	MiscarriageFirst	20180508	na	alterations	18_trisomy	notnecessary	notnecessary	18_trisomy		NA	NA	18_trisomy	discarded_after_qfPCR
+AS038	MiscarriageRecurrent	20190408	male	alterations	21_trisomy	notnecessary	notnecessary	21_trisomy		NA	NA	21_trisomy	discarded_after_qfPCR
+AS083	MiscarriageRecurrent	20180508	female	alterations	21_trisomy	notnecessary	notnecessary	21_trisomy		NA	NA	21_trisomy	discarded_after_qfPCR
+AS062	MiscarriageRecurrent	20190408	female	alterations	unbalanced18	duplication22	good	22_duplication		NA	NA	22_duplication	discarded_after_qfPCR
+AS011	MiscarriageRecurrent	20190408	female	alterations	22_trisomy	notnecessary	notnecessary	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS032	MiscarriageRecurrent	20180306	male	alterations	22_trisomy	22_trisomy	low	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS047	MiscarriageRecurrent	20180508	male	alterations	22_trisomy	notnecessary	notnecessary	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS057	MiscarriageRecurrent	20180306	male	alterations	22_trisomy	notnecessary	notnecessary	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS071	MiscarriageRecurrent	20180508	male	ok	normale	22_trisomy	good	22_trisomy		NA	NA	22_trisomy	discarded_after_CGH
+AS092	MiscarriageRecurrent	20180306	male	alterations	22_trisomy	notnecessary	notnecessary	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS114	MiscarriageRecurrent	20190408	female	alterations	22_trisomy	notnecessary	notnecessary	22_trisomy		NA	NA	22_trisomy	discarded_after_qfPCR
+AS118	MiscarriageRecurrent	20190408	female	ok	normale	3_trisomy	good	3_trisomy		NA	NA	3_trisomy	discarded_after_CGH
+AS043	MiscarriageRecurrent	20180508	male	ok	normale	7_trisomy	low	7_trisomy		NA	NA	7_trisomy	discarded_after_CGH
+AS059	MiscarriageRecurrent	20180508	female	contamination	contamination	notnecessary	notnecessary	maternal_contamination		NA	NA	maternal_contamination	maternal_contamination
+AS060	MiscarriageRecurrent	20190408	female	contamination	contamination	contamination	contamination	maternal_contamination		NA	NA	maternal_contamination	maternal_contamination
+AS072	MiscarriageRecurrent	20180508	female	contamination	contamination	notnecessary	notnecessary	maternal_contamination		NA	NA	maternal_contamination	maternal_contamination
+AS079	MiscarriageRecurrent	20190408	female	contamination	contamination	contamination	contamination	maternal_contamination		NA	NA	maternal_contamination	maternal_contamination
+AS098	MiscarriageFirst	20180508	female	contamination	contamination	notnecessary	notnecessary	maternal_contamination		NA	NA	maternal_contamination	maternal_contamination
+AS051	MiscarriageRecurrent	20180508	female	alterations	X_monosomy	notnecessary	notnecessary	X_monosomy		NA	NA	X_monosomy	discarded_after_qfPCR
+AS095	MiscarriageFirst	20180508	female	alterations	X_monosomy	notnecessary	notnecessary	X_monosomy		NA	NA	X_monosomy	discarded_after_qfPCR
