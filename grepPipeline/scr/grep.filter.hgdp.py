@@ -138,11 +138,18 @@ def main():
                 #control_filtered.to_csv('control_filtered')
                 
                 ##~~ integrate with samples ID and csqAlele count 
-                mapperAC = {}; mapperSS={}
+                #mapperAC = {}; mapperSS={}
                 control_filtered_allsamples=pd.DataFrame()    
 
                 for ss in randomSample:  
                     tmpdf=control_filtered
+                    tmpSamp=read_table('%s/%s.%s.counts' %( args.pahtTodir, ss, args.chrom) )
+                    seleziona solo righe con AC>= args.ac
+
+                    df= merge tmpdf, tmpSam by key 
+                    
+
+                    """
                     for key in tmpdf.index_x.unique():
                         alternate=key.split(':')[2].lstrip('/')                 
                         ###~~ csq allele counts for sample ss at locus key 
@@ -154,13 +161,15 @@ def main():
                                 mapperSS[key] = ss
                         tmpdf['ac']= tmpdf.index_x.map(mapperAC)
                         tmpdf['sample'] = tmpdf.index_x.map(mapperSS)
+                        
                         ####### tmpdf remove rows with no AC 
                         df = tmpdf[tmpdf['ac'].notna()]
                         df = tmpdf[tmpdf['sample'].notna()]
                         #, tmpdf['sample'].notna()]
-                        control_filtered_allsamples=pd.concat([control_filtered_allsamples, df])
-                        #control_filtered_allsamples.to_csv("control_filtered_allsamples1205", sep="\t") 
-
+                     """   
+                    control_filtered_allsamples=pd.concat([control_filtered_allsamples, df])
+                         #control_filtered_allsamples.to_csv("control_filtered_allsamples1205", sep="\t") 
+                          
                 #control_filtered_allsamples.to_csv('control_filtered_allsamples', index=False)                
                 ##~~ subset for loci with AF>0 in sampleToConsider 
                 ##~~ count each gene only once per sample -> gene symbol, in how many samples it is found 
