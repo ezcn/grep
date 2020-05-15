@@ -240,7 +240,7 @@ def main():
         ##~~ remove genes with more than args.maxv variants 
         variantsPerGene=ssall[['index_x' , 'gene_symbol']].drop_duplicates().groupby(['gene_symbol']).count() 
         genesToDiscardVariants=variantsPerGene[variantsPerGene['index_x']>= args.maxv]
-        f2=f1[~f1.gene_symbol.isin(genesToDiscardVariants.index)]
+        f2=f1[~f1.gene_symbol.isin(genesToDiscardVariants.index)].drop_duplicates()
 
         ##~~~ print very final dataframe
         #out.close() 
