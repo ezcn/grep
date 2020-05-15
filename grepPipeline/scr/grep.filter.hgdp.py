@@ -103,7 +103,8 @@ def main():
         parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
         parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
         parser.add_argument("-maxv", help=" maximum variants per gene ",type=int , required= True)
-
+        parser.add_argument("-pathTodir", help="path to file directory  ",type=str, required= True)
+        parser.add_argument("-chrom", help="chromosome name  ",type=str, required= True)
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
         parser.add_argument("-e", help="path to error file",type=str,required=True)
         args = parser.parse_args()
@@ -143,11 +144,11 @@ def main():
 
                 for ss in randomSample:  
                     tmpdf=control_filtered
-                    tmpSamp=read_table('%s/%s.%s.counts' %( args.pahtTodir, ss, args.chrom) )
-                    seleziona solo righe con AC>= args.ac
+                    tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodir, ss, args.chrom) )
+                    tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>=args.ac )]
+                    print(tmpSamp)
+                    df=tmpdf.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 
-                    df= merge tmpdf, tmpSam by key 
-                    
 
                     """
                     for key in tmpdf.index_x.unique():
@@ -168,12 +169,12 @@ def main():
                         #, tmpdf['sample'].notna()]
                      """   
                     control_filtered_allsamples=pd.concat([control_filtered_allsamples, df])
-                         #control_filtered_allsamples.to_csv("control_filtered_allsamples1205", sep="\t") 
+                    #control_filtered_allsamples.to_csv("control_filtered_allsamples", sep="\t") 
                           
                 #control_filtered_allsamples.to_csv('control_filtered_allsamples', index=False)                
                 ##~~ subset for loci with AF>0 in sampleToConsider 
                 ##~~ count each gene only once per sample -> gene symbol, in how many samples it is found 
-                tmpg=control_filtered_allsamples[[ 'gene_symbol', 'sample']].drop_duplicates().groupby('gene_symbol').count().transform(lambda x: x /float(args.n) )
+                tmpg=control_filtered_allsamples[[ 'gene_symbol', 'ID']].drop_duplicates().groupby('gene_symbol').count().transform(lambda x: x /float(args.n) )
                 #tmpg.to_csv('tmpg%s' % (cycle) , sep='\t') #, index=False)
 
                 if cycle==1:  genesPerSample=tmpg # create genesPerSample at first cycle 
@@ -182,8 +183,8 @@ def main():
         genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
         genesToDiscardControl=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
         ##~~ print to make graphs in R 
-        genesPerSample.to_csv('genesPerSample_b.tsv', sep='\t') 
-        genesToDiscardControl.to_csv('genesToDiscardControl_b.tsv', sep='\t') 
+        genesPerSample.to_csv('genesPerSample.tsv', sep='\t') 
+        genesToDiscardControl.to_csv('genesToDiscardControl.tsv', sep='\t') 
     
 
         ###~~~  GREP
@@ -227,7 +228,7 @@ def main():
                         #sdf.to_csv("sdf1205", sep="\t")
                         #, tmpdf['sample'].notna()]
                         ssall=pd.concat([ssall, sdf])
-                        #ssall.to_csv("ssall1205", sep="\t") 
+                        #ssall.to_csv("ssallnew", sep="\t") 
 
         #ssall.to_csv('/lustre/home/enza/poicancella/ssall', index=False)             
 
