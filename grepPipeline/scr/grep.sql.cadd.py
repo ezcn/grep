@@ -9,6 +9,7 @@ def main():
 	###~~~ input files
 	parser.add_argument("-i", help="path to input vep table file ",type=str,required=True)
 	###~~~~ databases
+	parser.add_argument("-cadd", help="path to table of pLI score  ",type=str, required= True)
 	parser.add_argument("-g", help="path to gene file list ",required=True)
 	parser.add_argument("-pli", help="path to table of pLI score  ",type=str, required= True)
 	parser.add_argument('-fathmmcoding', help="path to fathmm file",type=str, required= True)
@@ -22,6 +23,10 @@ def main():
 
 	conn = sqlite3.connect(args.db)  ### create new sql db
 	c = conn.cursor()
+	###### open CADD table and create new table inside grep.db
+	df=pd.read_table(args.cadd, sep="\t")
+	df.columns = df.columns.str.strip()
+	df.to_sql("caddTab", conn)
 	###### open vep table with pandas and create table inside grep.db 
 	df=pd.read_table(args.i, sep="\t", index_col= "Uploaded_variation")  ####apro file con pandas na_values="-"
 	df.columns = df.columns.str.strip()
