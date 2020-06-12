@@ -1,0 +1,14 @@
+[1] "Pda_F4\tTot Number of Uniqe Variants\t1727"
+[1] "Pda_F4\tTot Number of NOB\t243"
+# A tibble: 3 x 2
+  impact       n
+  <fct>    <int>
+1 LOW        710
+2 MODERATE   986
+3 HIGH        31
+[1] "Pda_F4\tAverage number of sites per sample\t185.9"
+[1] "Pda_F4\tSd number of sites per sample\t10.0382601414123"
+[1] "Pda_F4\tTotal number of Unique Genes\t1281"
+[1] "Pda_F4\tTotal number of Unique Transcripts\t1281"
+[1] "Pda_F4\tAverage number of genes per sample\t178.4"
+[1] "Pda_F4\tSd number of genes per sample\t11.0674698503718"
