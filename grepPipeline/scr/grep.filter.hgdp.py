@@ -19,13 +19,13 @@ def takeInfoFromVcf(vcf, key , samplesToConsider):
     (chrom,pos,tmpalternate) = key.split(":")
     alternate=tmpalternate.lstrip('/')
 
-    cmd_head = "tabix -H %s %s:%d-%d | tail -1 " % (vcf, chrom, int(pos), int(pos))
+    cmd_head = "/lustrehome/enza/bin/htslib-1.9/tabix -H %s %s:%d-%d | tail -1 " % (vcf, chrom, int(pos), int(pos))
     proc_head = subprocess.Popen(cmd_head, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result_head, err = proc_head.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
     vcfhead=result_head.decode().rstrip().split('\t')
 
-    cmd = "tabix  %s %s:%d-%d " % (vcf, chrom, int(pos), int(pos))
+    cmd = "/lustrehome/enza/bin/htslib-1.9/tabix  %s %s:%d-%d " % (vcf, chrom, int(pos), int(pos))
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     result, err = proc.communicate()
     if err: raise IOError("** Error running %s key for %s on %s" % (keyString, db))
@@ -105,6 +105,8 @@ def main():
         parser.add_argument("-maxv", help=" maximum variants per gene ",type=int , required= True)
         parser.add_argument("-pathTodir", help="path to file directory  ",type=str, required= True)
         parser.add_argument("-chrom", help="chromosome name  ",type=str, required= True)
+        parser.add_argument("-ctgn", help="path to control genes file",type=str,required=True)
+        parser.add_argument("-gtd", help="path to genes to discard file",type=str,required=True)
         parser.add_argument("-o", help="path to output file  ",type=str, required= True)
         parser.add_argument("-e", help="path to error file",type=str,required=True)
         args = parser.parse_args()
@@ -125,7 +127,7 @@ def main():
         cycle=0
         while cycle < args.i: 
                 cycle+=1
-                print('sto facendo ciclo', cycle)
+                #print('sto facendo ciclo', cycle)
 
                 ##~~ choose a random sample form controls of size args.n  
                 randomSample=random.sample(listControl, args.n)
@@ -146,7 +148,7 @@ def main():
                     tmpdf=control_filtered
                     tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodir, ss, args.chrom) )
                     tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>=args.ac )]
-                    print(tmpSamp)
+                    #print(tmpSamp)
                     df=tmpdf.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 
 
@@ -183,8 +185,8 @@ def main():
         genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
         genesToDiscardControl=genesPerSample[genesPerSample['GrandMean']> float(args.gt)]
         ##~~ print to make graphs in R 
-        genesPerSample.to_csv('genesPerSample.tsv', sep='\t') 
-        genesToDiscardControl.to_csv('genesToDiscardControl.tsv', sep='\t') 
+        genesPerSample.to_csv(args.ctgn, sep='\t') 
+        genesToDiscardControl.to_csv(args.gtd, sep='\t') 
     
 
         ###~~~  GREP
@@ -244,7 +246,7 @@ def main():
 
         ##~~~ print very final dataframe
         #out.close() 
-        f2.to_csv(args.o, sep="\t",index=True)
+        f2.to_csv(args.o, sep="\t",index=False)
 
         ##~~~  filter in regulatory regions
         ##~~~   filter in intergenic 
