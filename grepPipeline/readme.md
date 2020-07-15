@@ -18,7 +18,7 @@ vep --af_1kg --af_gnomad --appris --biotype --buffer_size 5000 --check_existing 
 ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/
 
 
-#### 3. per chromosome annotate sites with grep.csq.sql.py 
+#### 3. parsing sites per chromosome with grep.csq.sql.py 
 Annotate samples 
 ```
 python3 /grepPipeline/scr/grep.csq.sql.py -db /db/sample.chrx.db -i vep/all.sample.chrx.vep.tsv -g testdata/db/all_geneList.tsv -pli testdata/db/pLIscore.tsv -fathmmcoding /lustre/home/enza/fathmm_database/coding/fathmm_xf_coding.$(chr).tsv -fathmmnc /lustre/home/enza/fathmm_database/noncoding/fathmm_xf_noncoding.$(chr).tsv -o /lustre/home/enza/grep/csq/all.sample.chrx.sql.csq
