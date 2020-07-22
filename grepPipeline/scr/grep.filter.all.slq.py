@@ -6,7 +6,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	###~~~~ new sql db name
 	parser.add_argument("-dbC", help="path to control db ",type=str,required=True)
-	parser.add_argument("-dbC", help="path to control db ",type=str,required=True)
+	parser.add_argument("-dbS", help="path to control db ",type=str,required=True)
 	###~~~ input files
 	#parser.add_argument("-scsq", help="path to input grep csq file ",type=str,required=True)
 	#parser.add_argument("-ccsq", help="path to input hgdp csq file ",type=str,required=True)
