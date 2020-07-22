@@ -5,10 +5,11 @@ import re, sys, argparse
 def main():
 	parser = argparse.ArgumentParser()
 	###~~~~ new sql db name
-	parser.add_argument("-db", help="path to new db ",type=str,required=True)
+	parser.add_argument("-dbC", help="path to control db ",type=str,required=True)
+	parser.add_argument("-dbC", help="path to control db ",type=str,required=True)
 	###~~~ input files
-	parser.add_argument("-scsq", help="path to input grep csq file ",type=str,required=True)
-	parser.add_argument("-ccsq", help="path to input hgdp csq file ",type=str,required=True)
+	#parser.add_argument("-scsq", help="path to input grep csq file ",type=str,required=True)
+	#parser.add_argument("-ccsq", help="path to input hgdp csq file ",type=str,required=True)
 	parser.add_argument("-cl", help="list of control samples id ",type=str,required=True)
 	parser.add_argument("-sl", help="list of sampes id ",type=str,required=True)
 	###~~~ filtering arguments
@@ -26,6 +27,7 @@ def main():
 	parser.add_argument("-gtd", help="path to genes to discard file",type=str,required=True)
 
 	###~~~ Grep arguments
+	parser.add_argument("-gps", help="path to input hgdp gene per sample file ",type=str,required=True)
 	parser.add_argument("-pathTodir", help="path to file directory  ",type=str, required= True)
 	parser.add_argument("-chrom", help="chromosome name  ",type=str, required= True)
 	parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
@@ -35,26 +37,26 @@ def main():
 	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	args = parser.parse_args()
 
-
-	conn = sqlite3.connect(args.db)  ### create new sql db
+	##### open hgdp db
+	conn = sqlite3.connect(args.dbC)  ### create new sql db
 	c = conn.cursor()
 	###### open vep table with pandas and create table inside grep.db 
-	df_grep=pd.read_table(args.scsq, sep="\t", index_col= "Uploaded_variation")  ####apro file con pandas na_values="-"
-	df_grep.columns = df.columns.str.strip()
-	df_grep.to_sql("myTable", conn)
-	df_grep=pd.read_table(args.ccsq, sep="\t", index_col= "Uploaded_variation")
-	df_grep.columns = df.columns.str.strip()
-	df_grep.to_sql("myCtr", conn)
+	#df_grep=pd.read_table(args.scsq, sep="\t", index_col= "Uploaded_variation")  ####apro file con pandas na_values="-"
+	#df_grep.columns = df.columns.str.strip()
+	#df_grep.to_sql("myTable", conn)
+	#df_grep=pd.read_table(args.ccsq, sep="\t", index_col= "Uploaded_variation")
+	#df_grep.columns = df.columns.str.strip()
+	#df_grep.to_sql("myCtr", conn)
 
 	###### retrieve frequencies for control samples
 	thr = args.ff
 
 	c.execute('CREATE TABLE freqTable1Ctr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real);')
 
-	c.execute("INSERT INTO freqTable1Ctr SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM myCtr;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
+	c.execute("INSERT INTO freqTable1Ctr SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM noncodjoin;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
 
 	conn.commit()
-	
+
 	thr = args.f
 
 	c.execute('CREATE TABLE freqTableCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real);')
@@ -113,13 +115,22 @@ def main():
 
 		genesPerSample.to_csv(args.ctgn, sep='\t')
 		genesToDiscardControl.to_csv(args.gtd, sep='\t')
-	
+
+	conn.close()
+	#### open grep db
+	conn = sqlite3.connect(args.dbS) 
+	c = conn.cursor()
+	#### load table genePerSample in grep db
+	genesPerSample = pd.read_table(args.gps, sep="\t")
+	genesPerSample.columns = genesPerSample.columns.str.strip()
+	genesPerSample.to_sql("genesMean", conn)
+
 	###### retrieve frequencies Grep samples
 	thr = args.ff
 
 	c.execute('CREATE TABLE freqTable1 (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real);')
 
-	c.execute("INSERT INTO freqTable SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM myTable;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
+	c.execute("INSERT INTO freqTable SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM noncodjoin;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
 
 	conn.commit()
 
@@ -153,8 +164,8 @@ def main():
 	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
 	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
-	df_final.to_csv()
-	df_final = pd.read_sql_query(query,conn)
+	#df_final.to_csv()
+	#df_final = pd.read_sql_query(query,conn)
 	
 	listSamples = [line.rstrip('\n') for line in open(args.sl)]
 	ssall=pd.DataFrame()
@@ -170,7 +181,7 @@ def main():
 	ssall.to_sql("grepFilter", conn)
 	#df=pd.read_table(args.ctrlgen, sep="\t")
 	#df.columns = df.columns.str.strip()
-	genesPerSample.to_sql("genesMean", conn)
+	#genesPerSample.to_sql("genesMean", conn)
 
 	hgdpMean = args.gt
 	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.gene_symbol WHERE GrandMean < ?; " , (hgdpMean,))
