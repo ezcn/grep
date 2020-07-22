@@ -24,13 +24,12 @@ def main():
 	###~~~ HGDP arguments
 	parser.add_argument("-n", help="number of individual to sample ",type=int,required=True)
 	parser.add_argument("-i", help="number of iterations ",type=int,required=True)
-	parser.add_argument("-pathTodirCtrl", help="path to file directory  ",type=str, required= True)
+	parser.add_argument("-pathTodirCtrl", help="path to file with control allele counts directory  ",type=str, required= True)
 	parser.add_argument("-ctgn", help="path to control genes file",type=str,required=True)
 	parser.add_argument("-gtd", help="path to genes to discard file",type=str,required=True)
 
 	###~~~ Grep arguments
-	parser.add_argument("-gps", help="path to input hgdp gene per sample file ",type=str,required=True)
-	parser.add_argument("-pathTodir", help="path to file directory  ",type=str, required= True)
+	parser.add_argument("-pathTodir", help="path to file with sample allele counts directory  ",type=str, required= True)
 	parser.add_argument("-chrom", help="chromosome name  ",type=str, required= True)
 	parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
 	#parser.add_argument("-ctrlgen", help="path to hgdp genes to discard file ",type=str,required=True)
@@ -123,7 +122,7 @@ def main():
 	conn = sqlite3.connect(args.dbS) 
 	c = conn.cursor()
 	#### load table genePerSample in grep db
-	genesPerSample = pd.read_table(args.gps, sep="\t")
+	genesPerSample = pd.read_table(args.ctgn, sep="\t")
 	genesPerSample.columns = genesPerSample.columns.str.strip()
 	genesPerSample.to_sql("genesMean", conn)
 
