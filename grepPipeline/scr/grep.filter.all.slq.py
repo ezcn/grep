@@ -13,10 +13,11 @@ def main():
 	parser.add_argument("-cl", help="list of control samples id ",type=str,required=True)
 	parser.add_argument("-sl", help="list of sampes id ",type=str,required=True)
 	###~~~ filtering arguments
-	parser.add_argument("-f", help="threshold for first rare frequency definition ", type=float,required=True)
-	parser.add_argument("-ff", help="threshold for second rare frequency definition", type=float,required=True)
+	parser.add_argument("-ff", help="threshold for first rare frequency definition (01) ", type=float,required=True)
+	parser.add_argument("-f", help="threshold for second rare frequency definition (05)", type=float,required=True)
 	parser.add_argument("-type", help=" feature_type(genic , intergenic, regularoty) ", type=str,required=True)
-	parser.add_argument("-r", help=" rare variant not equal to", type=str,required=True)
+	parser.add_argument("-r", help=" rare variant not equal to (01)", type=str,required=True)
+	parser.add_argument("-rr", help=" rare variant for second threshold not equal to (05)", type=str,required=True)
 	parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
 	parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
 	parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
@@ -66,14 +67,14 @@ def main():
 
 	conn.commit()
 	###### create sumGene column in control samples df
-	c.execute('CREATE TABLE sumgeneTabCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare real, sumGene real);')
+	c.execute('CREATE TABLE sumgeneTabCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real, sumGene real);')
 
 	c.execute("INSERT INTO sumgeneTabCtr SELECT Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,MAX_AF,CADD_RAW, CADD_PHRED, pLIscore, EmbryoDev, DDD, Lethal, Essential, Misc, index_x text, FathmmCod, FathmmNonCod,rare, (EmbryoDev + DDD + Lethal + Essential + Misc) FROM freqTableCtr;")
 
 	conn.commit()
 
 	###### create CADD percentile column in control samples df
-	c.execute("CREATE TABLE finalTableCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare real, sumGene real, caddPercent real);")
+	c.execute("CREATE TABLE finalTableCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real, sumGene real, caddPercent real);")
 
 
 	c.execute("INSERT INTO finalTableCtr SELECT * , ROUND(PERCENT_RANK() OVER (ORDER BY CADD_RAW),3) FROM sumgeneTabCtr WHERE CADD_RAW != '-';")
@@ -81,11 +82,11 @@ def main():
 	conn.commit()
 
 	######## filter control samples 
-	typ = args.type ; rareThresh = args.r ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
+	typ = args.type ; rareThresh = args.r ; rareThresh2 = args.rr ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
-	df_finalCtr = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
+	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	df_finalCtr = pd.read_sql_query(query,conn, params = (typ,rareThresh, rareThresh2, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_finalHg.to_csv()
 	#df_finalHg = pd.read_sql_query(query,conn)
@@ -143,14 +144,14 @@ def main():
 
 	conn.commit()
 	###### create sumGene column grep samples
-	c.execute('CREATE TABLE sumgeneTab (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare real, sumGene real);')
+	c.execute('CREATE TABLE sumgeneTab (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real, sumGene real);')
 
 	c.execute("INSERT INTO sumgeneTab SELECT Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,MAX_AF,CADD_RAW, CADD_PHRED, pLIscore, EmbryoDev, DDD, Lethal, Essential, Misc, index_x text, FathmmCod, FathmmNonCod,rare, (EmbryoDev + DDD + Lethal + Essential + Misc) FROM freqTable;")
 
 	conn.commit()
 
 	###### create CADD percentile column grep samples
-	c.execute("CREATE TABLE finalTable (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare real, sumGene real, caddPercent real);")
+	c.execute("CREATE TABLE finalTable (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real, sumGene real, caddPercent real);")
 
 
 	c.execute("INSERT INTO finalTable SELECT * , ROUND(PERCENT_RANK() OVER (ORDER BY CADD_RAW),3) FROM sumgeneTab WHERE CADD_RAW != '-';")
@@ -159,11 +160,11 @@ def main():
 
 	########## FILTERING grep samples
 
-	typ = args.type ; rareThresh = args.r ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
+	typ = args.type ; rareThresh = args.r ; rareThresh2 = args.rr ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
-	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
+	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, rareThresh2, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_final.to_csv()
 	#df_final = pd.read_sql_query(query,conn)
