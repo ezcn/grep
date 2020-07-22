@@ -14,7 +14,7 @@ def main():
 	parser.add_argument("-sl", help="list of sampes id ",type=str,required=True)
 	###~~~ filtering arguments
 	parser.add_argument("-f", help="threshold for first rare frequency definition ", type=float,required=True)
-	parser.add_argument("-f", help="threshold for second rare frequency definition", type=float,required=True)
+	parser.add_argument("-ff", help="threshold for second rare frequency definition", type=float,required=True)
 	parser.add_argument("-type", help=" feature_type(genic , intergenic, regularoty) ", type=str,required=True)
 	parser.add_argument("-r", help=" rare variant not equal to", type=str,required=True)
 	parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
