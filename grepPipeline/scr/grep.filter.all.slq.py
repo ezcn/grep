@@ -162,7 +162,7 @@ def main():
 	typ = args.type ; rareThresh = args.r ; rareThresh2 = args.rr ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
 	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, rareThresh2, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_final.to_csv()
