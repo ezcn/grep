@@ -16,8 +16,8 @@ def main():
 	parser.add_argument("-ff", help="threshold for first rare frequency definition (01) ", type=float,required=True)
 	parser.add_argument("-f", help="threshold for second rare frequency definition (05)", type=float,required=True)
 	parser.add_argument("-type", help=" feature_type(genic , intergenic, regularoty) ", type=str,required=True)
-	parser.add_argument("-r", help=" rare variant not equal to (01)", type=str,required=True)
-	parser.add_argument("-rr", help=" rare variant for second threshold not equal to (05)", type=str,required=True)
+	parser.add_argument("-r", help=" rare variant not equal to (05)", type=str,required=True)
+	#parser.add_argument("-rr", help=" rare variant for second threshold not equal to (05)", type=str,required=True)
 	parser.add_argument("-pli", help="threshold for  pLI score  ",type=float, required= True)
 	parser.add_argument("-cadd", help=" treshold for CADD score  ",type=float , required= True)
 	parser.add_argument("-g", help=" number of gene lists  ",type=float , required= True)
@@ -81,11 +81,11 @@ def main():
 	conn.commit()
 
 	######## filter control samples 
-	typ = args.type ; rareThresh = args.r ; rareThresh2 = args.rr ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
+	typ = args.type ; rareThresh = args.r  ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
-	df_finalCtr = pd.read_sql_query(query,conn, params = (typ,rareThresh, rareThresh2, pliscore, caddscore, numgene))
+	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	df_finalCtr = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_finalHg.to_csv()
 	#df_finalHg = pd.read_sql_query(query,conn)
@@ -159,11 +159,11 @@ def main():
 
 	########## FILTERING grep samples
 
-	typ = args.type ; rareThresh = args.r ; rareThresh2 = args.rr ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
+	typ = args.type ; rareThresh = args.r ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare01 != ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
-	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, rareThresh2, pliscore, caddscore, numgene))
+	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ?  AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_final.to_csv()
 	#df_final = pd.read_sql_query(query,conn)
