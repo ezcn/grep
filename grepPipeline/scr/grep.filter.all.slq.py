@@ -194,8 +194,7 @@ def main():
 	conn.commit()
 	query = "SELECT * FROM noCtrlGenes;"
 	df_end = pd.read_sql_query(query,conn)
-	df_end.fillna(0)
-	df_end.to_csv(args.o, sep = "\t", index = False)
+	df_end.to_csv(args.o, sep = "\t", na_rep= "NA", index = False)
 
 
 if __name__ == "__main__":
