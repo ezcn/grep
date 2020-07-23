@@ -95,8 +95,10 @@ def main():
 	cycle=0
 	while cycle < args.i:
 		cycle+=1
+		print("sto facendo ciclo")
 		##~~ choose a random sample form controls of size args.n
 		randomSample=random.sample(listControl, args.n)
+		print(randomSample)
 		##~~ integrate with samples ID and csqAlele count
 		control_filtered_allsamples=pd.DataFrame()
 		for ss in randomSample:
