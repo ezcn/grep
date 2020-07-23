@@ -185,7 +185,7 @@ def main():
 	#genesPerSample.to_sql("genesMean", conn)
 
 	hgdpMean = args.gt
-	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.gene_symbol WHERE GrandMean < ?; " , (hgdpMean,))
+	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL WHERE GrandMean < ?; " , (hgdpMean,))
 
 	variants = args.maxv
 	c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL HAVING COUNT (DISTINCT index_x) >=?;" ,(variants,))
