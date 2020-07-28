@@ -134,11 +134,11 @@ def main():
 
 	conn.commit()
 
-	thr = args.f
+	thr2 = args.f
 
 	c.execute('CREATE TABLE freqTable (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real);')
 
-	c.execute("INSERT INTO freqTable SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM freqTable1;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
+	c.execute("INSERT INTO freqTable SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM freqTable1;" ,(thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,))
 
 	conn.commit()
 	###### create sumGene column grep samples
