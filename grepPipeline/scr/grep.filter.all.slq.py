@@ -184,7 +184,7 @@ def main():
 	c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL;")
 	#HAVING COUNT (DISTINCT index_x) >=?;" ,(variants,))
 	query1 = "SELECT * FROM variantsPerGene;"
-	variants = variants.read_sql_query(query,conn)
+	variants = pd.read_sql_query(query1,conn)
 	variants.to_csv(args.v, sep = "\t", index = False)
 	#c.execute("DELETE FROM noCtrlGenes WHERE EXISTS (SELECT * FROM variantsPerGene WHERE variantsPerGene.SYMBOL = noCtrlGenes.SYMBOL);")
 	conn.commit()
