@@ -41,15 +41,12 @@ def main():
 	##### open hgdp db
 	conn = sqlite3.connect(args.dbC)  ### create new sql db
 	c = conn.cursor()
-	###### open vep table with pandas and create table inside grep.db 
-	#df_grep=pd.read_table(args.scsq, sep="\t", index_col= "Uploaded_variation")  ####apro file con pandas na_values="-"
-	#df_grep.columns = df.columns.str.strip()
-	#df_grep.to_sql("myTable", conn)
-	#df_grep=pd.read_table(args.ccsq, sep="\t", index_col= "Uploaded_variation")
-	#df_grep.columns = df.columns.str.strip()
-	#df_grep.to_sql("myCtr", conn)
-
-	###### retrieve frequencies for control samples
+	##### remove tables pli, fathmm and gene list
+	c.execute("DROP TABLE pLItable;")
+	c.execute("DROP TABLE geneList;")
+	c.execute("DROP TABLE fatmTab;")
+	c.execute("DROP TABLE fatmNCtab;")
+	####### add info to hgdp table
 	thr = args.ff
 
 	c.execute('CREATE TABLE freqTable1Ctr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real);')
