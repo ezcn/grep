@@ -34,7 +34,7 @@ def main():
 	parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
 	#parser.add_argument("-ctrlgen", help="path to hgdp genes to discard file ",type=str,required=True)
 	parser.add_argument("-gt", help="threshold for excluding genes ",type=float,required=True)
-	parser.add_argument("-maxv", help=" maximum variants per gene ",type=int , required= True)
+	parser.add_argument("-v", help=" path to file for variants per gene count ",type=int , required= True)
 	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	args = parser.parse_args()
 
@@ -84,7 +84,7 @@ def main():
 	typ = args.type ; rareThresh = args.r  ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	query = "SELECT * FROM finalTableCtr WHERE IMPACT != 'MODIFIER' AND Feature_type = ? AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
 	df_finalCtr = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
 	#query = "SELECT * FROM filtro;"
 	#df_finalHg.to_csv()
@@ -106,9 +106,9 @@ def main():
 			tmpSamp["sample"] = ss
 			df=tmpdf.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 			control_filtered_allsamples=pd.concat([control_filtered_allsamples, df])
-			tmpg=control_filtered_allsamples[[ 'SYMBOL', 'ID']].drop_duplicates().groupby('SYMBOL').count().transform(lambda x: x /float(args.n) )
-			if cycle==1:  genesPerSample=tmpg  # create genesPerSample at first cycle
-			else: genesPerSample=genesPerSample.join(tmpg, on='SYMBOL', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
+		tmpg=control_filtered_allsamples[[ 'SYMBOL', 'ID']].drop_duplicates().groupby('SYMBOL').count().transform(lambda x: x /float(args.n) )
+		if cycle==1:  genesPerSample=tmpg  # create genesPerSample at first cycle
+		else: genesPerSample=genesPerSample.join(tmpg, on='SYMBOL', how='outer', lsuffix='_genesPerSample', rsuffix='_tmpg').fillna(0)
 		
 	##~~ make GrandMean over args.i and discard genes that on average shows up in args.gt individuals over args.i iterations	
 	genesPerSample['GrandMean']=genesPerSample.sum(axis=1 )/float(args.i)
@@ -161,11 +161,8 @@ def main():
 	typ = args.type ; rareThresh = args.r ; pliscore = args.pli ; caddscore = args.cadd ; numgene = args.g
 
 	#c.execute("CREATE TABLE filtro AS SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ? AND rare != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?);" , (typ,rareThresh, pliscore, caddscore, numgene,))
-	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND feature_type = ?  AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
+	query = "SELECT * FROM finalTable WHERE IMPACT != 'MODIFIER' AND Feature_type = ?  AND rare05 != ? AND (pLIscore >= ? AND caddPercent >= ? OR sumGene >= ?); "
 	df_final = pd.read_sql_query(query,conn, params = (typ,rareThresh, pliscore, caddscore, numgene))
-	#query = "SELECT * FROM filtro;"
-	#df_final.to_csv()
-	#df_final = pd.read_sql_query(query,conn)
 	
 	listSamples = [line.rstrip('\n') for line in open(args.sl)]
 	ssall=pd.DataFrame()
@@ -179,17 +176,17 @@ def main():
 		
 
 	ssall.to_sql("grepFilter", conn)
-	#df=pd.read_table(args.ctrlgen, sep="\t")
-	#df.columns = df.columns.str.strip()
-	#genesPerSample.to_sql("genesMean", conn)
 
-	hgdpMean = args.gt
-	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL WHERE GrandMean < ?; " , (hgdpMean,))
-
-	variants = args.maxv
-	c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL HAVING COUNT (DISTINCT index_x) >=?;" ,(variants,))
-
-	c.execute("DELETE FROM noCtrlGenes WHERE EXISTS (SELECT * FROM variantsPerGene WHERE variantsPerGene.SYMBOL = noCtrlGenes.SYMBOL);")
+	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.*, CASE WHEN genesMean.GrandMean IS NULL THEN 0 ELSE genesMean.GrandMean END as GrandMean FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL;")
+	#hgdpMean = args.gt
+	#c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL WHERE GrandMean <= ?; " , (hgdpMean,))
+	#variants = args.maxv
+	c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL;")
+	#HAVING COUNT (DISTINCT index_x) >=?;" ,(variants,))
+	query1 = "SELECT * FROM variantsPerGene;"
+	variants = variants.read_sql_query(query,conn)
+	variants.to_csv(args.v, sep = "\t", index = False)
+	#c.execute("DELETE FROM noCtrlGenes WHERE EXISTS (SELECT * FROM variantsPerGene WHERE variantsPerGene.SYMBOL = noCtrlGenes.SYMBOL);")
 	conn.commit()
 	query = "SELECT * FROM noCtrlGenes;"
 	df_end = pd.read_sql_query(query,conn)
