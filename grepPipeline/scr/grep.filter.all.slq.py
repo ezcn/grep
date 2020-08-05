@@ -42,10 +42,10 @@ def main():
 	conn = sqlite3.connect(args.dbC)  ### create new sql db
 	c = conn.cursor()
 	##### remove tables pli, fathmm and gene list
-	c.execute("DROP TABLE pLItable;")
-	c.execute("DROP TABLE geneList;")
-	c.execute("DROP TABLE fatmTab;")
-	c.execute("DROP TABLE fatmNCtab;")
+	#c.execute("DROP TABLE pLItable;")
+	#c.execute("DROP TABLE geneList;")
+	#c.execute("DROP TABLE fatmTab;")
+	#c.execute("DROP TABLE fatmNCtab;")
 	########## Replace - with 0 in frequencies columns
 	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomAD_AF = REPLACE (gnomAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
 	####### add info to hgdp table
