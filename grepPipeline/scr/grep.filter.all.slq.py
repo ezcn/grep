@@ -173,6 +173,8 @@ def main():
 	for ss in listSamples:
 		tmpgrep=df_final
 		tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodir, ss, args.chrom) )
+		if "chr" in tmpSamp.loc[0].key:
+			tmpSamp.key = tmpSamp.key.str.lstrip("chr")
 		tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>= args.ac )]
 		df=tmpgrep.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 		ssall=pd.concat([ssall, df])
