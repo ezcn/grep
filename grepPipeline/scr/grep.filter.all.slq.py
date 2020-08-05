@@ -46,12 +46,14 @@ def main():
 	c.execute("DROP TABLE geneList;")
 	c.execute("DROP TABLE fatmTab;")
 	c.execute("DROP TABLE fatmNCtab;")
+	########## Replace - with 0 in frequencies columns
+	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomaAD_AF = REPLACE (gnomaAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
 	####### add info to hgdp table
 	thr = args.ff
 
 	c.execute('CREATE TABLE freqTable1Ctr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real);')
 
-	c.execute("INSERT INTO freqTable1Ctr SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM noncodjoin;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
+	c.execute("INSERT INTO freqTable1Ctr SELECT *, CASE WHEN AFR_AF =0 AND AMR_AF =0 AND ASN_AF =0 AND EUR_AF =0 AND EAS_AF =0 AND SAS_AF =0 AND AA_AF =0 AND EA_AF =0 AND gnomAD_AFR_AF =0 AND gnomAD_AMR_AF =0 AND gnomAD_ASJ_AF =0 AND gnomAD_EAS_AF =0 AND gnomAD_FIN_AF =0 AND gnomAD_NFE_AF =0 AND gnomAD_OTH_AF =0 AND gnomAD_SAS_AF =0 THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM noncodjoin;" ,(thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,thr,))
 
 	conn.commit()
 
@@ -59,7 +61,7 @@ def main():
 
 	c.execute('CREATE TABLE freqTableCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,AF real,AFR_AF real,AMR_AF real,ASN_AF real,EUR_AF real,EAS_AF real,SAS_AF real,AA_AF real,EA_AF real,gnomAD_AF real,gnomAD_AFR_AF real,gnomAD_AMR_AF real,gnomAD_ASJ_AF real,gnomAD_EAS_AF real,gnomAD_FIN_AF real,gnomAD_NFE_AF real,gnomAD_OTH_AF real,gnomAD_SAS_AF real,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real);')
 
-	c.execute("INSERT INTO freqTableCtr SELECT *, CASE WHEN AFR_AF ='-' AND AMR_AF ='-' AND ASN_AF ='-' AND EUR_AF ='-' AND EAS_AF ='-' AND SAS_AF ='-' AND AA_AF ='-' AND EA_AF ='-' AND gnomAD_AF ='-' AND gnomAD_AFR_AF ='-' AND gnomAD_AMR_AF ='-' AND gnomAD_ASJ_AF ='-' AND gnomAD_EAS_AF ='-' AND gnomAD_FIN_AF ='-' AND gnomAD_NFE_AF ='-' AND gnomAD_OTH_AF ='-' AND gnomAD_SAS_AF ='-' THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM freqTable1Ctr;" ,(thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,))
+	c.execute("INSERT INTO freqTableCtr SELECT *, CASE WHEN AFR_AF =0 AND AMR_AF =0 AND ASN_AF =0 AND EUR_AF =0 AND EAS_AF =0 AND SAS_AF =0 AND AA_AF =0 AND EA_AF =0 AND gnomAD_AFR_AF =0 AND gnomAD_AMR_AF =0 AND gnomAD_ASJ_AF =0 AND gnomAD_EAS_AF =0 AND gnomAD_FIN_AF =0 AND gnomAD_NFE_AF =0 AND gnomAD_OTH_AF =0 AND gnomAD_SAS_AF =0 THEN 'NOB' WHEN AFR_AF <=? AND AMR_AF <=? AND ASN_AF <=? AND EUR_AF <=? AND EAS_AF <=? AND SAS_AF <=? AND AA_AF <=? AND EA_AF <=? AND gnomAD_AFR_AF <=? AND gnomAD_AMR_AF <=? AND gnomAD_ASJ_AF <=? AND gnomAD_EAS_AF <=? AND gnomAD_FIN_AF <=? AND gnomAD_NFE_AF <=? AND gnomAD_OTH_AF <=? AND gnomAD_SAS_AF <=? THEN 'true' ELSE 'false' END FROM freqTable1Ctr;" ,(thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,thr2,))
 
 	conn.commit()
 	###### create sumGene column in control samples df
@@ -178,11 +180,11 @@ def main():
 	#hgdpMean = args.gt
 	#c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.* FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL WHERE GrandMean <= ?; " , (hgdpMean,))
 	#variants = args.maxv
-	c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL;")
+	#c.execute("CREATE TABLE variantsPerGene AS SELECT index_x, SYMBOL ,COUNT (DISTINCT index_x) FROM noCtrlGenes GROUP BY SYMBOL;")
 	#HAVING COUNT (DISTINCT index_x) >=?;" ,(variants,))
-	query1 = "SELECT * FROM variantsPerGene;"
-	variants = pd.read_sql_query(query1,conn)
-	variants.to_csv(args.v, sep = "\t", index = False)
+	#query1 = "SELECT * FROM variantsPerGene;"
+	#variants = pd.read_sql_query(query1,conn)
+	#variants.to_csv(args.v, sep = "\t", index = False)
 	#c.execute("DELETE FROM noCtrlGenes WHERE EXISTS (SELECT * FROM variantsPerGene WHERE variantsPerGene.SYMBOL = noCtrlGenes.SYMBOL);")
 	conn.commit()
 	query = "SELECT * FROM noCtrlGenes;"
