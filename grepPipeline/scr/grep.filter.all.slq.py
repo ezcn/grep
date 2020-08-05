@@ -105,6 +105,8 @@ def main():
 				tmpSamp.key = tmpSamp.key.str.lstrip("chr")
 			tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>=args.ac )]
 			tmpSamp["sample"] = ss
+			if "chr" in tmpdf.loc[0].index_x:
+				tmpdf.index_x = tmpdf.index_x.str.lstrip("chr")
 			df=tmpdf.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 			control_filtered_allsamples=pd.concat([control_filtered_allsamples, df])
 		tmpg=control_filtered_allsamples[[ 'SYMBOL', 'ID']].drop_duplicates().groupby('SYMBOL').count().transform(lambda x: x /float(args.n) )
@@ -175,6 +177,8 @@ def main():
 		tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodir, ss, args.chrom) )
 		if "chr" in tmpSamp.loc[0].key:
 			tmpSamp.key = tmpSamp.key.str.lstrip("chr")
+		if "chr" in tmpgrep.loc[0].index_x:
+			tmpgrep.index_x = tmpgrep.index_x.str.lstrip("chr")
 		tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>= args.ac )]
 		df=tmpgrep.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 		ssall=pd.concat([ssall, df])
