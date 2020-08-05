@@ -47,7 +47,7 @@ def main():
 	c.execute("DROP TABLE fatmTab;")
 	c.execute("DROP TABLE fatmNCtab;")
 	########## Replace - with 0 in frequencies columns
-	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomAD_AF = REPLACE (gnomaAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
+	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomAD_AF = REPLACE (gnomAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
 	####### add info to hgdp table
 	thr = args.ff
 
@@ -124,7 +124,7 @@ def main():
 	genesPerSample.columns = genesPerSample.columns.str.strip()
 	genesPerSample.to_sql("genesMean", conn)
 
-	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomAD_AF = REPLACE (gnomaAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
+	c.execute("UPDATE noncodjoin SET AFR_AF = REPLACE (AFR_AF, '-', 0) , AMR_AF = REPLACE (AMR_AF, '-', 0) , ASN_AF = REPLACE (ASN_AF, '-', 0) , EUR_AF = REPLACE (EUR_AF, '-', 0) , EAS_AF = REPLACE (EAS_AF, '-', 0) , SAS_AF = REPLACE (SAS_AF, '-', 0) , AA_AF = REPLACE (AA_AF, '-', 0) , EA_AF = REPLACE (EA_AF, '-', 0) , gnomAD_AF = REPLACE (gnomAD_AF, '-', 0), gnomAD_AFR_AF = REPLACE (gnomAD_AFR_AF, '-', 0) ,  gnomAD_AMR_AF = REPLACE (gnomAD_AMR_AF, '-', 0) , gnomAD_ASJ_AF = REPLACE (gnomAD_ASJ_AF, '-', 0), gnomAD_EAS_AF = REPLACE (gnomAD_EAS_AF, '-', 0), gnomAD_FIN_AF = REPLACE (gnomAD_FIN_AF, '-', 0), gnomAD_NFE_AF = REPLACE (gnomAD_NFE_AF, '-', 0), gnomAD_OTH_AF = REPLACE (gnomAD_OTH_AF, '-', 0), gnomAD_SAS_AF = REPLACE (gnomAD_SAS_AF, '-', 0),  CADD_RAW = REPLACE (CADD_RAW, '-', 0);")
 
 
 	###### retrieve frequencies Grep samples
