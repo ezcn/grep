@@ -101,6 +101,8 @@ def main():
 		for ss in randomSample:
 			tmpdf=df_finalCtr
 			tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodirCtrl, ss, args.chrom) )
+			if "chr" in tmpSamp.loc[0].key:
+				tmpSamp.key = tmpSamp.key.str.lstrip("chr")
 			tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>=args.ac )]
 			tmpSamp["sample"] = ss
 			df=tmpdf.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
