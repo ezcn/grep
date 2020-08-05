@@ -34,7 +34,7 @@ def main():
 	parser.add_argument("-ac", help=" allele count >= of   ",type=int , required= True)
 	#parser.add_argument("-ctrlgen", help="path to hgdp genes to discard file ",type=str,required=True)
 	parser.add_argument("-gt", help="threshold for excluding genes ",type=float,required=True)
-	parser.add_argument("-v", help=" path to file for variants per gene count ",type=str , required= True)
+	#parser.add_argument("-v", help=" path to file for variants per gene count ",type=str , required= True)
 	parser.add_argument("-o", help="path to output file  ",type=str, required= True)
 	args = parser.parse_args()
 
