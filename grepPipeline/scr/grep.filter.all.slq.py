@@ -189,7 +189,7 @@ def main():
 		#df_final.to_csv("filtropdaslq" , sep="\t", index=False)
 		
 
-	ssall.to_sql("grepFilter", conn)
+	ssall.to_sql("grepFilter", conn,if_exists="replace")
 	c.execute("DROP TABLE IF EXISTS noCtrlGenes;")
 	c.execute("CREATE TABLE noCtrlGenes AS SELECT grepFilter.*, CASE WHEN genesMean.GrandMean IS NULL THEN 0 ELSE genesMean.GrandMean END as GrandMean FROM grepFilter LEFT JOIN genesMean ON grepFilter.SYMBOL = genesMean.SYMBOL;")
 	#hgdpMean = args.gt
