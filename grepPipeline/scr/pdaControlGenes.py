@@ -17,27 +17,35 @@ def main():
 	conn = sqlite3.connect(args.db)
 	c = conn.cursor()
 	### open file with candidate genes
-	df=pd.read_table(args.cg, sep="\t")
+	df=pd.read_table(args.cg)
 	df.columns = df.columns.str.strip()
 	df.to_sql("CandidateGenes", conn)
+
 	###### find candidate genes in csq files
+	c.execute("DROP TABLE IF EXISTS CandidateGenes;")
 	query = "SELECT * FROM noncodjoin JOIN CandidateGenes ON noncodjoin.Gene = CandidateGenes.Gene;"
 	dfCtr = pd.read_sql_query(query, conn)
 
 	##### add sample and AltCounts
-	listSamples = [line.rstrip('\n') for line in open(args.sl)]
-	allcontrol=pd.DataFrame()
-	for ss in listSamples:
-		tmpPda=dfCtr
-		tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( args.pathTodir, ss, args.chrom) )
-		if "chr" in tmpSamp.loc[0].key:
-			tmpSamp.key = tmpSamp.key.str.lstrip("chr")
+
+	def countedSC(df, listSamples, pathTodir, chrom, output):
+		
 		if "chr" in tmpPda.loc[0].index_x:
 			tmpPda.index_x = tmpPda.index_x.str.lstrip("chr")
-		tmpSamp = tmpSamp[ (tmpSamp['ALTcount']>= args.ac )]
-		df=tmpPda.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
-		allcontrol=pd.concat([allcontrol, df])	
-	allcontrol.to_csv(args.o, sep = "\t", na_rep= "NA", index = False)
+		
+		allCandidateGenes=pd.DataFrame()
+		
+		for sample in listSamples:
+			tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( pathTodir, sample, chrom) )
+			if "chr" in tmpSamp.loc[0].key:
+				tmpSamp.key = tmpSamp.key.str.lstrip("chr")
+			df=tmpPda.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
+			allCandidateGenes=pd.concat([allCandidateGenes, df])
+		
+		allCandidateGenes.to_csv(output, sep = "\t", na_rep= "NA", index = False)
+
+	listSamples = [line.rstrip('\n') for line in open(args.sl)]
+	countedSC(df, listSamples, args.pathTodir, args.chrom, args.o)
 
 if __name__ == "__main__":
 	main()
