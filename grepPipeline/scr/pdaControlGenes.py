@@ -30,6 +30,7 @@ def main():
 
 	def countedSC(df, listSamples, pathTodir, chrom, output):
 		
+		tmpPda = dfCtr
 		if "chr" in tmpPda.loc[0].index_x:
 			tmpPda.index_x = tmpPda.index_x.str.lstrip("chr")
 		
