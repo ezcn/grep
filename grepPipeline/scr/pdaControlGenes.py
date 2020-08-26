@@ -19,9 +19,9 @@ def main():
 	### open file with candidate genes
 	df=pd.read_table(args.cg, sep="\t")
 	df.columns = df.columns.str.strip()
-	df.to_sql("controlGenes", conn)
+	df.to_sql("CandidateGenes", conn)
 	###### find candidate genes in csq files
-	query = "SELECT * FROM noncodjoin JOIN controlGenes ON noncodjoin.Gene = controlGenes.Gene;"
+	query = "SELECT * FROM noncodjoin JOIN CandidateGenes ON noncodjoin.Gene = CandidateGenes.Gene;"
 	dfCtr = pd.read_sql_query(query, conn)
 
 	##### add sample and AltCounts
