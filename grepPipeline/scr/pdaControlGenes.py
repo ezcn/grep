@@ -16,13 +16,13 @@ def main():
 	#### access to db
 	conn = sqlite3.connect(args.db)
 	c = conn.cursor()
+	c.execute("DROP TABLE IF EXISTS CandidateGenes;")
 	### open file with candidate genes
 	df=pd.read_table(args.cg)
 	df.columns = df.columns.str.strip()
 	df.to_sql("CandidateGenes", conn)
 
 	###### find candidate genes in csq files
-	c.execute("DROP TABLE IF EXISTS CandidateGenes;")
 	query = "SELECT * FROM noncodjoin JOIN CandidateGenes ON noncodjoin.Gene = CandidateGenes.Gene;"
 	dfCtr = pd.read_sql_query(query, conn)
 
