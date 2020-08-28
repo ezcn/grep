@@ -68,7 +68,7 @@ def main():
 	c.execute("DROP TABLE IF EXISTS sumgeneTabCtr;")
 	c.execute('CREATE TABLE sumgeneTabCtr (Uploaded_variation text,Location text,Allele text,Gene text,Feature text,Feature_type text,Consequence text,cDNA_position integer,CDS_position integer,Protein_position integer,Amino_acids text,Codons text,Existing_variation text,IMPACT text,SYMBOL text,STRAND text,SIFT real,PolyPhen real,EXON integer,MAX_AF real,CADD_RAW real, CADD_PHRED real, pLIscore real, EmbryoDev real, DDD real, Lethal real, Essential real, Misc real, Candidate_gene real, index_x text, FathmmCod real, FathmmNonCod real, rare01 real, rare05 real, sumGene real);')
 
-	c.execute("INSERT INTO sumgeneTabCtr SELECT Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,MAX_AF,CADD_RAW, CADD_PHRED, pLIscore, EmbryoDev, DDD, Lethal, Essential, Misc, Candidate_gene, index_x text, FathmmCod, FathmmNonCod,rare01,rare05, (EmbryoDev + DDD + Lethal + Essential + Misc + Candidate_gene) FROM freqTableCtr;")
+	c.execute("INSERT INTO sumgeneTabCtr SELECT Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,MAX_AF,CADD_RAW, CADD_PHRED, pLIscore, EmbryoDev, DDD, Lethal, Essential, Misc, Candidate_gene, index_x text, FathmmCod, FathmmNonCod,rare01,rare05, (EmbryoDev + DDD + Lethal + Essential + Misc ) FROM freqTableCtr;")
 
 	conn.commit()
 
