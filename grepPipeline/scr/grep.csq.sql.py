@@ -24,9 +24,9 @@ def main():
 	c.execute("DROP TABLE IF EXISTS pLItable;")
 	c.execute("DROP TABLE IF EXISTS geneList;")
 	c.execute("DROP TABLE IF EXISTS fatmTab;")
-	c.execute("DROP TABLE IF EXISTS fatmNCtab;"
-	###### open vep table with pandas and create table inside grep.db 
-	df=pd.read_table(args.i, sep="\t", index_col= "Uploaded_variation")  ####apro file con pandas na_values="-"
+	c.execute("DROP TABLE IF EXISTS fatmNCtab;")
+	###### open vep table with pandas and create table inside grep.db
+	df = pd.read_table(args.i, sep="\t", index_col= "Uploaded_variation")
 	df.columns = df.columns.str.strip()
 	df.to_sql("myTable", conn)
 	###### open pLI table and create new table inside grep.db
