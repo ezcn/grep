@@ -1,0 +1,15 @@
+[1] "Grep_gm0.05\tTot Number of Uniqe Variants\t467"
+[1] "Grep_gm0.05\tTot Number of NOB\t98"
+# A tibble: 2 x 2
+  IMPACT       n
+  <fct>    <int>
+1 HIGH        18
+2 MODERATE   449
+[1] "Grep_gm0.05\tAverage number of sites per sample\t52.6"
+[1] "Grep_gm0.05\tSd number of sites per sample\t10.9666160079884"
+[1] "Grep_gm0.05\tTotal number of Unique Genes\t425"
+[1] "Grep_gm0.05\tTotal number of Unique Transcripts\t668"
+[1] "Grep_gm0.05\tAverage number of genes per sample\t50.9"
+[1] "Grep_gm0.05\tSd number of genes per sample\t10.3650052259192"
+[1] "Grep_gm0.05\tAverage number of transcripts per sample\t77.1"
+[1] "Grep_gm0.05\tSd number of transcripts per sample\t16.1689001893553"
