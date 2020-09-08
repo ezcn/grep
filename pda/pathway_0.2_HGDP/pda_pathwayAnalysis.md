@@ -92,3 +92,9 @@ for(i in ID[,]){
 }
 
 ```
+
+### Convert EntrezID using conversion table
+
+```
+cat pda_geneID_to_entrezID.tsv| grep -E -w -- '23279|6790|55706|10401|7153|4927|332|81929' | cut -f 1 | tr "\n" ","
+```

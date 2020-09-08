@@ -1,0 +1,7 @@
+"ID"	"Description"	"GeneRatio"	"BgRatio"	"pvalue"	"p.adjust"	"qvalue"	"geneID"	"Count"
+"R-HSA-448424"	"Interleukin-17 signaling"	"3/41"	"72/10654"	0.00262441541898445	0.267965857348269	0.243844975944071	"466/1848/64806"	3
+"R-HSA-198725"	"Nuclear Events (kinase and transcription factor activation)"	"2/41"	"25/10654"	0.00409857886483006	0.267965857348269	0.243844975944071	"466/1848"	2
+"R-HSA-1428517"	"The citric acid (TCA) cycle and respiratory electron transport"	"4/41"	"174/10654"	0.0043458397590631	0.267965857348269	0.243844975944071	"1743/5160/7384/7386"	4
+"R-HSA-389661"	"Glyoxylate metabolism and glycine degradation"	"2/41"	"31/10654"	0.00626088451748291	0.267965857348269	0.243844975944071	"1743/5160"	2
+"R-HSA-450282"	"MAPK targets/ Nuclear events mediated by MAP kinases"	"2/41"	"31/10654"	0.00626088451748291	0.267965857348269	0.243844975944071	"466/1848"	2
+"R-HSA-8939236"	"RUNX1 regulates transcription of genes involved in differentiation of HSCs"	"3/41"	"130/10654"	0.0134999886973121	0.270938333127669	0.246549885039934	"865/4005/6688"	3
