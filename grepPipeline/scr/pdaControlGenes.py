@@ -28,7 +28,7 @@ def main():
 
 	##### add sample and AltCounts
 
-	def countedSC(df, listSamples, pathTodir, chrom, output):
+	def countedSC(dfCtr, listSamples, pathTodir, chrom, output):
 		
 		tmpPda = dfCtr
 		if "chr" in tmpPda.loc[0].index_x:
