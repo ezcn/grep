@@ -31,14 +31,14 @@ def main():
 	def countedSC(dfCtr, listSamples, pathTodir, chrom, output):
 		
 		tmpPda = dfCtr
-		if "chr" in tmpPda.loc[0].index_x:
+		if "chr" in tmpPda.iloc[0].index_x:
 			tmpPda.index_x = tmpPda.index_x.str.lstrip("chr")
 		
 		allCandidateGenes=pd.DataFrame()
 		
 		for sample in listSamples:
 			tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( pathTodir, sample, chrom) )
-			if "chr" in tmpSamp.loc[0].key:
+			if "chr" in tmpSamp.iloc[0].key:
 				tmpSamp.key = tmpSamp.key.str.lstrip("chr")
 			df=tmpPda.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 			allCandidateGenes=pd.concat([allCandidateGenes, df])
