@@ -46,9 +46,11 @@ def main():
 		allCandidateGenes.to_csv(output, sep = "\t", na_rep= "NA", index = False)
 
 	listSamples = [line.rstrip('\n') for line in open(args.sl)]
-	print(dfCtr)
-	print(args.pathTodir, args.chrom, args.o)
-	countedSC(dfCtr, listSamples, args.pathTodir, args.chrom, args.o)
+	try:
+		countedSC(dfCtr, listSamples, args.pathTodir, args.chrom, args.o)
+	except Exception as e:
+		"Candidate genes absents, skip..."
+	
 
 if __name__ == "__main__":
 	main()
