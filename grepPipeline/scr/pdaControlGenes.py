@@ -31,8 +31,8 @@ def main():
 	def countedSC(dfCtr, listSamples, pathTodir, chrom, output):
 		
 		tmpPda = dfCtr
-		if "chr" in tmpPda.loc[0].index:
-			tmpPda.index = tmpPda.index.str.lstrip("chr")
+		if "chr" in tmpPda.loc[0].index_x:
+			tmpPda.index_x = tmpPda.index_x.str.lstrip("chr")
 		
 		allCandidateGenes=pd.DataFrame()
 		
@@ -40,13 +40,13 @@ def main():
 			tmpSamp=pd.read_table('%s/%s.%s_counts.tsv' %( pathTodir, sample, chrom) )
 			if "chr" in tmpSamp.loc[0].key:
 				tmpSamp.key = tmpSamp.key.str.lstrip("chr")
-			df=tmpPda.reset_index(drop=True).merge(tmpSamp, left_on='index', right_on='key').drop("key",axis=1)
+			df=tmpPda.reset_index(drop=True).merge(tmpSamp, left_on='index_x', right_on='key').drop("key",axis=1)
 			allCandidateGenes=pd.concat([allCandidateGenes, df])
 		
 		allCandidateGenes.to_csv(output, sep = "\t", na_rep= "NA", index = False)
 
 	listSamples = [line.rstrip('\n') for line in open(args.sl)]
-	countedSC(df, listSamples, args.pathTodir, args.chrom, args.o)
+	countedSC(dfCtr, listSamples, args.pathTodir, args.chrom, args.o)
 
 if __name__ == "__main__":
 	main()
