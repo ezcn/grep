@@ -46,6 +46,8 @@ def main():
 		allCandidateGenes.to_csv(output, sep = "\t", na_rep= "NA", index = False)
 
 	listSamples = [line.rstrip('\n') for line in open(args.sl)]
+	print(dfCtr)
+	print(args.pathTodir, args.chrom, args.o)
 	countedSC(dfCtr, listSamples, args.pathTodir, args.chrom, args.o)
 
 if __name__ == "__main__":
