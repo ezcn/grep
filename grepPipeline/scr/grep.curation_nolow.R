@@ -11,7 +11,7 @@ if (length(args)==0) {
 
 code=args[2]
 mydata=read.table(args[1], header=T, sep='\t')
-myf = mydata %>% filter(GrandMean <= 0.2) %>% filter(IMPACT != "LOW")
+myf <- mydata %>% filter(pLIscore >= 0.9 & caddPercent >=0.9 | sumGene >=2) %>% filter(GrandMean <= 0.05) %>% filter(IMPACT != "LOW")
 myf$impact= factor(myf$IMPACT,levels=c( 'MODERATE','HIGH'))
 #maxv <- myf %>% group_by(index_x, SYMBOL) %>% count() %>% filter(n<=args[3])
 maxv <- myf %>% select(index_x, Feature, SYMBOL) %>% distinct() %>% group_by( SYMBOL) %>% tally() %>% filter(n<=5)
@@ -93,7 +93,7 @@ csqtype=myd %>% select(ID, index_x, IMPACT, Consequence) %>% distinct() %>% grou
 #number$impact= factor(number$impact,levels=c('HIGH','MODERATE'))
 nbcolors=length(levels(myd$Consequence)) 
 mycolors <- colorRampPalette(brewer.pal(8,'Set2'))(nbcolors)
-ggplot(csqtype, aes(as.factor(ID), n, fill=Consequence)) + geom_bar(stat='identity')  + theme_bw()+ facet_wrap (IMPACT ~ ., scales='free')+ scale_fill_manual(values = mycolors) +coord_flip() +labs(fill = "Most severe Consequence", y='Number of unique variants', x='' ) #+ ggtitle(paste(code, '- most_severe_consequence', sep=' '))
+ggplot(csqtype, aes(as.factor(ID), n, fill=Consequence)) + geom_bar(stat='identity')  + theme_bw()+ facet_wrap (IMPACT ~ ., scales='free')+ scale_fill_manual(values = mycolors) +coord_flip() +labs(fill = "Consequences", y='Number of unique variants', x='' ) #+ ggtitle(paste(code, '- most_severe_consequence', sep=' '))
 ggsave(paste(code, '_most_severe_consequence.png', sep=''))
 
 
@@ -149,11 +149,20 @@ sh<-myd %>% select (index_x, IMPACT, SYMBOL, ID, ALTcount) %>%distinct() %>% gro
 mydsh <- merge(myd,sh)
 mydsh$ID <- as.factor(mydsh$ID)
 mycol = c("#e2979c","#e7305b", "#f4ebc1", "#a0c1b8")
+#mycol = c("#e2979c", "#f4ebc1", "#a0c1b8")
 mydsh %>% select(ID, SYMBOL, ALTcount, IMPACT)  %>% mutate(colorTile = ifelse (IMPACT == "HIGH" & ALTcount == 2 ,"highHom" , ifelse(IMPACT == "HIGH" & ALTcount ==1 , "highHet", ifelse(IMPACT == "MODERATE" & ALTcount == 2, "ModHom", "ModHet")))) %>% ggplot(aes(ID, SYMBOL, fill = as.factor(colorTile))) + geom_tile() + scale_fill_manual(values= mycol) + theme_bw() + theme(axis.text.x = element_text(angle=90, hjust=1)) + xlab("") + ylab("") + theme(legend.title=element_blank())
-ggsave(paste(code, '_aggregate_impact_count.png', sep=''),width = 15, height = 20)
+ggsave(paste(code, '_aggregate_impact_count.png', sep=''),width = 10, height = 15)
 
 ##### not shared genes
+mycol = c("#e2979c","#e7305b", "#f4ebc1", "#a0c1b8")
 Nsh<-myd %>% select (index_x, IMPACT, SYMBOL, ID, ALTcount) %>%distinct() %>% group_by( IMPACT, SYMBOL)  %>% count() %>% rename(notShared = n) %>% filter(notShared==1)
 mydnsh<-merge(myd,Nsh)
 mydnsh %>% select(index_x, IMPACT, SYMBOL, ID, ALTcount) %>% distinct() %>% mutate(colorTile = ifelse (IMPACT == "HIGH" & ALTcount == 2 ,"highHom" , ifelse(IMPACT =="HIGH" & ALTcount ==1 , "highHet", ifelse(IMPACT == "MODERATE" & ALTcount == 2, "ModHom", "ModHet")))) %>% ggplot(aes(SYMBOL, fill= as.factor(colorTile))) +geom_bar() + coord_flip() + facet_wrap( .~ ID ,scale= "free", ncol = 10) + scale_fill_manual(values = mycol) + ylim(0,2) + theme_bw() + xlab("") + ylab("") + theme(legend.title=element_blank())
 ggsave(paste(code, '_individual_impact_count.png', sep='') , width = 15, height = 20)
+
+#### all genes per sample
+mycol = c("#e2979c","#e7305b", "#f4ebc1", "#a0c1b8")
+allg<-myd %>% select (index_x, IMPACT, SYMBOL, ID, ALTcount) %>%distinct() %>% group_by( IMPACT, SYMBOL)  %>% count() %>% rename(allGenes = n)
+mydallg<-merge(myd,allg)
+mydallg %>% select(index_x, IMPACT, SYMBOL, ID, ALTcount) %>% distinct() %>% mutate(colorTile = ifelse (IMPACT == "HIGH" & ALTcount == 2 ,"highHom" , ifelse(IMPACT =="HIGH" & ALTcount ==1 , "highHet", ifelse(IMPACT == "MODERATE" & ALTcount == 2, "ModHom", "ModHet")))) %>% ggplot(aes(SYMBOL, fill= as.factor(colorTile))) +geom_bar() + coord_flip() + facet_wrap( .~ ID ,scale= "free", ncol = 10) + scale_fill_manual(values = mycol) + ylim(0,2) + theme_bw() + xlab("") + ylab("") + theme(legend.title=element_blank())
+ggsave(paste(code, '_allGenes_impact_count.png', sep='') , width = 15, height = 20)
