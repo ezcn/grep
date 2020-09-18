@@ -11,7 +11,8 @@ if (length(args)==0) {
 
 code=args[2]
 mydata=read.table(args[1], header=T, sep='\t')
-myf <- mydata %>% filter(pLIscore >= 0.9 & caddPercent >=0.9 | sumGene >=2) %>% filter(GrandMean <= 0.05) %>% filter(IMPACT != "LOW")
+#myf <- mydata %>% filter(pLIscore >= 0.9 & caddPercent >=0.9 | sumGene >=2) %>% filter(GrandMean <= 0.05) %>% filter(IMPACT != "LOW")
+myf <- mydata %>% filter(GrandMean <= 0.05) %>% filter(IMPACT != "LOW")
 myf$impact= factor(myf$IMPACT,levels=c( 'MODERATE','HIGH'))
 #maxv <- myf %>% group_by(index_x, SYMBOL) %>% count() %>% filter(n<=args[3])
 maxv <- myf %>% select(index_x, Feature, SYMBOL) %>% distinct() %>% group_by( SYMBOL) %>% tally() %>% filter(n<=5)
@@ -136,6 +137,7 @@ ggsave(paste(code, '_plicadd.png', sep=''))
 ### Aggregate analysis 
 print('aggregate')
 mycol=c( "#FF5959", "#49BEB7")
+
 myd %>% select (IMPACT, SYMBOL, ID) %>%distinct() %>% group_by( IMPACT, SYMBOL)  %>% tally() %>% filter(n>1) %>% ggplot( aes(reorder(SYMBOL, n), n, fill=IMPACT)) + geom_bar(stat='identity', position='dodge') + xlab('genes') + ylab('number of samples') + scale_fill_manual(values=mycol) + coord_flip() + theme_minimal() + facet_wrap (IMPACT ~ ., scales ='free') + ggtitle(paste(code, '- Genes shared among samples', sep=' ')) 
 ggsave(paste(code, '_aggregate.png', sep='')) 
 
