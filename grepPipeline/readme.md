@@ -88,7 +88,7 @@ python3 grep.filter.all.slq.py -db /control/db/hgdp.$(chr).full.db -dbS /samples
 ```
 - concat all chromosomes -> allSamples.filtered.tsv
 
-#### 9. Format results with [grep.curation_nolow.R](ezcn/grep/tree/master/grepPipeline/scr/grep.curation_nolow.R) 
+#### 9. Format results with [grep.curation_nolow.R](https://github.com/ezcn/grep/tree/master/grepPipeline/scr/grep.curation_nolow.R) 
 
 ```
 Rscript grepPipeline/scr/grep.curation_nolow.R allSamples.filtered.tsv Grep_allsamples
