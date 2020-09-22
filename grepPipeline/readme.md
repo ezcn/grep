@@ -65,7 +65,7 @@ Input gene list: tab-delimited two column file with ENSGENEID, category. Genes i
 Output: merged file 
 - fathmm 
 
-#### 6. Parsing VEP annotations with `grep.csq.sql.py` 
+#### 6. Parsing VEP annotations with `grep/grepPipeline/scr/grep.csq.sql.py` 
  per chromosome
 ```
 python3 /grepPipeline/scr/grep.csq.sql.py -db /db/sample.chrx.db -i vep/all.sample.chrx.vep.tsv -g testdata/db/all_geneList.tsv -pli testdata/db/pLIscore.tsv -fathmmcoding /lustre/home/enza/fathmm_database/coding/fathmm_xf_coding.$(chr).tsv -fathmmnc /lustre/home/enza/fathmm_database/noncoding/fathmm_xf_noncoding.$(chr).tsv -o /lustre/home/enza/grep/csq/all.sample.chrx.sql.csq
@@ -81,14 +81,14 @@ vcftools --gzvcf all.sample.chrx.vcf.gz --out $(chr)/$(id).$(chr)_counts  --coun
 python3 grepPipeline/scr/altCounts.py -i /$(chr)/$(id).$(chr)_counts.frq.count -id $(id)
 ```
 
-#### 8. Filter variable sites with `grep.filter.py`
+#### 8. Filter variable sites with `grep/grepPipeline/scr/grep.filter.all.slq.py`
 per chromosome 
 ```
 python3 grep.filter.all.slq.py -db /control/db/hgdp.$(chr).full.db -dbS /samples/db/allGrep.$(chr).db -cl control.list.txt -sl samples.list.txt -ff 0.01 -f 0.05 -type Transcript -r false -pli 0.7 -cadd 0.5 -g 2 -n 10 -i 100 -pathTodirCtrl /control/alleleCount/$(chr) -ctgn controlGenes.$(chr).tsv -gtd GenesToDiscardHgdp.$(chr).tsv -pathTodir /samples/counts/$(chr) -chrom $(chr) -ac 1 -gt 0.5 -o samples.$(chr).filtered.tsv
 ```
 - concat all chromosomes -> allSamples.filtered.tsv
 
-#### 9. Format results with grep.curation.py 
+#### 9. Format results with grep/grepPipeline/scr/grep.curation_nolow.R 
 
 ```
 Rscript grepPipeline/scr/grep.curation_nolow.R allSamples.filtered.tsv Grep_allsamples
