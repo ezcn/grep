@@ -1,0 +1,15 @@
+[1] "PregLoss\tTot Number of Uniqe Variants\t357"
+[1] "PregLoss\tTot Number of NOB\t152"
+# A tibble: 2 x 2
+  IMPACT       n
+  <fct>    <int>
+1 HIGH        19
+2 MODERATE   339
+[1] "PregLoss\tAverage number of sites per sample\t42.5555555555556"
+[1] "PregLoss\tSd number of sites per sample\t10.8755587340503"
+[1] "PregLoss\tTotal number of Unique Genes\t320"
+[1] "PregLoss\tTotal number of Unique Transcripts\t676"
+[1] "PregLoss\tAverage number of genes per sample\t40.8888888888889"
+[1] "PregLoss\tSd number of genes per sample\t9.40005910146905"
+[1] "PregLoss\tAverage number of transcripts per sample\t85.1111111111111"
+[1] "PregLoss\tSd number of transcripts per sample\t23.9449600356967"

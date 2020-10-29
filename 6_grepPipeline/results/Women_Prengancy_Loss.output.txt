@@ -1,0 +1,15 @@
+[1] "Women_Prengancy_Loss\tTot Number of Uniqe Variants\t359"
+[1] "Women_Prengancy_Loss\tTot Number of NOB\t152"
+# A tibble: 2 x 2
+  IMPACT       n
+  <fct>    <int>
+1 HIGH        19
+2 MODERATE   341
+[1] "Women_Prengancy_Loss\tAverage number of sites per sample\t42.7777777777778"
+[1] "Women_Prengancy_Loss\tSd number of sites per sample\t10.6744763077373"
+[1] "Women_Prengancy_Loss\tTotal number of Unique Genes\t322"
+[1] "Women_Prengancy_Loss\tTotal number of Unique Transcripts\t678"
+[1] "Women_Prengancy_Loss\tAverage number of genes per sample\t41.1111111111111"
+[1] "Women_Prengancy_Loss\tSd number of genes per sample\t9.1848304889699"
+[1] "Women_Prengancy_Loss\tAverage number of transcripts per sample\t85.3333333333333"
+[1] "Women_Prengancy_Loss\tSd number of transcripts per sample\t23.8379948821204"
