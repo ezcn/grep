@@ -27,4 +27,4 @@ colnames(geneID)[colnames(geneID)=="SYMBOL"] <- "external_gene_name"
 
 grepOMIM=merge(allGeneOMIM_def, geneID, by="external_gene_name")
 
-write.table(grepOMIM, "grepOMIM.tsv", row.names = FALSE, quote = FALSE, col.names = T)
+write.table(grepOMIM, "grepOMIM.tsv", row.names = FALSE, quote = F, col.names = T, sep="\t")
