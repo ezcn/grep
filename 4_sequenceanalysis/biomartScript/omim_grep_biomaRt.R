@@ -20,7 +20,7 @@ attributes = listAttributes(ensembl)
 allGeneOMIM1<-getBM(attributes = c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name","mim_gene_accession","mim_gene_description"), filters = "", values = "", ensembl, curl = NULL,checkFilters = TRUE, verbose = FALSE, uniqueRows = TRUE, bmHeader = FALSE,quote = "\"")
 
 # Get "mim_morbid_description","mim_morbid_accession" from all genes
-allGeneOMIM2<-getBM(attributes = c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name","mim_morbid_description","mim_morbid_accession"), filters = "", values = "", ensembl, curl = NULL,checkFilters = TRUE, verbose = FALSE, uniqueRows = TRUE, bmHeader = FALSE,quote = "\"")
+allGeneOMIM2<-getBM(attributes = c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name","mim_morbid_accession","mim_morbid_description"), filters = "", values = "", ensembl, curl = NULL,checkFilters = TRUE, verbose = FALSE, uniqueRows = TRUE, bmHeader = FALSE,quote = "\"")
 
 # Merge two subset for obtain all 4 OMIM External attributes
 allGeneOMIM_def = merge(allGeneOMIM1,allGeneOMIM2,by=c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name"))
