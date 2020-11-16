@@ -37,5 +37,8 @@ colnames(geneID)[colnames(geneID)=="SYMBOL"] <- "external_gene_name"
 # Merge BioMart Query with GREP's output table
 grepOMIM=merge(allGeneOMIM_def, geneID, by="external_gene_name")
 
+# Arrange column
+grepOMIM= grepOMIM[c(1,2,3,4,5,6,7,9,8)]
+
 # Write table with omim info for each Gene Name of GREP's output
 write.table(grepOMIM, "grepOMIM.tsv", row.names = FALSE, quote = F, col.names = T, sep="\t")
