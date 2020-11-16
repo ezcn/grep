@@ -21,14 +21,17 @@ write.table(sample, "~/projects/miscarriage/pathway/grep/20201028_PL_analysis/PL
 entrezID=sample$ENTREZID
 
 gene=entrezID
-yy = enrichPathway(gene, organism = "human", pvalueCutoff = 0.5, pAdjustMethod = "BH", qvalueCutoff = 0.5, minGSSize = 10, maxGSSize = 500, readable = FALSE)
+yy = enrichPathway(gene, organism = "human", pvalueCutoff = 0.06, pAdjustMethod = "BH", qvalueCutoff = 0.06, minGSSize = 10, maxGSSize = 500, readable = TRUE)
 recap=head(as.data.frame(yy))
 
 write.table(recap, "~/projects/miscarriage/pathway/grep/20201028_PL_analysis/aggregate/recap/PL_aggregate_recap.tsv" ,sep="\t", row.names=F)
 write.table(yy, "~/projects/miscarriage/pathway/grep/20201028_PL_analysis/aggregate/PL_reactomeAnalisys.tsv" ,sep="\t", row.names=F)
 
-emapplot(yy, color="pvalue")
+emapplot(yy, color="p.adjust")
 ggsave("~/projects/miscarriage/pathway/grep/20201028_PL_analysis/plot/PL_aggregate_emap.png")
+
+heatplot(yy)
+ggsave("~/projects/miscarriage/pathway/grep/20201028_PL_analysis/plot/PL_aggregate_heat.png")
 
 ID = mydS %>% selectd(ID) %>% distinctd()
 
@@ -40,13 +43,13 @@ for(i in ID[,]){
   sample=select(hs,keys = as.character(to_process[,]), columns = c("ENTREZID", "SYMBOL"),keytype = "SYMBOL")
   entrezID=sample$ENTREZID
   gene=entrezID
-  yy = enrichPathway(gene, organism = "human", pvalueCutoff = 0.5, pAdjustMethod = "BH", qvalueCutoff = 0.5, minGSSize = 10, maxGSSize = 500, readable = FALSE)
+  yy = enrichPathway(gene, organism = "human", pvalueCutoff = 0.06, pAdjustMethod = "BH", qvalueCutoff = 0.06, minGSSize = 10, maxGSSize = 500, readable = TRUE)
   recap=head(as.data.frame(yy))
 
   write.table(recap, paste("~/projects/miscarriage/pathway/grep/20201028_PL_analysis/individual_analysis/recap/PL_recap_sample_",i,".tsv",sep='') ,sep="\t", row.names=F)
   write.table(yy, paste("~/projects/miscarriage/pathway/grep/20201028_PL_analysis/individual_analysis/PL_allPathways_sample_",i,".tsv",sep=''),sep="\t", row.names=F)
 
-  emapplot(yy, color="pvalue")
+  emapplot(yy, color="p.adjust")
   ggsave(paste("~/projects/miscarriage/pathway/grep/20201028_PL_analysis/plot/PL_emap_sample_",i,".png", sep=''))
 
 }
