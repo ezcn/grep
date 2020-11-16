@@ -26,7 +26,7 @@ allGeneOMIM2<-getBM(attributes = c("chromosome_name","start_position","end_posit
 allGeneOMIM_def = merge(allGeneOMIM1,allGeneOMIM2,by=c("chromosome_name","start_position","end_position","ensembl_gene_id","external_gene_name"))
 
 # Load GREP output Table
-grepOutput<-read.table("/Users/gianlucadamaggio/projects/miscarriage/data/Grep_final_allfilters.tsv", header=T, sep="\t")
+grepOutput<-read.table("/Users/gianlucadamaggio/projects/miscarriage/data/grep_output/Grep_final_allfilters.tsv", header=T, sep="\t")
 
 # Select only uniq Gene Name
 geneID = grepOutput %>% select(SYMBOL) %>% distinct()
