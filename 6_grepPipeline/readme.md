@@ -1,58 +1,58 @@
 #### 1. Align reads to reference genome 
 ```
-bwa mem -t 24 -R "@RG\tID:$id\tSM:$id" /lustre/home/enza/hgdp/fasta/GRCh38_full_analysis_set_plus_decoy_hla.fa /lustre/home/enza/grep/raw_data/$gz1 /lustre/home/enza/grep/raw_data/$gz2 | samtools view -b - > /lustre/home/enza/grep/bam/$id.raw.bam && touch /lustrehome/gianluca/junk/new_grep/$id.align_ok
+bwa mem -t 24 -R "@RG\tID:$id\tSM:$id" GRCh38.fa sample_R1.fastq.gz sample_R2.fastq.gz | samtools view -b - > sample.raw.bam && touch sample.align_ok
 ```
 - sort bed file
 
 ```
-sambamba sort -t 16 -m 32G --tmpdir /scratch -o /lustre/home/enza/grep/id.raw.sorted.bam /lustre/home/enza/grep/bam/$id.raw.bam
+sambamba sort -t 16 -m 32G --tmpdir /scratch -o sample.raw.sorted.bam sample.raw.bam
 ```
 - remove PCR duplicates
 ```
-sambamba markdup -t 8 --tmpdir ~/tmp --overflow-list-size 500000 /lustre/home/enza/grep/bam/${id}.raw.sorted.bam /lustre/home/enza/grep/bam/${id}.bam
+sambamba markdup -t 8 --tmpdir ~/tmp --overflow-list-size 500000 sample.raw.sorted.bam sample.bam
 ```
-#### 2. Variant Calling
+#### 2. Variant Calling by sample and chromosome
 ```
-freebayes -f /lustre/home/enza/hgdp/fasta/GRCh38_full_analysis_set_plus_decoy_hla.fa -r $2 -g 500 -b /lustre/home/enza/grep/bam/$1.bam > /lustre/home/enza/grep/newVariantCalling/$id/$id.$chr.fb.vcf && touch /lustrehome/enza/junk/fbV2/$id.$chr.fb_ok
+freebayes -f GRCh38.fa -r $chr -g 500 -b sample.bam > sample.$chr.fb.vcf && touch sample.$chr.fb_ok
 ```
 -bgzip and tabix
 ```
-bgzip /lustre/home/enza/grep/newVariantCalling/$id/$id.$chr.fb.vcf
+bgzip sample.$chr.fb.vcf
 ```
 ```
-tabix -p vcf /lustre/home/enza/grep/newVariantCalling/$id/$id.$chr.fb.vcf.gz
+tabix -p vcf sample.$chr.fb.vcf.gz
 ```
 - filter vcf for quality > 20
 ```
-bcftools filter -i "QUAL>20" /lustre/home/enza/grep/newVariantCalling/$id/$id.$chr.fb.vcf.gz -O z -o /lustre/home/enza/grep/newVariantCalling/$id/filtered/$id.$chr.filtered.fb.vcf.gz && touch /lustrehome/enza/junk/fbV2/$id.$chr_filter_ok
+bcftools filter -i "QUAL>20"  sample.$chr.fb.vcf.gz -O z -o sample.$chr.fb.filtered.vcf.gz && touch sample.$chr_filter_ok
 ```
 - tabix
 - normalize filtered vcf
 ```
-vt normalize -n -r /lustre/home/enza/hgdp/fasta/GRCh38_full_analysis_set_plus_decoy_hla.fa /lustre/home/enza/grep/newVariantCalling/$id/filtered/$id.$chr.filtered.fb.vcf.gz > /lustre/home/enza/grep/newVariantCalling/$id/normalized/$id.$chr.fb.norm.vcf && touch /lustrehome/enza/junk/fbV2/$id.$chr_norm_ok
+vt normalize -n -r GRCh38.fa sample.$chr.filtered.fb.vcf.gz > sample.$chr.fb.norm.vcf && touch sample.$chr_norm_ok
 ```
 - bgzip and tabix
 -decompose normalized vcf
 ```
-vt  decompose_blocksub /lustre/home/enza/grep/newVariantCalling/$id/normalized/$id.$chr.fb.norm.vcf.gz > /lustre/home/enza/grep/newVariantCalling/$id/decomposed/$id.$chr.fb.decomp.vcf && touch /lustrehome/enza/junk/fbV2/$id.$chr_decomp_ok
+vt  decompose_blocksub sample.$chr.fb.norm.vcf.gz > sample.$chr.fb.decomp.vcf && touch sample.$chr_decomp_ok
 ```
 -bgzip and tabix
 
 #### 3. Merge all samples
 ```
-bcftools merge -O z -0 -o /lustre/home/enza/grep/newVariantCalling/merged/allGrep.decomp.$chr.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS006/decomposed/AS006.$chr.fb.decomp.vcf.gz  /lustre/home/enza/grep/newVariantCalling/AS030/decomposed/AS030.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS036/decomposed/AS036.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS054/decomposed/AS054.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS064/decomposed/AS064.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS065/decomposed/AS065.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS087/decomposed/AS087.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS090/decomposed/AS090.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS093/decomposed/AS093.$chr.fb.decomp.vcf.gz /lustre/home/enza/grep/newVariantCalling/AS094/decomposed/AS094.$chr.fb.decomp.vcf.gz
+bcftools merge -O z -0 -o allsamples.decomp.$chr.vcf.gz sample1.$chr.fb.decomp.vcf.gz  sample2.$chr.fb.decomp.vcf.gz sample3.$chr.fb.decomp.vcf.gz sampleX.$chr.fb.decomp.vcf.gz 
 ```
 - bgzip and tabix
 
 #### 4.  Annotate variants using `V.E.P`
 merged vcf per chromosome. output is a table
 
-all.sample.chrx.vcf -> all.sample.chrx.vep.tsv
-all.control.chrx.vcf -> all.control.chrx.vep.tsv  
+allsamples.$chr.vcf -> allsamples.$chr.vep.tsv
+all.control.chrx.vcf -> allcontrols.$chr.vep.tsv  
 ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HGDP/data/
 
 ```
-vep --af_1kg --af_gnomad --appris --biotype --buffer_size 5000 --check_existing --distance 5000 --fork 4 --polyphen b --pubmed --regulatory --sift b --species homo_sapiens --symbol --tsl --cache --dir_cache /data/biocontainers/vepcache --offline --tab --fields "Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,AF,AFR_AF,AMR_AF,ASN_AF,EUR_AF,EAS_AF,SAS_AF,AA_AF,EA_AF,gnomAD_AF,gnomAD_AFR_AF,gnomAD_AMR_AF,gnomAD_ASJ_AF,gnomAD_EAS_AF,gnomAD_FIN_AF,gnomAD_NFE_AF,gnomAD_OTH_AF,gnomAD_SAS_AF,MAX_AF,CADD_RAW,CADD_PHRED" --force_overwrite --variant_class -i all.sample.chrx.vcf --plugin CADD,/lustre/home/enza/CADD/whole_genome_SNVs.tsv.gz -o  all.sample.chrx.vep.tsv && touch tabOk/all.sample.chrx.table_ok
+vep --af_1kg --af_gnomad --appris --biotype --buffer_size 5000 --check_existing --distance 5000 --fork 4 --polyphen b --pubmed --regulatory --sift b --species homo_sapiens --symbol --tsl --cache --dir_cache /data/biocontainers/vepcache --offline --tab --fields "Uploaded_variation,Location,Allele,Gene,Feature,Feature_type,Consequence,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,IMPACT,SYMBOL,STRAND,SIFT,PolyPhen,EXON,AF,AFR_AF,AMR_AF,ASN_AF,EUR_AF,EAS_AF,SAS_AF,AA_AF,EA_AF,gnomAD_AF,gnomAD_AFR_AF,gnomAD_AMR_AF,gnomAD_ASJ_AF,gnomAD_EAS_AF,gnomAD_FIN_AF,gnomAD_NFE_AF,gnomAD_OTH_AF,gnomAD_SAS_AF,MAX_AF,CADD_RAW,CADD_PHRED" --force_overwrite --variant_class -i allsamples.chrx.vcf --plugin CADD,/CADD/whole_genome_SNVs.tsv.gz -o  allsamples.$chr.vep.tsv && touch tabOk/allsamples.$chr.table_ok
 ```
 
 #### 4.1  Remove Header of file VEP
